@@ -1,0 +1,7 @@
+datcnv /id:\ctd\SKQ202309T\SKQ202309T_%1.hex /pw:\SKQ202309T\ctd\proc\scripts\datcnv.psa /cd:\ctd\SKQ202309T\SKQ202309T_b.xmlcon 
+binavg /iw:\SKQ202309T\ctd\proc\SKQ202309T_%1.cnv /pw:\SKQ202309T\ctd\proc\scripts\binavg.psa
+datcnv /id:\ctd\SKQ202309T\SKQ202309T_%1.hex /pw:\SKQ202309T\ctd\proc\scripts\datcnvSVP.psa /cd:\ctd\SKQ202309T\SKQ202309T_b.xmlcon
+binavg /iw:\SKQ202309T\ctd\proc\SKQ202309T_%1svp.cnv /pw:\SKQ202309T\ctd\proc\scripts\binavgSVP.psa
+seaplot /pw:\SKQ202309T\ctd\proc\scripts\seaplot.psa /iw:\SKQ202309T\ctd\proc\SKQ202309T_%1avg.cnv
+datcnv /id:\ctd\SKQ202309T\SKQ202309T_%1.hex /pw:\SKQ202309T\ctd\proc\scripts\datcnvros.psa /cd:\ctd\SKQ202309T\SKQ202309T_b.xmlcon 
+bottlesum /iw:\SKQ202309T\ctd\proc\SKQ202309T_%1.ros /pw:\SKQ202309T\ctd\proc\scripts\bottlesum.psa /cd:\ctd\SKQ202309T\SKQ202309T_b.xmlcon
