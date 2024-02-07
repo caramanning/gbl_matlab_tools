@@ -5,12 +5,12 @@ load IEP_SID.mat;
 match_sb = nan.*IEP_SID.Niskin; % create blank variable for storing matching indices
 
 % find the index (row) in IEP_btl that matches every sample in IEP_SID
-for i = 1:length(IEP_SID.Station)
+for i = 1:length(IEP_SID.Station)  
     match_s = find(IEP_btl.Grid == IEP_SID.Station(i)); % matching station name
     match_b = find(IEP_btl.Bottle == IEP_SID.Niskin(i)); % matching bottle
     match_sb(i) = intersect(match_s,match_b); % matching both station and bottle
 end
-
+%%
 % calculate potential temperature, which will be used to calculate
 % solubility later
 IEP_btl.PotentialT = sw_ptmp(IEP_btl.SalinityPSU,IEP_btl.TemperatureITS90DegC,IEP_btl.Pressuredb,0);

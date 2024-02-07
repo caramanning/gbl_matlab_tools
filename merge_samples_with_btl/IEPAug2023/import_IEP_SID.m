@@ -21,7 +21,8 @@ opts.VariableTypes = ["categorical", "double", "double"];
 opts = setvaropts(opts, "Station", "EmptyFieldRule", "auto");
 
 % Import the data
-IEP_SID = readtable("C:\Users\ccm21008\Documents\GitHub\gbl_matlab_tools\merge_samples_with_btl\IEPAug2023\Final IEP logsheet N2O- Aug 2023.xlsx", opts, "UseExcel", false);
+%IEP_SID = readtable("C:\Users\ccm21008\Documents\GitHub\gbl_matlab_tools\merge_samples_with_btl\IEPAug2023\Final IEP logsheet N2O- Aug 2023.xlsx", opts, "UseExcel", false);
+IEP_SID = readtable("Final IEP logsheet N2O- Aug 2023.xlsx", opts, "UseExcel", false);
 
 
 %% Clear temporary variables
