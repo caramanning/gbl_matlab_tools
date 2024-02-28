@@ -36,7 +36,7 @@ set(gca,'ylim',yl);
 
 %%
 dl = [0:0.5:20]'; % depths for interpolation
-x = [1 3 5 7 9]; % fake x values for interpolation
+x = [1 3 5 7 9]; % temporary x values for interpolation
 n_stn = numel(x);
 
 CH4i = nan(length(dl),n_stn);
