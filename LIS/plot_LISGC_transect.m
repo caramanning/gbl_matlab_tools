@@ -70,7 +70,7 @@ axis ij;
 % we need to make a grid that is evenly spaced so that all the casts are
 % interpolated onto the same spacing
 
-dl = [0:0.25:18]'; % depth spacing for interpolation
+dl = [0:0.1:18]'; % depth spacing for interpolation
 x = km_cumulative'; % temporary x values for interpolation
 n_stn = numel(x);
 
@@ -109,13 +109,11 @@ CH4i(:,4) = interp1(LIS.Depth(A),LIS.mean_CH4_nM(A),dl);
 N2Oi(:,4) = interp1(LIS.Depth(A),LIS.mean_N2O_nM(A),dl);
 O2i(:,4) = interp1(LIS.Depth(A),LIS.O2_umolkg(A),dl);
 
-
 stn = 'MID5-cast01';
 A = find(LIS.Station==stn);
 CH4i(:,5) = interp1(LIS.Depth(A),LIS.mean_CH4_nM(A),dl);
 N2Oi(:,5) = interp1(LIS.Depth(A),LIS.mean_N2O_nM(A),dl);
 O2i(:,5) = interp1(LIS.Depth(A),LIS.O2_umolkg(A),dl);
-
 
 stn = 'WLIS-cast02';
 A = find(LIS.Station==stn);
@@ -139,44 +137,176 @@ figure(2)
 clf; hold on;
 box on;
 set(gca,'tickdir','out');
+set(gca,'fontsize',15);
+set(gcf, 'PaperUnits', 'inches');
+set(gcf,'renderer','painters');
+set(gcf, 'PaperPosition', [0 0 6 8]);
+set(gca,'linewidth',0.75);
+    set(gcf,'GraphicsSmoothing','on')
+
+
 clevel = [40:1:450];
 C = contourf(x_grid,dl_grid,CH4i,clevel,'edgecolor','none');
+
+stn = 'EXR1-cast01';
+A = find(LIS.Station==stn);
+plot(x(1).*ones(numel(A)),LIS.Depth(A), '+k', 'LineWidth', 2, 'MarkerSize', 4);
+
+stn = 'EXCR-cast02';
+A = find(LIS.Station==stn);
+plot(x(2).*ones(numel(A)),LIS.Depth(A), '+k', 'LineWidth', 2, 'MarkerSize', 4);
+
+stn = 'MID3-cast01';
+A = find(LIS.Station==stn);
+plot(x(3).*ones(numel(A)),LIS.Depth(A), '+k', 'LineWidth', 2, 'MarkerSize', 4);
+
+stn = 'MID4-cast14';
+A = find(LIS.Station==stn);
+plot(x(4).*ones(numel(A)),LIS.Depth(A), '+k', 'LineWidth', 2, 'MarkerSize', 4);
+
+stn = 'MID5-cast01';
+A = find(LIS.Station==stn);
+plot(x(5).*ones(numel(A)),LIS.Depth(A), '+k', 'LineWidth', 2, 'MarkerSize', 4);
+
+stn = 'WLIS-cast02';
+A = find(LIS.Station==stn);
+plot(x(6).*ones(numel(A)),LIS.Depth(A), '+k', 'LineWidth', 2, 'MarkerSize', 4);
+
+stn = 'WLI6-cast01';
+A = find(LIS.Station==stn);
+plot(x(7).*ones(numel(A)),LIS.Depth(A), '+k', 'LineWidth', 2, 'MarkerSize', 4);
+
+
 xlabel('Transect distance [km]');
 ylabel('Depth [m]');
-c = colorbar;
+c = colorbar('location','southoutside');
 c.Label.String = 'CH_4 (nM)';
-c.Label.FontSize = 16;
+c.FontSize = 15;
 set(gca,'layer','top');
+ylim([0 18]);
 axis ij;
 
+print -dpng -r300 LIS_CH4_transect.png;
+
+wysiwyg;
+%%
 figure(3)
 clf; hold on;
+set(gca,'tickdir','out');
+set(gca,'fontsize',15);
+set(gcf, 'PaperUnits', 'inches');
+set(gcf,'renderer','painters');
+set(gcf, 'PaperPosition', [0 0 6 8]);
+set(gca,'linewidth',0.75);
+    set(gcf,'GraphicsSmoothing','on')
+
 box on;
 set(gca,'tickdir','out');
 clevel = [8:0.05:13.5];
 C = contourf(x_grid,dl_grid,N2Oi,clevel,'edgecolor','none');
+
+stn = 'EXR1-cast01';
+A = find(LIS.Station==stn);
+plot(x(1).*ones(numel(A)),LIS.Depth(A), '+k', 'LineWidth', 2, 'MarkerSize', 4);
+
+stn = 'EXCR-cast02';
+A = find(LIS.Station==stn);
+plot(x(2).*ones(numel(A)),LIS.Depth(A), '+k', 'LineWidth', 2, 'MarkerSize', 4);
+
+stn = 'MID3-cast01';
+A = find(LIS.Station==stn);
+plot(x(3).*ones(numel(A)),LIS.Depth(A), '+k', 'LineWidth', 2, 'MarkerSize', 4);
+
+stn = 'MID4-cast14';
+A = find(LIS.Station==stn);
+plot(x(4).*ones(numel(A)),LIS.Depth(A), '+k', 'LineWidth', 2, 'MarkerSize', 4);
+
+stn = 'MID5-cast01';
+A = find(LIS.Station==stn);
+plot(x(5).*ones(numel(A)),LIS.Depth(A), '+k', 'LineWidth', 2, 'MarkerSize', 4);
+
+stn = 'WLIS-cast02';
+A = find(LIS.Station==stn);
+plot(x(6).*ones(numel(A)),LIS.Depth(A), '+k', 'LineWidth', 2, 'MarkerSize', 4);
+
+stn = 'WLI6-cast01';
+A = find(LIS.Station==stn);
+plot(x(7).*ones(numel(A)),LIS.Depth(A), '+k', 'LineWidth', 2, 'MarkerSize', 4);
+
 xlabel('Transect distance [km]');
 ylabel('Depth [m]');
-c = colorbar;
+c = colorbar('location','southoutside');
 c.Label.String = 'N_2O (nM)';
-c.Label.FontSize = 16;
+c.FontSize = 15;
+ylim([0 18]);
 set(gca,'layer','top');
 axis ij;
 
+print -dpng -r300 LIS_N2O_transect.png;
+
+wysiwyg;
+%%
 
 figure(4)
 clf; hold on;
+
+set(gca,'tickdir','out');
+set(gca,'fontsize',15);
+set(gcf, 'PaperUnits', 'inches');
+set(gcf,'renderer','painters');
+set(gcf, 'PaperPosition', [0 0 6 8]);
+set(gca,'linewidth',0.75);
+    set(gcf,'GraphicsSmoothing','on')
+
+
+
 box on;
 set(gca,'tickdir','out');
-set(gca,'fontsize',14);
+set(gca,'fontsize',15);
 clevel = [40:1:200];
 C = contourf(x_grid,dl_grid,O2i,clevel,'edgecolor','none');
+
+stn = 'EXR1-cast01';
+A = find(LIS.Station==stn);
+plot(x(1).*ones(numel(A)),LIS.Depth(A), '+k', 'LineWidth', 2, 'MarkerSize', 4);
+
+stn = 'EXCR-cast02';
+A = find(LIS.Station==stn);
+plot(x(2).*ones(numel(A)),LIS.Depth(A), '+k', 'LineWidth', 2, 'MarkerSize', 4);
+
+stn = 'MID3-cast01';
+A = find(LIS.Station==stn);
+plot(x(3).*ones(numel(A)),LIS.Depth(A), '+k', 'LineWidth', 2, 'MarkerSize', 4);
+
+stn = 'MID4-cast14';
+A = find(LIS.Station==stn);
+plot(x(4).*ones(numel(A)),LIS.Depth(A), '+k', 'LineWidth', 2, 'MarkerSize', 4);
+
+stn = 'MID5-cast01';
+A = find(LIS.Station==stn);
+plot(x(5).*ones(numel(A)),LIS.Depth(A), '+k', 'LineWidth', 2, 'MarkerSize', 4);
+
+stn = 'WLIS-cast02';
+A = find(LIS.Station==stn);
+plot(x(6).*ones(numel(A)),LIS.Depth(A), '+k', 'LineWidth', 2, 'MarkerSize', 4);
+
+stn = 'WLI6-cast01';
+A = find(LIS.Station==stn);
+plot(x(7).*ones(numel(A)),LIS.Depth(A), '+k', 'LineWidth', 2, 'MarkerSize', 4);
+
+
 xlabel('Transect distance [km]');
 ylabel('Depth [m]');
-c = colorbar;
+c = colorbar('location','southoutside');
 c.Label.String = 'O_2 (\mumol/kg)';
-c.Label.FontSize = 16;
+c.Label.FontSize = 15;
 set(gca,'layer','top');
+ylim([0 18]);
 axis ij;
+
+print -dpng -r300 LIS_O2_transect.png;
+
+
+wysiwyg;
 
 
