@@ -8,10 +8,35 @@ Cast = LISAug2023CastData.Cast(ncast);
 Lat = LISAug2023CastData.Lat(ncast);
 Lon = LISAug2023CastData.Lon(ncast);
 
+
+% load LISOct23_CH4N2O_CTD.mat
+% LIS = LISOct23_CH4N2O_CTD;
+% 
+% load LISOct2023CastData.mat;
+% 
+% ncast = 16:22;
+% Cast = LISOct2023CastData.Cast(ncast);
+% Lat = LISOct2023CastData.Lat(ncast);
+% Lon = LISOct2023CastData.Lon(ncast);
+
+
 km_between = m_lldist(Lon,Lat); % distance between consecutive stations
 km_between = [0; km_between]; % add on zero for first station
 
 km_cumulative = cumsum(km_between); % consecutive distance
+
+% for October the station names are different
+stn = 'EXRX-cast01';
+A = find(LIS.Station==stn);
+LIS.Station(A) = 'EXCR-cast01';
+
+stn = 'EXRX-cast02';
+A = find(LIS.Station==stn);
+LIS.Station(A) = 'EXCR-cast02';
+
+stn = 'EXCR1-cast01';
+A = find(LIS.Station==stn);
+LIS.Station(A) = 'EXR1-cast01';
 
 %%
 
@@ -132,12 +157,12 @@ O2i(:,7) = interp1(LIS.Depth(A),LIS.O2_umolkg(A),dl);
 
 
 
-
+fs=17;
 figure(2)
 clf; hold on;
 box on;
 set(gca,'tickdir','out');
-set(gca,'fontsize',15);
+set(gca,'fontsize',fs);
 set(gcf, 'PaperUnits', 'inches');
 set(gcf,'renderer','painters');
 set(gcf, 'PaperPosition', [0 0 6 8]);
@@ -145,7 +170,8 @@ set(gca,'linewidth',0.75);
     set(gcf,'GraphicsSmoothing','on')
 
 
-clevel = [40:1:450];
+clevel = [25:1:460];
+ca = [25 460]; %colorbar limits
 C = contourf(x_grid,dl_grid,CH4i,clevel,'edgecolor','none');
 
 stn = 'EXR1-cast01';
@@ -179,30 +205,31 @@ plot(x(7).*ones(numel(A)),LIS.Depth(A), '+k', 'LineWidth', 2, 'MarkerSize', 4);
 
 xlabel('Transect distance [km]');
 ylabel('Depth [m]');
+caxis(ca)
 c = colorbar('location','southoutside');
-c.Label.String = 'CH_4 (nM)';
-c.FontSize = 15;
+c.Label.String = 'CH_4 (nmol/kg)';
+c.FontSize = fs;
 set(gca,'layer','top');
 ylim([0 18]);
 axis ij;
 
-print -dpng -r300 LIS_CH4_transect.png;
+%print -dpng -r300 LIS_CH4_transect_Oct.png;
 
 wysiwyg;
 %%
 figure(3)
 clf; hold on;
 set(gca,'tickdir','out');
-set(gca,'fontsize',15);
+set(gca,'fontsize',fs);
 set(gcf, 'PaperUnits', 'inches');
 set(gcf,'renderer','painters');
 set(gcf, 'PaperPosition', [0 0 6 8]);
 set(gca,'linewidth',0.75);
-    set(gcf,'GraphicsSmoothing','on')
-
+set(gcf,'GraphicsSmoothing','on');
 box on;
-set(gca,'tickdir','out');
-clevel = [8:0.05:13.5];
+
+clevel = [8.5:0.02:14];
+ca = [8.5 14];
 C = contourf(x_grid,dl_grid,N2Oi,clevel,'edgecolor','none');
 
 stn = 'EXR1-cast01';
@@ -235,35 +262,32 @@ plot(x(7).*ones(numel(A)),LIS.Depth(A), '+k', 'LineWidth', 2, 'MarkerSize', 4);
 
 xlabel('Transect distance [km]');
 ylabel('Depth [m]');
+caxis([ca]);
 c = colorbar('location','southoutside');
-c.Label.String = 'N_2O (nM)';
-c.FontSize = 15;
+c.Label.String = 'N_2O (nmol/kg)';
+c.FontSize = fs;
 ylim([0 18]);
 set(gca,'layer','top');
 axis ij;
 
-print -dpng -r300 LIS_N2O_transect.png;
+%print -dpng -r300 LIS_N2O_transect_Oct.png;
 
 wysiwyg;
 %%
 
 figure(4)
 clf; hold on;
-
 set(gca,'tickdir','out');
-set(gca,'fontsize',15);
+set(gca,'fontsize',fs);
 set(gcf, 'PaperUnits', 'inches');
 set(gcf,'renderer','painters');
 set(gcf, 'PaperPosition', [0 0 6 8]);
 set(gca,'linewidth',0.75);
-    set(gcf,'GraphicsSmoothing','on')
-
-
-
+set(gcf,'GraphicsSmoothing','on');
 box on;
-set(gca,'tickdir','out');
-set(gca,'fontsize',15);
-clevel = [40:1:200];
+
+clevel = [40:1:250];
+ca = [40 250];
 C = contourf(x_grid,dl_grid,O2i,clevel,'edgecolor','none');
 
 stn = 'EXR1-cast01';
@@ -297,15 +321,15 @@ plot(x(7).*ones(numel(A)),LIS.Depth(A), '+k', 'LineWidth', 2, 'MarkerSize', 4);
 
 xlabel('Transect distance [km]');
 ylabel('Depth [m]');
+caxis([ca]);
 c = colorbar('location','southoutside');
 c.Label.String = 'O_2 (\mumol/kg)';
-c.Label.FontSize = 15;
+c.FontSize = fs;
 set(gca,'layer','top');
 ylim([0 18]);
 axis ij;
 
-print -dpng -r300 LIS_O2_transect.png;
-
+print -dpng -r300 LIS_O2_transect_Aug.png;
 
 wysiwyg;
 

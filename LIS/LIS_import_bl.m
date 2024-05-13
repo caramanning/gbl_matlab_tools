@@ -28,8 +28,8 @@ opts = setvaropts(opts, ["FireSeq", "Niskin", "Day", "Year", "ScanStart", "ScanE
 
 % Import the data
 %MID4cast07_fireseq = readtable("C:\Users\ccm21008\OneDrive - University of Connecticut\research\Long Island Sound\Aug 2023 cruise\CTD_2023_08_01-03_TobiasKayCarsonCara\MID4-cast07.bl", opts);
-EXCRcast01_fireseq = readtable("C:\Users\ccm21008\OneDrive - University of Connecticut\research\Long Island Sound\October 2023 cruise\CTD_2023_10_18-20_TobiasKayCarsonCara\bottle\excr101.btl")
-save MID4cast07_fireseq.mat MID4cast07_fireseq;
+MID5cast01_fireseq = readtable("C:\Users\ccm21008\OneDrive - University of Connecticut\research\Long Island Sound\October 2023 cruise\CTD_2023_10_18-20_TobiasKayCarsonCara\mid501.bl", opts);
+save MID5cast01_fireseq.mat MID5cast01_fireseq;
 %% Clear temporary variables
 clear opts
 

@@ -1,9 +1,9 @@
 % THINGS THAT STILL NEED TO BE DONE:
-load LISAug23_CH4N2O_CTD.mat;
+load LISOct23_CH4N2O_CTD.mat;
 
-surf_i = find(LISAug23_CH4N2O_CTD.Depth<3);
+surf_i = find(LISOct23_CH4N2O_CTD.Depth<3);
 
-LIS_s = LISAug23_CH4N2O_CTD(surf_i,:);
+LIS_s = LISOct23_CH4N2O_CTD(surf_i,:);
 
 %%
 
