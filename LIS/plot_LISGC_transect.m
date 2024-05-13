@@ -1,23 +1,23 @@
-load LISAug23_CH4N2O_CTD.mat
-LIS = LISAug23_CH4N2O_CTD;
-
-load LISAug2023CastData.mat;
-
-ncast = 16:22;
-Cast = LISAug2023CastData.Cast(ncast);
-Lat = LISAug2023CastData.Lat(ncast);
-Lon = LISAug2023CastData.Lon(ncast);
-
-
-% load LISOct23_CH4N2O_CTD.mat
-% LIS = LISOct23_CH4N2O_CTD;
+% load LISAug23_CH4N2O_CTD.mat
+% LIS = LISAug23_CH4N2O_CTD;
 % 
-% load LISOct2023CastData.mat;
+% load LISAug2023CastData.mat;
 % 
 % ncast = 16:22;
-% Cast = LISOct2023CastData.Cast(ncast);
-% Lat = LISOct2023CastData.Lat(ncast);
-% Lon = LISOct2023CastData.Lon(ncast);
+% Cast = LISAug2023CastData.Cast(ncast);
+% Lat = LISAug2023CastData.Lat(ncast);
+% Lon = LISAug2023CastData.Lon(ncast);
+
+
+load LISOct23_CH4N2O_CTD.mat
+LIS = LISOct23_CH4N2O_CTD;
+
+load LISOct2023CastData.mat;
+
+ncast = 16:22;
+Cast = LISOct2023CastData.Cast(ncast);
+Lat = LISOct2023CastData.Lat(ncast);
+Lon = LISOct2023CastData.Lon(ncast);
 
 
 km_between = m_lldist(Lon,Lat); % distance between consecutive stations
@@ -157,7 +157,7 @@ O2i(:,7) = interp1(LIS.Depth(A),LIS.O2_umolkg(A),dl);
 
 
 
-fs=17;
+fs=22;
 figure(2)
 clf; hold on;
 box on;
@@ -210,10 +210,12 @@ c = colorbar('location','southoutside');
 c.Label.String = 'CH_4 (nmol/kg)';
 c.FontSize = fs;
 set(gca,'layer','top');
+set(gca,'ytick',[0 5 10 15]);
 ylim([0 18]);
 axis ij;
 
-%print -dpng -r300 LIS_CH4_transect_Oct.png;
+print -dpng -r300 LIS_CH4_transect_Oct.png;
+%print -dpng -r300 LIS_CH4_transect_Aug.png;
 
 wysiwyg;
 %%
@@ -270,7 +272,8 @@ ylim([0 18]);
 set(gca,'layer','top');
 axis ij;
 
-%print -dpng -r300 LIS_N2O_transect_Oct.png;
+print -dpng -r300 LIS_N2O_transect_Oct.png;
+%print -dpng -r300 LIS_N2O_transect_Aug.png;
 
 wysiwyg;
 %%
@@ -329,7 +332,8 @@ set(gca,'layer','top');
 ylim([0 18]);
 axis ij;
 
-print -dpng -r300 LIS_O2_transect_Aug.png;
+%print -dpng -r300 LIS_O2_transect_Aug.png;
+print -dpng -r300 LIS_O2_transect_Oct.png;
 
 wysiwyg;
 
