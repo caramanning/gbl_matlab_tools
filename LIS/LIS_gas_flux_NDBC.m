@@ -1,4 +1,8 @@
-% THINGS THAT STILL NEED TO BE DONE:
+% this code calculates the gas flux based on NDBC mooring data collected at
+% one location (mooring 44022, EXRX)
+% data from mooring 44040, WLIS, was not available for the desired time
+% period
+
 load LISOct23_CH4N2O_CTD.mat;
 
 surf_i = find(LISOct23_CH4N2O_CTD.Depth<3);
@@ -9,17 +13,18 @@ LIS_s = LISOct23_CH4N2O_CTD(surf_i,:);
 
 % load in wind data
 %load NDBC_44040h2023.mat;
+% winds are collected at 3.5 m height and need to be adjusted to u10
 load NDBC_44022h2023.mat;
 b = NDBC_44022h2023;
 
 b.datenum = datenum(b.YY,b.MM,b.DD,b.hh,b.mm,0.*b.mm);
 
 b.slp = ones(size(b.WSPD));
-time_int_wind_hr = 0.5; % interval between wind speed observations = 0.5 hr for wind
+time_int_wind_hr = 0.25; % interval between wind speed observations = 0.25 hr
 
 b.WSPD(b.WSPD>99)=nan;
 h_WSPD = 3.5; % wind speed height in meters
-b.u10 = b.WSPD .*(10/3.5)^0.11;
+b.u10 = b.WSPD .*(10/3.5)^0.11; % correcting to 10 m height
 
 %%
 
