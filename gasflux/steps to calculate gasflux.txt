@@ -1,0 +1,38 @@
+# steps to download ERA5 files for Aug 2023 Benguela cruise
+
+Go to:
+https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-single-levels
+
+Need to sign up for an account. I was not able to get the verification email to my UConn email but gmail worked.
+
+select
+Reanalysis
+
+Variable:
+10m u-component of wind
+10m v-component of wind
+mean sea level pressure
+sea surface temperature
+
+Year:
+2023
+
+Month: May, Jun, July, Aug, Sept
+
+Day - select all
+
+Time - select all
+
+Geographical area:
+Select
+sub-region extraction
+North -27, West 13, East 19, South -35
+
+Select NetCDF (experimental)
+
+Note: to run the GRIB in matlab you need version 2023b or newer and I don't have code for this yet. The NetCDF is working.
+
+Then you can checkout and wait for the file to be ready, download it and import into matlab.
+
+
+

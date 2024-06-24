@@ -6,7 +6,7 @@ LIS = LISAug23_CH4N2O_CTD;
 load LISOct23_CH4N2O_CTD;
 LIS = LISOct23_CH4N2O_CTD;
 
-h_WSPD = 3.5; % wind speed height in meters
+h_WSPD = 3.5; % wind speed height in meters from NDBC buoy
 ms_per_kts = 0.514444; % conversion factor to go from kts to m/s
 exrx.u10_ms = exrx.windSpd_Kts .* ms_per_kts .*(10/h_WSPD)^0.11;
 
@@ -20,25 +20,29 @@ de = dc + 15;
 %dsdt = datetime(ds);
 %dsde = datetime(de);
 
+% calculate the average of the u10 squared for 15 days before and after
+% each cruise
 A = find(exrx.TIMESTAMP>=ds & exrx.TIMESTAMP<=de); % 15 days before and after cruise
 
-u10_sq = exrx.u10_ms(A).^2;
-avg_u10_sq = mean(u10_sq);
-u10_monthly = sqrt(avg_u10_sq);
-
+u10_sq = exrx.u10_ms(A).^2; 
+avg_u10_sq = mean(u10_sq); % monthly average u10^2
+u10_monthly = sqrt(avg_u10_sq); % convert to equivalent u10 that would give the same u10^2
 
 
 LIS.n2o_nmolkg = LIS.mean_N2O_nM./sw_dens(LIS.S,LIS.T,LIS.P).*1000;
 LIS.ch4_nmolkg = LIS.mean_CH4_nM./sw_dens(LIS.S,LIS.T,LIS.P).*1000;
 
 
-% need to use the exact atmospheric concentration corrected for water vapor here, just approximating
-% for now
-N2Oatm = 330e-9;
-LIS.n2o_eq_nmolkg = N2Osol(LIS.S,LIS.T,N2Oatm).*1000;
+% need to use the exact atmospheric concentration, just approximating for
+% now
+N2Oatm_dry = 335e-9;
+CH4atm_dry = 1920e-9;
 
-CH4atm = 1920e-9;
-LIS.ch4_eq_nmolkg = CH4sol(LIS.S,LIS.T,CH4atm)'.*1000;
+N2Oatm_H2Osat = N2Oatm_dry .* (1 - vpress(LIS.S,LIS.T));
+LIS.n2o_eq_nmolkg = N2Osol(LIS.S,LIS.T,N2Oatm_H2Osat).*1000;
+
+CH4atm_H2Osat = CH4atm_dry .* (1 - vpress(LIS.S,LIS.T));
+LIS.ch4_eq_nmolkg = CH4sol(LIS.S,LIS.T,CH4atm_H2Osat)'.*1000;
 
 LIS.Dch4 = (LIS.ch4_nmolkg - LIS.ch4_eq_nmolkg)./LIS.ch4_eq_nmolkg.*100;
 LIS.Dn2o = (LIS.n2o_nmolkg - LIS.n2o_eq_nmolkg)./LIS.n2o_eq_nmolkg.*100;
@@ -59,6 +63,7 @@ LIS.k_N2O_md(si) = kgas(u10_monthly_rep,LIS.Sc_N2O(si),'W14').*spd; %k in m/d
 
 LIS.F_CH4_umolm2d = nan.*LIS.S;
 LIS.F_N2O_umolm2d = nan.*LIS.S;
+
 % Flux = k .* (CH4meas - CH4eq)
 % Flux in umol m-2 d-1 = m d-1 .* nmol/kg .* umol/nmol .* kg/m3 
 

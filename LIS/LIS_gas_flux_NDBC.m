@@ -19,7 +19,7 @@ b = NDBC_44022h2023;
 
 b.datenum = datenum(b.YY,b.MM,b.DD,b.hh,b.mm,0.*b.mm);
 
-b.slp = ones(size(b.WSPD));
+b.slp = ones(size(b.WSPD)); % no data for this mooring unfortunately, need to fill in with other source
 time_int_wind_hr = 0.25; % interval between wind speed observations = 0.25 hr
 
 b.WSPD(b.WSPD>99)=nan;
@@ -91,12 +91,18 @@ gd.ch4_nmolkg = LIS_s.mean_CH4_nM./sw_dens(gd.S,gd.T,gd.P).*1000;
 
 
 % need to use the exact atmospheric concentration corrected for water vapor here, just approximating
-% for now
-N2Oatm = 330e-9;
-gd.n2o_eq_nmolkg = N2Osol(gd.S,gd.T,N2Oatm).*1000;
+% for now, need to go back and get exact values for each month
+N2Oatm_dry = 335e-9; %dry mole fraction
+CH4atm_dry = 1920e-9; %dry mole fraction
 
-CH4atm = 1920e-9;
-gd.ch4_eq_nmolkg = CH4sol(gd.S,gd.T,CH4atm)'.*1000;
+
+% calculate n2o concentration with water vapor pressure at saturation
+% c_H2Osat = c_dry * (1 - H2Opress)
+N2Oatm_H2Osat = N2Oatm_dry .* (1 - vpress(gd.S,gd.T));
+gd.n2o_eq_nmolkg = N2Osol(gd.S,gd.T,N2Oatm_H2Osat).*1000;
+
+CH4atm_H2Osat = CH4atm_dry .* (1 - vpress(gd.S,gd.T));
+gd.ch4_eq_nmolkg = CH4sol(gd.S,gd.T,CH4atm_H2Osat)'.*1000;
 
 
 % save the gas data to new variable names
