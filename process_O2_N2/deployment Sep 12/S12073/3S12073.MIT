@@ -1,0 +1,54 @@
+	Filename: C:\Software\Star-Oddi\SeaStar\DST CTD\S12073\3S12073.MIT
+	SeaStar 9.05
+	Date & Time: 8/1/2022 1:43:04 PM
+	----------------------------------------------------
+	Recorder type             : DST CTD
+	Recorder number           : S12073
+	Recorder version          : 20  DM/CRC16/4800
+	Recorder measures         : Temperature, Pressure & Conductivity
+	Memory capacity(Meas/Byte): 87217 / 392478
+	Measurement seq. number   : 3
+	----------------------------------------------
+
+	Retrieved according to    : Recorder definition
+	Communication statistics
+		Requested bytes  : 84
+		Received bytes   : 84
+		Requested packs  : 2
+		Received packs   : 2
+		Re-sent packs    : 0
+		Empty packs      : 0
+		Number of errors : 0
+	----------------------------------------------
+
+	Recorder initiation time : 8/1/2022 1:21:09 PM
+	Measurement start time   : 8/1/2022 1:24:00 PM
+	PC connection time       : 8/1/2022 1:42:38 PM
+	Data retrieval time      : 8/1/2022 1:43:04 PM
+	Status (7)               : Measuring OK
+	Recorder mode            : Measurement mode
+	Measurements           Number    Mem.used(%)
+	----------------------------------------------
+	                       0              0      
+	                       0              0      
+	Measurement time (days:hours) : 0:0
+	Memory used Byte / (%)        : 84  /  0
+
+	Estimated battery life calculations
+	       At initiation time (%) :  97,9
+	     At connection time (%) :  97,9
+	            Remaining now (%) :  97,9
+	CRC test on MID          : Enabled
+	----------------------------------------------
+
+
+	Measurement start time     : 8/1/2022 1:24:00 PM
+	----------------------------------------------
+
+	Measurement settings:  [dd:hh:mm:ss] x number
+	                                             
+	---------------------------------------------
+	Start delay          :  00:00:02:51
+	1. interval period   :     00:01:00  x  65520
+
+	Measurement interval sequence: 1-1-1-1-1-1-1-1-1-1-1-1-1-1

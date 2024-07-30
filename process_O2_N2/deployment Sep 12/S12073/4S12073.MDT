@@ -1,0 +1,46 @@
+	Filename: C:\Software\Star-Oddi\SeaStar\DST CTD\S12073\4S12073.MDT
+	SeaStar 9.05
+	----------------------------------------------
+	Recorder type               : DST CTD
+	Recorder number             : S12073
+	Recorder version            : 20  DM/CRC16/4800
+	Recorder measures           : Temperature, Pressure & Conductivity
+	Recorder memory(Meas/Byte)  : 87217 / 392478
+	Measurement sequence number : 4
+	Recorder started from PC    : 8/1/2022 1:45:30 PM
+	----------------------------------------------
+
+	Measurement interval def.   : Single interval = 00:02:00
+
+
+	Measurement start time     : 8/1/2022 1:51:00 PM
+	----------------------------------------------
+
+	Measurement settings:  [dd:hh:mm:ss] x number
+	                                             
+	---------------------------------------------
+	Start delay          :  00:00:05:30
+	1. interval period   :     00:02:00  x  65520
+
+	Measurement interval sequence: 1-1-1-1-1-1-1-1-1-1-1-1-1-1
+
+	Estimated time duration and battery usage for NMS
+	----------------------------------------------------
+
+	Battery energy at initiation time(%)   :  97,9
+	Battery energy at measurement start (%):  97,9
+	----------------------------------------------------
+
+	Cycle 1                                                    Meas.taken   Interval Def.
+	Seq/Inr      Date&Time      Batt.used(%)  Mem.used(%)       CTD      Primary   Sec-CNT
+	  1/1   10/31/2022 1:51:00 PM      16          75           65521    Normal    0
+
+	Memory full                : 11/30/2022 5:05:00 PM
+	    After (days:hours)     : 121:3
+	    In Cycle               : 1
+	    In sequence            : 2
+	    In Interval            : 1
+	    In measurement         : 21697
+	    Total meas. taken      : 87218
+	    Battery used (%)       :  21,8
+	    Battery remaining (%)  :  76,1

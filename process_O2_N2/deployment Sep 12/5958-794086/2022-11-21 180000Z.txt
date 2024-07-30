@@ -1,0 +1,7 @@
+5958-794086
+OS REV: 2.30
+Type:   0, Scrub:   1, Angle:  45
+Timeout:  10, Threshold: 200
+Time (sec),  Bat (Volt),  T (deg C), Wipes (), Cal Wipe Time (sec), Wipe Time (sec), Start I (mA), Ave I (mA), Peak I (mA), Final I (mA), Rsource (Ohm)
+ 1669053600, +3.45, +12.536,    591,  +1.0,  +1.6, +206.6, +206.6,   +0.0,  253.4,  +0.9
+ 1669064400, +3.39,  +8.365,    592,  +1.0,  +1.6, +246.2, +161.2,   +0.0,  258.0,  +0.7

@@ -1,0 +1,103 @@
+	Filename: C:\Software\Star-Oddi\SeaStar\DST CTD\S12073\3S12073.MID
+	SeaStar 9.05
+	Description: 
+	----------------------------------------------
+	Recorder type                  : DST CTD
+	Recorder number                : S12073
+	Recorder version               : 20  DM/CRC16/4800
+	Recorder measures              : Temperature, Pressure & Conductivity
+	Memory capacity                : 87217
+	Memory capacity(Meas/Byte)     : 87217 / 392478
+	Measurement sequence number    : 3
+	Convertion number              : 0
+	Recorder initiation time       : 8/1/2022 1:21:09 PM
+	Measurement start time         : 8/1/2022 1:24:00 PM
+	Time of conversion             : 8/1/2022 1:43:04 PM
+	----------------------------------------------
+
+	Conversion type                : Upload conversion
+	Calibration constants used     : from MID-file
+	Number of measurements         : 19
+	Total mesurement time          : 0:0:20:51
+	Measurements read from DAD     : 18
+	Converted measurements         : 18
+
+	Data file settings
+	----------------------------------------------
+	Temperature unit               : (°C) Celcius
+	Temperature number of decimals : 2
+	No Temperature offset adjustment
+	Pressure unit                  : (m) Depth
+	Gravitational Acceleration (g) : 9,807
+	Conversion = Seawater density  : 1,026
+	No Pressure offset adjustment
+	Pressure number of decimals    : 2
+	Salinity unit                  : (PSU)
+	Salinity number of decimals    : 2
+	Conductivity unit              : (mS/cm)
+	Conductivity numb. of decimals : 2
+	Decimal point                  : , (comma)
+	Date format                    : [dmy] (day month year)
+	Date separation                : . (dot)
+	Time separation                : : (colon)
+	Field separation               : Tab
+
+
+	Out Of Range DV (Decimal Value) Limits
+	--------------------------------------
+	RID: Temperature Calibration limits: 1269 - 2564
+	RID: Pressure Calibration limits:  322 - 2900
+	RID: Conductivity Calibr. limits: 1369 - 3993
+
+	Out Of Range UV (Unit Value) Limits (User Def.)
+	-----------------------------------------------
+	Temperature limits (°C)   : -5 - 55
+	Pressure/depth limits (m): 0 - 900
+
+	Out Of Range settings and values
+	---------------------------------
+	DV OOR detection method: RID values
+	DV correction method   : No correction
+	UV correction method   : No correction
+
+	Out Of Range Overall Results
+	----------------------------
+	Temperature OORS
+	DV-OORS detected :  0
+	DV-OORS corrected:  0
+	UV-OORS detected :  0
+	UV-OORS corrected:  0
+
+	Pressure OORS
+	DV-OORS detected :  18
+	DV-OORS corrected:  0
+	UV-OORS detected :  18
+	UV-OORS corrected:  0
+
+	Conductivity OORS
+	DV-OORS detected :  0
+	DV-OORS corrected:  0
+	UV-OORS detected :  0
+	UV-OORS corrected:  0
+
+
+	    Statistical Data
+	----------------------------
+
+	Unit value statistics
+	Parameter             Nr.Meas.       Mem.used(%)      Min        Max    Average     Middle
+	------------------------------------------------------------------------------------------
+	Temperature(°C)             18         0,01          19,9       20,1       20,0       20,0
+	Depth(m)                    18         0,01          -1,3        0,0       -1,3       -0,6
+	Conductivity(mS/cm)         18         0,01           0,0       14,1       13,7        7,1
+	                            18         0,01           0,0       21,1       20,4       10,6
+	                             0         0,00           0,0        0,0        0,0        0,0
+
+	Decimal value statistics
+	Parameter             Nr.Points      Bytes used       Min        Max    Average     Middle
+	------------------------------------------------------------------------------------------
+	Temp-bin                    18           27          1929       1936       1935       1932
+	Press-bin                   18           27             0        291        290        145
+	Conductivity-bin            18           27             0       3277       3268       1638
+	                            18           27             0       3277       3268       1638
+	                             0            0             0          0          0          0

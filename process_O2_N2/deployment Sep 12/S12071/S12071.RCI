@@ -1,0 +1,93 @@
+	Filename: C:\Software\Star-Oddi\SeaStar\DST CTD\S12071\S12071.RCI
+	SeaStar 9.05
+	File creation Date & Time: 11/21/2022 5:20:07 PM
+	Recorder type              : DST CTD
+	Recorder number            : S12071
+	Production number          : 8274C071
+	Production date [dd:mm:yy] : 19:04:22
+	Calibration number         : 1
+	Calibration date[dd:mm:yy] : 19:04:22
+
+	Temperature Calibration constants:
+	------------------------------------------------------
+	Temp.C0: 125.623809766917
+	Temp.C1: -0.148125284282549
+	Temp.C2: 0.000118492273636355
+	Temp.C3: -6.16691279162308E-8
+	Temp.C4: 1.70124275160355E-11
+	Temp.C5: -2.00053393290708E-15
+
+	Temperature Calibration range:
+		      Decimal Temp.(°C)/(°F)
+		Min:	2569       -1 /   30
+		Max:	1273       40 /  104
+		Avg.resol.: 31(m°C) / 88(m°F)
+
+	Temperature sensor: Thermistor
+
+	Pressure Calibration constants:
+	------------------------------------------------------
+	Pres.C0: -1.98590932610189
+	Pres.C1: 0.00638195603422145
+	Pres.C2: 6.78491418915327E-8
+	Pres.C3: -1.16924934130647E-10
+	Pres.C4: 6.71535863422023E-14
+	Pres.C5: -1.30240963446968E-17
+
+	Pressure Temperature Regulation constants
+	-------------------------
+	TPR.C1: -0.752397461064189
+	TPR.C2: -0.0843470956471064
+	TPR.C3: 0.00325239480887656
+	TPR.C4: -7.69458096307166E-5
+	TPR.C5: 7.18845679868606E-7
+
+	Ambient pressure (mBar): 1026
+	Pressure Calibration Temperature reference (°C): 24.05
+
+	Pressure Sensor Type: 1
+	Max pressure tolerance(Bar):0 - 30
+
+	Pressure Calibration range:
+		      Decimal   (Bar) / (m)
+		Min:	 312        0.01       0.1
+		Max:	2187        12.0       122
+		Avg.resol.: 6(mbar)  65(mm)
+
+	Conduct Calibration constants:
+	------------------------------------------------------
+	Conduc.C0: 76.5594165831008
+	Conduc.C1: 0.0620824664697595
+	Conduc.C2: -0.000121053026184107
+	Conduc.C3: 8.99140689380988E-8
+	Conduc.C4: -3.89697276970601E-11
+	Conduc.C5: 9.90871716427597E-15
+	Conduc.C6: -1.3706203016695E-18
+	Conduc.C7: 7.94928573274513E-23
+
+	Conductivity Calibration Temperature reference (°C): 32.78
+	Conductivity Cell Type: 3
+	Conductivity Cell Range (mS/cm): 3 - 68
+
+	Conductivity Calibration range:
+		      Decimal Conduc.(mS/cm)
+		Min:	3994        1
+		Max:	1351       68
+		Avg.resol.(uS/cm): 25
+
+	Conductivity Temperature Regulation constants
+	-------------------------
+	TCR.C1: 1.31664236995888
+	TCR.C2: -0.0303402102395144
+	TCR.C3: 0.00181991447195205
+	TCR.C4: -5.14050328373035E-5
+	TCR.C5: 5.04819921705352E-7
+
+	TCR1.C1: 0.361037354267286
+	TCR1.C2: 0.00632729372501247
+	TCR1.C3: -9.73498102031685E-5
+	TCR1.C4: -3.59569261790283E-6
+	TCR1.C5: 6.97356013565914E-8
+
+	TCR  Decimal Value Range : 2625 - 2665
+	TCR1 Decimal Value Range : 3516 - 3532

@@ -1,0 +1,55 @@
+	Filename               : C:\Software\Star-Oddi\SeaStar\DST CTD\S12071\13S12071.OOR
+	Time of Conversion     : 9/9/2022 12:59:16 PM
+	DV OOR detection method: RID values
+	DV correction method   : No correction
+	UV correction method   : No correction
+
+     	              Measurement
+	Meas.Nr. Time&Date         Type    Value  OOR   CORR.-Value
+	------------------------------------------------------------
+	1	09/09/22 12:44:00	Press	293	DV-min  	
+	1	09/09/22 12:44:00	Press	-1.12	UV-min  	
+	2	09/09/22 12:45:00	Press	292	DV-min  	
+	2	09/09/22 12:45:00	Press	-1.18	UV-min  	
+	3	09/09/22 12:46:00	Press	292	DV-min  	
+	3	09/09/22 12:46:00	Press	-1.18	UV-min  	
+	4	09/09/22 12:47:00	Press	292	DV-min  	
+	4	09/09/22 12:47:00	Press	-1.18	UV-min  	
+	5	09/09/22 12:48:00	Press	292	DV-min  	
+	5	09/09/22 12:48:00	Press	-1.18	UV-min  	
+	6	09/09/22 12:49:00	Press	291	DV-min  	
+	6	09/09/22 12:49:00	Press	-1.25	UV-min  	
+	7	09/09/22 12:50:00	Press	290	DV-min  	
+	7	09/09/22 12:50:00	Press	-1.31	UV-min  	
+	8	09/09/22 12:51:00	Press	291	DV-min  	
+	8	09/09/22 12:51:00	Press	-1.25	UV-min  	
+	9	09/09/22 12:52:00	Press	291	DV-min  	
+	9	09/09/22 12:52:00	Press	-1.25	UV-min  	
+	10	09/09/22 12:53:00	Press	292	DV-min  	
+	10	09/09/22 12:53:00	Press	-1.18	UV-min  	
+	11	09/09/22 12:54:00	Press	291	DV-min  	
+	11	09/09/22 12:54:00	Press	-1.25	UV-min  	
+	12	09/09/22 12:55:00	Press	291	DV-min  	
+	12	09/09/22 12:55:00	Press	-1.25	UV-min  	
+	13	09/09/22 12:56:00	Press	291	DV-min  	
+	13	09/09/22 12:56:00	Press	-1.25	UV-min  	
+	14	09/09/22 12:57:00	Press	291	DV-min  	
+	14	09/09/22 12:57:00	Press	-1.25	UV-min  	
+	------------------------------------------------------------
+	Temperature OORS
+	DV-OORS detected :  0
+	DV-OORS corrected:  0
+	UV-OORS detected :  0
+	UV-OORS corrected:  0
+
+	Pressure OORS
+	DV-OORS detected :  14
+	DV-OORS corrected:  0
+	UV-OORS detected :  14
+	UV-OORS corrected:  0
+
+	Conductivity OORS
+	DV-OORS detected :  0
+	DV-OORS corrected:  0
+	UV-OORS detected :  0
+	UV-OORS corrected:  0

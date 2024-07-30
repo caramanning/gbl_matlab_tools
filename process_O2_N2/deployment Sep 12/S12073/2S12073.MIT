@@ -1,0 +1,55 @@
+	Filename: C:\Software\Star-Oddi\SeaStar\DST CTD\S12073\2S12073.MIT
+	SeaStar 9.05
+	Date & Time: 8/1/2022 1:20:08 PM
+	----------------------------------------------------
+	Recorder type             : DST CTD
+	Recorder number           : S12073
+	Recorder version          : 20  DM/CRC16/4800
+	Recorder measures         : Temperature, Pressure & Conductivity
+	Memory capacity(Meas/Byte): 87217 / 392478
+	Measurement seq. number   : 2
+	----------------------------------------------
+
+	Retrieved according to    : Recorder definition
+	Communication statistics
+		Requested bytes  : 90
+		Received bytes   : 90
+		Requested packs  : 2
+		Received packs   : 2
+		Re-sent packs    : 0
+		Empty packs      : 0
+		Number of errors : 0
+	----------------------------------------------
+
+	Recorder initiation time : 7/27/2022 3:57:53 PM
+	Measurement start time   : 7/27/2022 4:02:00 PM
+	PC connection time       : 8/1/2022 1:19:24 PM
+	Data retrieval time      : 8/1/2022 1:20:08 PM
+	Status (7)               : Measuring OK
+	Recorder mode            : Sleep mode
+	                         : Data already retrieved
+	Measurements           Number    Mem.used(%)
+	----------------------------------------------
+	                       0              0      
+	                       0              0      
+	Measurement time (days:hours) : 0:0
+	Memory used Byte / (%)        : 90  /  0
+
+	Estimated battery life calculations
+	       At initiation time (%) :  98,0
+	     At connection time (%) :  98,0
+	            Remaining now (%) :  97,9
+	CRC test on MID          : Enabled
+	----------------------------------------------
+
+
+	Measurement start time     : 7/27/2022 4:02:00 PM
+	----------------------------------------------
+
+	Measurement settings:  [dd:hh:mm:ss] x number
+	                                             
+	---------------------------------------------
+	Start delay          :  00:00:04:07
+	1. interval period   :     00:02:00  x  65520
+
+	Measurement interval sequence: 1-1-1-1-1-1-1-1-1-1-1-1-1-1

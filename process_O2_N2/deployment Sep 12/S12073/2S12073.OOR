@@ -1,0 +1,119 @@
+	Filename               : C:\Software\Star-Oddi\SeaStar\DST CTD\S12073\2S12073.OOR
+	Time of Conversion     : 8/1/2022 1:20:06 PM
+	DV OOR detection method: RID values
+	DV correction method   : No correction
+	UV correction method   : No correction
+
+     	              Measurement
+	Meas.Nr. Time&Date         Type    Value  OOR   CORR.-Value
+	------------------------------------------------------------
+	1	27.07.22 16:02:00	Press	293	DV-min  	
+	1	27.07.22 16:02:00	Press	-1,24	UV-min  	
+	1	27.07.22 16:02:00	Conduc	4043	DV-max  	
+	1	27.07.22 16:02:00	Conduc	0,01	UV-min  	
+	1	27.07.22 16:02:00	Conduc	4043	DV-max  	
+	1	27.07.22 16:02:00	Salinty	0,01	UV-min  	
+	2	27.07.22 16:04:00	Press	294	DV-min  	
+	2	27.07.22 16:04:00	Press	-1,19	UV-min  	
+	2	27.07.22 16:04:00	Conduc	4043	DV-max  	
+	2	27.07.22 16:04:00	Conduc	0,01	UV-min  	
+	2	27.07.22 16:04:00	Conduc	4043	DV-max  	
+	2	27.07.22 16:04:00	Salinty	0,01	UV-min  	
+	3	27.07.22 16:06:00	Press	295	DV-min  	
+	3	27.07.22 16:06:00	Press	-1,14	UV-min  	
+	3	27.07.22 16:06:00	Conduc	4043	DV-max  	
+	3	27.07.22 16:06:00	Conduc	0,01	UV-min  	
+	3	27.07.22 16:06:00	Conduc	4043	DV-max  	
+	3	27.07.22 16:06:00	Salinty	0,01	UV-min  	
+	4	27.07.22 16:08:00	Press	295	DV-min  	
+	4	27.07.22 16:08:00	Press	-1,14	UV-min  	
+	4	27.07.22 16:08:00	Conduc	4043	DV-max  	
+	4	27.07.22 16:08:00	Conduc	0,01	UV-min  	
+	4	27.07.22 16:08:00	Conduc	4043	DV-max  	
+	4	27.07.22 16:08:00	Salinty	0,01	UV-min  	
+	5	27.07.22 16:10:00	Press	295	DV-min  	
+	5	27.07.22 16:10:00	Press	-1,14	UV-min  	
+	5	27.07.22 16:10:00	Conduc	4041	DV-max  	
+	5	27.07.22 16:10:00	Conduc	0,02	UV-min  	
+	5	27.07.22 16:10:00	Conduc	4041	DV-max  	
+	5	27.07.22 16:10:00	Salinty	0,02	UV-min  	
+	6	27.07.22 16:12:00	Press	293	DV-min  	
+	6	27.07.22 16:12:00	Press	-1,24	UV-min  	
+	7	27.07.22 16:14:00	Press	293	DV-min  	
+	7	27.07.22 16:14:00	Press	-1,24	UV-min  	
+	8	27.07.22 16:16:00	Press	292	DV-min  	
+	8	27.07.22 16:16:00	Press	-1,28	UV-min  	
+	9	27.07.22 16:18:00	Press	293	DV-min  	
+	9	27.07.22 16:18:00	Press	-1,24	UV-min  	
+	10	27.07.22 16:20:00	Press	293	DV-min  	
+	10	27.07.22 16:20:00	Press	-1,24	UV-min  	
+	11	27.07.22 16:22:00	Press	294	DV-min  	
+	11	27.07.22 16:22:00	Press	-1,19	UV-min  	
+	12	27.07.22 16:24:00	Press	294	DV-min  	
+	12	27.07.22 16:24:00	Press	-1,19	UV-min  	
+	13	27.07.22 16:26:00	Press	293	DV-min  	
+	13	27.07.22 16:26:00	Press	-1,24	UV-min  	
+	13	27.07.22 16:26:00	Conduc	4043	DV-max  	
+	13	27.07.22 16:26:00	Conduc	0,01	UV-min  	
+	13	27.07.22 16:26:00	Conduc	4043	DV-max  	
+	13	27.07.22 16:26:00	Salinty	0,01	UV-min  	
+	14	27.07.22 16:28:00	Press	292	DV-min  	
+	14	27.07.22 16:28:00	Press	-1,28	UV-min  	
+	14	27.07.22 16:28:00	Conduc	4042	DV-max  	
+	14	27.07.22 16:28:00	Conduc	0,01	UV-min  	
+	14	27.07.22 16:28:00	Conduc	4042	DV-max  	
+	14	27.07.22 16:28:00	Salinty	0,01	UV-min  	
+	15	27.07.22 16:30:00	Press	292	DV-min  	
+	15	27.07.22 16:30:00	Press	-1,28	UV-min  	
+	15	27.07.22 16:30:00	Conduc	4042	DV-max  	
+	15	27.07.22 16:30:00	Conduc	0,01	UV-min  	
+	15	27.07.22 16:30:00	Conduc	4042	DV-max  	
+	15	27.07.22 16:30:00	Salinty	0,01	UV-min  	
+	16	27.07.22 16:32:00	Press	293	DV-min  	
+	16	27.07.22 16:32:00	Press	-1,24	UV-min  	
+	16	27.07.22 16:32:00	Conduc	4042	DV-max  	
+	16	27.07.22 16:32:00	Conduc	0,01	UV-min  	
+	16	27.07.22 16:32:00	Conduc	4042	DV-max  	
+	16	27.07.22 16:32:00	Salinty	0,01	UV-min  	
+	17	27.07.22 16:34:00	Press	294	DV-min  	
+	17	27.07.22 16:34:00	Press	-1,19	UV-min  	
+	17	27.07.22 16:34:00	Conduc	4043	DV-max  	
+	17	27.07.22 16:34:00	Conduc	0,01	UV-min  	
+	17	27.07.22 16:34:00	Conduc	4043	DV-max  	
+	17	27.07.22 16:34:00	Salinty	0,01	UV-min  	
+	18	27.07.22 16:36:00	Press	294	DV-min  	
+	18	27.07.22 16:36:00	Press	-1,19	UV-min  	
+	18	27.07.22 16:36:00	Conduc	4042	DV-max  	
+	18	27.07.22 16:36:00	Conduc	0,01	UV-min  	
+	18	27.07.22 16:36:00	Conduc	4042	DV-max  	
+	18	27.07.22 16:36:00	Salinty	0,01	UV-min  	
+	19	27.07.22 16:38:00	Press	294	DV-min  	
+	19	27.07.22 16:38:00	Press	-1,19	UV-min  	
+	19	27.07.22 16:38:00	Conduc	4042	DV-max  	
+	19	27.07.22 16:38:00	Conduc	0,01	UV-min  	
+	19	27.07.22 16:38:00	Conduc	4042	DV-max  	
+	19	27.07.22 16:38:00	Salinty	0,01	UV-min  	
+	20	27.07.22 16:40:00	Press	295	DV-min  	
+	20	27.07.22 16:40:00	Press	-1,14	UV-min  	
+	20	27.07.22 16:40:00	Conduc	4042	DV-max  	
+	20	27.07.22 16:40:00	Conduc	0,01	UV-min  	
+	20	27.07.22 16:40:00	Conduc	4042	DV-max  	
+	20	27.07.22 16:40:00	Salinty	0,01	UV-min  	
+	------------------------------------------------------------
+	Temperature OORS
+	DV-OORS detected :  0
+	DV-OORS corrected:  0
+	UV-OORS detected :  0
+	UV-OORS corrected:  0
+
+	Pressure OORS
+	DV-OORS detected :  20
+	DV-OORS corrected:  0
+	UV-OORS detected :  20
+	UV-OORS corrected:  0
+
+	Conductivity OORS
+	DV-OORS detected :  13
+	DV-OORS corrected:  0
+	UV-OORS detected :  26
+	UV-OORS corrected:  0
