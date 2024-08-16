@@ -1,5 +1,6 @@
 %foldername = "G:\Shared drives\Gas Biogeochemistry Lab\projects\CIRCA 2022 seed grant\test deployment August 1 to 3";
-foldername = "H:\Shared drives\Gas Biogeochemistry Lab\projects\CIRCA 2022 seed grant\deployment Aug 5";
+%foldername = "H:\Shared drives\Gas Biogeochemistry Lab\projects\CIRCA 2022 seed grant\deployment Aug 5";
+foldername = "deployment Aug 5"
 
 % load files
 fname_O2 =  'PME_O2_cc.mat';
