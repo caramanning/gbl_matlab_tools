@@ -36,7 +36,7 @@ set(gca,'ylim',yl);
 
 %%
 dl = [0:0.5:20]'; % depths for interpolation
-x = [1 3 5 7 9]; % temporary x values for interpolation
+x = [1:8]; % temporary x values for interpolation
 n_stn = numel(x);
 
 CH4i = nan(length(dl),n_stn);
@@ -65,9 +65,70 @@ stn="MID4-cast09";
 A=find(LIS.Station==stn & isnumeric(LIS.Lon));
 CH4i(:,5) = interp1(LIS.Depth(A),LIS.mean_CH4_nM(A),dl);
 
+stn="MID4-cast11";
+A=find(LIS.Station==stn & isnumeric(LIS.Lon));
+CH4i(:,6) = interp1(LIS.Depth(A),LIS.mean_CH4_nM(A),dl);
+
+stn="MID4-cast13";
+A=find(LIS.Station==stn & isnumeric(LIS.Lon));
+CH4i(:,7) = interp1(LIS.Depth(A),LIS.mean_CH4_nM(A),dl);
+
+stn="MID4-cast09";
+A=find(LIS.Station==stn & isnumeric(LIS.Lon));
+CH4i(:,8) = interp1(LIS.Depth(A),LIS.mean_CH4_nM(A),dl);
+
+
 
 figure(2)
 clf; hold on;
 contourf(x_grid,dl_grid,CH4i,'edgecolor','none')
+axis ij;
+colorbar;
+
+%%
+
+N2Oi = nan(length(dl),n_stn);
+
+dl_grid = repmat(dl,1,n_stn);
+
+x_grid = repmat(x,length(dl),1);
+
+stn="MID4-cast01";
+A=find(LIS.Station==stn & isnumeric(LIS.Lon));
+N2Oi(:,1) = interp1(LIS.Depth(A),LIS.mean_N2O_nM(A),dl);
+
+stn="MID4-cast03";
+A=find(LIS.Station==stn & isnumeric(LIS.Lon));
+N2Oi(:,2) = interp1(LIS.Depth(A),LIS.mean_N2O_nM(A),dl);
+
+stn="MID4-cast05";
+A=find(LIS.Station==stn & isnumeric(LIS.Lon));
+N2Oi(:,3) = interp1(LIS.Depth(A),LIS.mean_N2O_nM(A),dl);
+
+stn="MID4-cast07";
+A=find(LIS.Station==stn & isnumeric(LIS.Lon));
+N2Oi(:,4) = interp1(LIS.Depth(A),LIS.mean_N2O_nM(A),dl);
+
+stn="MID4-cast09";
+A=find(LIS.Station==stn & isnumeric(LIS.Lon));
+N2Oi(:,5) = interp1(LIS.Depth(A),LIS.mean_N2O_nM(A),dl);
+
+stn="MID4-cast11";
+A=find(LIS.Station==stn & isnumeric(LIS.Lon));
+N2Oi(:,6) = interp1(LIS.Depth(A),LIS.mean_N2O_nM(A),dl);
+
+stn="MID4-cast13";
+A=find(LIS.Station==stn & isnumeric(LIS.Lon));
+N2Oi(:,7) = interp1(LIS.Depth(A),LIS.mean_N2O_nM(A),dl);
+
+stn="MID4-cast09";
+A=find(LIS.Station==stn & isnumeric(LIS.Lon));
+N2Oi(:,8) = interp1(LIS.Depth(A),LIS.mean_N2O_nM(A),dl);
+
+
+
+figure(3)
+clf; hold on;
+contourf(x_grid,dl_grid,N2Oi,'edgecolor','none')
 axis ij;
 colorbar;
