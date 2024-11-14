@@ -57,17 +57,22 @@ LIS.Station(A) = 'EXR1-cast01';
 % interpolated onto the same spacing
 
 dl = [0:0.1:18]'; % depth spacing for interpolation
-x = km_cumulativeA'; % temporary x values for interpolation
+%x = km_cumulativeA'; % temporary x values for interpolation
+x = [-0.5 km_cumulativeA' 19]; % now set values to have a bit of extra start and end
 n_stn = numel(x);
 
 dl_grid = repmat(dl,1,n_stn);
 
+% modify the station list to add a bit of distance extending past the first
+% station
 stnlist = ["EXR1-cast01"
+    "EXR1-cast01"
     "EXCR-cast02"
     "MID3-cast01"
     "MID4-cast14"
     "MID5-cast01"
     "WLIS-cast02"
+    "WLI6-cast01"
     "WLI6-cast01"]; % this matches cast 16-22 and x as listed above
 
 % AUGUST 2023
@@ -103,8 +108,11 @@ tiA = repmat(datetime(0,0,0), 1, n_stn);
 
 for i = 1:numel(stnlist)
     A = find(LISA.Station==stnlist(i));
-    LISA.km_cumulative(A) = x(i);
     asA = [asA; A];
+    if (i ~=1 && i~= numel(stnlist))
+        LISA.km_cumulative(A) = x(i); % make sure we only do this for the real stations and not fillers
+    end;
+
     tiA(i) = LISA.datetime(A(1));
     CH4iA(:,i) = interp1(LISA.Depth(A),LISA.mean_CH4_nM(A),dl);
     N2OiA(:,i) = interp1(LISA.Depth(A),LISA.mean_N2O_nM(A),dl);
@@ -113,6 +121,7 @@ for i = 1:numel(stnlist)
     PDeniA(:,i) = interp1(LISA.Depth(A),LISA.PDen(A),dl);    
 end;
 
+%%
 
 % OCTOBER 2023
 km_gridO = repmat(x,length(dl),1);
@@ -147,8 +156,11 @@ tiO = repmat(datetime(0,0,0), 1, n_stn);
 
 for i = 1:numel(stnlist)
     s = find(LISO.Station==stnlist(i));
-    LISO.km_cumulative(s) = x(i);
     asO = [asO; s];
+    if (i ~=1 && i~= numel(stnlist))
+        LISO.km_cumulative(s) = x(i); % make sure we only do this for the real stations and not fillers
+    end;
+
     tiO(i) = LISO.datetime(s(1));
     CH4iO(:,i) = interp1(LISO.Depth(s),LISO.mean_CH4_nM(s),dl);
     N2OiO(:,i) = interp1(LISO.Depth(s),LISO.mean_N2O_nM(s),dl);
@@ -169,7 +181,7 @@ ms = 3; % default marker size
 yt = [0 5 10 15 20]; %y-axis ticks;
 xt = [0 5 10 15];
 yl = [0 20]; % y-axis limit in m
-xl = [0 18.5]; %x-axis limit in km
+xl = [-0.5 19]; %x-axis limit in km
 caCH4 = [25 460]; % CH4 axis limits
 clevelCH4 = [25:1:460]; %CH4 colorbar levels
 
