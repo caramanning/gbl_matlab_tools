@@ -6,7 +6,7 @@ load LISAug2023CastData.mat;
 LISCDA.Cast = LISAug2023CastData.Cast;
 LISCDA.Lat = LISAug2023CastData.Lat;
 LISCDA.Lon = LISAug2023CastData.Lon;
-
+%%
 ncast = 16:22;
 km_between = m_lldist(LISCDA.Lon(ncast),LISCDA.Lat(ncast)); % distance between consecutive stations
 km_between = [0; km_between]; % add on zero for first station
