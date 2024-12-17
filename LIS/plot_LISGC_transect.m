@@ -519,8 +519,8 @@ subplot(sp(12))
     
     wysiwyg;
 
-print(gcf, '-dpng', '-r300', 'LIS_Transect_CH4_N2O_O2_PDen.png');
-print(gcf,'-depsc','-vector','LIS_Transect_CH4_N2O_O2_PDen.eps');
+%print(gcf, '-dpng', '-r300', 'LIS_Transect_CH4_N2O_O2_PDen.png');
+%print(gcf,'-depsc','-vector','LIS_Transect_CH4_N2O_O2_PDen.eps');
 %epsclean('LIS_Transect_CH4_N2O_O2_PDen.eps','LIS_Transect_CH4_N2O_O2_PDen.eps');
 
 %%
