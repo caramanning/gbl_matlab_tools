@@ -1,12 +1,19 @@
-load LISAug23GC.mat
+%load LISAug23GC.mat
+load LISAug23GC_v2.mat
+%%
+% REMOVE THE ROWS WITH BAD DATA using the note 'delete'
+toDelete = find(LISAug23GC.note=='delete');
 
+%toDelete = Tnew.Age < 30;
+LISAug23GC(toDelete,:) = [];
 
+%%
 u_SID = unique(LISAug23GC.SID); % find unique sample IDs
 u_SID(isnan(u_SID)) = []; % remove non-numeric values
 %%
 
 % run a loop to find the duplicate sample IDs
-match_SID = nan(numel(u_SID),2);nan
+match_SID = nan(numel(u_SID),2);
 
 for i = 1:length(u_SID)
     if ~isnan(u_SID(i)) % check that the SID is a non-nan value
@@ -57,10 +64,10 @@ for i=1:length(usn)
     Cast(i) = a.Cast(A);
     Station(i) = a.Station(A);
     Niskin(i) = a.Niskin(A);
-    mean_CH4_nM(i) = nanmean(a.CH4nM([A,B]));
-    std_CH4_nM(i)=nanstd(a.CH4nM([A,B]));
-    mean_N2O_nM(i) = nanmean(a.N2OnM([A,B]));
-    std_N2O_nM(i)=nanstd(a.N2OnM([A,B]));
+    mean_CH4_nM(i) = mean(a.CH4_nM([A,B]),'omitnan');
+    std_CH4_nM(i) = std(a.CH4_nM([A,B]),'omitnan');
+    mean_N2O_nM(i) = mean(a.N2O_nM([A,B]),'omitnan');
+    std_N2O_nM(i) = std(a.N2O_nM([A,B]),'omitnan');
 
 end
 
@@ -78,39 +85,39 @@ LISAug23_CH4N2O = a_m;
 
 save LISAug23_CH4N2O.mat LISAug23_CH4N2O;
 
-%%
-%a.
-%std_ch4=a.std_ch4';
-%%
-for i=1:numel(usn)
-    A=find(a.sample_num==usn(i));
-    a.std_n2o(A)=nanstd(a.n2o(A));
-end
-a.std_n2o=a.std_n2o';
-
-for i=1:numel(usn)
-    A=find(a.sample_num==usn(i));
-    a.ch4(A)=nanmean(a.ch4(A));
-end
-
-for i=1:numel(usn)
-    A=find(a.sample_num==usn(i));
-    a.n2o(A)=nanmean(a.n2o(A));
-end
-
-
-%%
-Cruise = LISAug23GC.Cruise(dup_SID(:,1));
-LISAug23_CH4N2O = table(Cruise);
-%%
-LISAug23_CH4N2O.Cast = LISAug23GC.Cast(dup_SID(:,1));
-LISAug23_CH4N2O.Niskin = LISAug23GC.Niskin(dup_SID(:,1));
-LISAug23_CH4N2O.CH4_nM = mean(LISAug23GC.CH4nM(dup_SID),2);
-LISAug23_CH4N2O.CH4_nM_std = std(LISAug23GC.CH4nM(dup_SID,:),0,1);
-
-%%
-std(LISAug23GC.CH4nM(dup_SID(:,1),:),1,2)
-
-%%
-
-% now figure out code to plot all of the 
+% %%
+% %a.
+% %std_ch4=a.std_ch4';
+% %%
+% for i=1:numel(usn)
+%     A=find(a.sample_num==usn(i));
+%     a.std_n2o(A)=nanstd(a.n2o(A));
+% end
+% a.std_n2o=a.std_n2o';
+% 
+% for i=1:numel(usn)
+%     A=find(a.sample_num==usn(i));
+%     a.ch4(A)=nanmean(a.ch4(A));
+% end
+% 
+% for i=1:numel(usn)
+%     A=find(a.sample_num==usn(i));
+%     a.n2o(A)=nanmean(a.n2o(A));
+% end
+% 
+% 
+% %%
+% Cruise = LISAug23GC.Cruise(dup_SID(:,1));
+% LISAug23_CH4N2O = table(Cruise);
+% %%
+% LISAug23_CH4N2O.Cast = LISAug23GC.Cast(dup_SID(:,1));
+% LISAug23_CH4N2O.Niskin = LISAug23GC.Niskin(dup_SID(:,1));
+% LISAug23_CH4N2O.CH4_nM = mean(LISAug23GC.CH4nM(dup_SID),2);
+% LISAug23_CH4N2O.CH4_nM_std = std(LISAug23GC.CH4nM(dup_SID,:),0,1);
+% 
+% %%
+% std(LISAug23GC.CH4nM(dup_SID(:,1),:),1,2)
+% 
+% %%
+% 
+% % now figure out code to plot all of the 

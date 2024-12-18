@@ -1,6 +1,7 @@
 load LISAug23_CH4N2O.mat
 GC = LISAug23_CH4N2O;
 
+
 %% rename all the cast numbers in the file
 GC.CastNum = nan.*GC.mean_CH4_nM;
 
@@ -89,15 +90,19 @@ GC.NiskinNum(A) = 11;
 A=find(GC.Niskin=='Ni12');
 GC.NiskinNum(A) = 12;
 
+A=find(GC.Niskin=='hand');
+GC.NiskinNum(A) = 0;
+
 
 LISAug23_CH4N2O_CTD = GC;
 
 save LISAug23_CH4N2O_CTD.mat LISAug23_CH4N2O_CTD ;
 
 %%
-load LISAug23btl.mat;
-btl = LISAug23btl;
-
+load LISAug23btl_combo.mat;
+%%
+btl = LISAug23btl_combo;
+%%
 LIS = GC; % shorten name temporarily
 LIS.Depth = nan.*LIS.CastNum;
 LIS.P = nan.*LIS.CastNum;
@@ -113,33 +118,33 @@ LIS.pH = nan.*LIS.CastNum;
 LIS.Lat = nan.*LIS.CastNum;
 LIS.Lon = nan.*LIS.CastNum;
 %LIS.datetime = nan.*LIS.CastNum;
-
+%%
 for i = 1:length(GC.Cast)
 %for i = 1  
-    A = find(LISAug23btl.Cast==LIS.CastNum(i));
-    B = find(LISAug23btl.Niskin==LIS.NiskinNum(i));
+    A = find(btl.Cast==LIS.CastNum(i));
+    B = find(btl.Niskin==LIS.NiskinNum(i));
     C = intersect(A,B);
     if ~isempty(C)
-    LIS.Depth(i) = LISAug23btl.Depth(C); 
-    LIS.P(i) = LISAug23btl.P(C);
-    LIS.S(i) = LISAug23btl.S(C);
-    LIS.T(i) = LISAug23btl.T(C);
-    LIS.PTemp(i) = LISAug23btl.PTemp(C);
-    LIS.Dens(i) = LISAug23btl.Dens(C);
-    LIS.PDen(i) = LISAug23btl.PDen(C);
-    LIS.O2_umolkg(i) = LISAug23btl.O2_umolkg(C);
-    LIS.O2_umolkg_A(i) = LISAug23btl.O2_umolkg_A(C);
-    LIS.Chl(i) = LISAug23btl.Chl(C);
-    LIS.pH(i) = LISAug23btl.pH(C);
-    LIS.Lat(i) = LISAug23btl.Lat(C);
-    LIS.Lon(i) = LISAug23btl.Lon(C);
-    LIS.datetime(i) = LISAug23btl.datetime(C);
-    LIS.Station(i) = LISAug23btl.Station(C);
+    LIS.Depth(i) = btl.Depth(C); 
+    LIS.P(i) = btl.P(C);
+    LIS.S(i) = btl.S(C);
+    LIS.T(i) = btl.T(C);
+    LIS.PTemp(i) = btl.PTemp(C);
+    LIS.Dens(i) = btl.Dens(C);
+    LIS.PDen(i) = btl.PDen(C);
+    LIS.O2_umolkg(i) = btl.O2_umolkg(C);
+    LIS.O2_umolkg_A(i) = btl.O2_umolkg_A(C);
+    LIS.Chl(i) = btl.Chl(C);
+    LIS.pH(i) = btl.pH(C);
+    LIS.Lat(i) = btl.Lat(C);
+    LIS.Lon(i) = btl.Lon(C);
+    LIS.datetime(i) = btl.datetime(C);
+    LIS.Station(i) = btl.Station(C);
     end;
 end
 
 LISAug23_CH4N2O_CTD = LIS;
-
+%%
 save LISAug23_CH4N2O_CTD.mat LISAug23_CH4N2O_CTD
 
 %%

@@ -1,16 +1,16 @@
 load LISAug23_CH4N2O_CTD.mat;
 LIS = LISAug23_CH4N2O_CTD;
-LIS.Depth(isnan(LIS.Depth)) = 20;
+%LIS.Depth(isnan(LIS.Depth)) = 20;
 
-load LISOct23_CH4N2O_CTD.mat;
-LISO = LISOct23_CH4N2O_CTD;
+%load LISOct23_CH4N2O_CTD.mat;
+%LISO = LISOct23_CH4N2O_CTD;
 
 
 UTC_to_local = -4/24;
 LIS.datetime_local = LIS.datetime + UTC_to_local;
 
 
-LIS = LISO;
+%LIS = LISO;
 %%
 %
 % we need to make a grid that is evenly spaced so that all the casts are
@@ -61,7 +61,7 @@ end;
 % for AUGUST set to EDT
 
 ti_EDT = ti - 4/24;
-ti_EST = ti - 5/24;
+%ti_EST = ti - 5/24;
 
 t_grid = repmat(ti_EDT,length(dl),1);
 t_grid = datenum(t_grid);
@@ -86,7 +86,7 @@ c.Label.FontSize = 16;
 datetick;
 axis ij;
 %print -dpng -r300 plot_MID4_CH4_Aug.png;
-print -dpng -r300 plot_MID4_CH4_Oct.png;
+% -dpng -r300 plot_MID4_CH4_Oct.png;
 
 
 figure(3)
@@ -104,14 +104,14 @@ c.Label.FontSize = 16;
 datetick;
 axis ij;
 %print -dpng -r300 plot_MID4_N2O_Aug.png;
-print -dpng -r300 plot_MID4_N2O_Oct.png;
+%print -dpng -r300 plot_MID4_N2O_Oct.png;
 
 figure(4)
 clf; hold on;
 box on;
 set(gca,'tickdir','out');
 %clevel = [190:260]; %Oct
-clevel = [20:260]; %Aug
+clevel = [15:230]; %Aug
 C = contourf(t_grid,dl_grid,O2i,clevel,'edgecolor','none');
 plot(datenum(LIS.datetime_local(as)),LIS.Depth(as),'.k','markersize',ms)
 xlabel('time (EDT)');
@@ -122,7 +122,7 @@ c.Label.FontSize = 16;
 datetick;
 axis ij;
 %print -dpng -r300 plot_MID4_O2_Aug.png;
-print -dpng -r300 plot_MID4_O2_Oct.png;
+%print -dpng -r300 plot_MID4_O2_Oct.png;
 
 figure(5)
 clf; hold on;
@@ -140,7 +140,7 @@ c.Label.FontSize = 16;
 datetick;
 axis ij;
 %print -dpng -r300 plot_MID4_S_Aug.png;
-print -dpng -r300 plot_MID4_S_Oct.png;
+%print -dpng -r300 plot_MID4_S_Oct.png;
 
 
 
@@ -161,6 +161,6 @@ c.Label.FontSize = 16;
 datetick;
 axis ij;
 %print -dpng -r300 plot_MID4_PDen_Aug.png;
-print -dpng -r300 plot_MID4_PDen_Oct.png;
+%print -dpng -r300 plot_MID4_PDen_Oct.png;
 
 

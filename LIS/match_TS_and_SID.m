@@ -4,31 +4,21 @@
 % 3) transfer those back to the excel sheet
 % 4) ensure the summary sheet is updated for the new concentrations
 
-load LISAug2023btl_combo.mat;
-btl = LISAug2023btl_combo;
+load LISAug23btl_combo.mat;
+btl = LISAug23btl_combo;
 
 % find sample IDs for a list
-SID = [206
-182
-166
-202
-184
-180
-142
-196
-198
-160
-210
-172
-194
-186
-190
-192
-188
-178
-170
-174
-208
+SID = [57
+49
+71
+73
+75
+59
+81
+43
+61
+53
+83
 ];
 
 A = nan.*SID;
