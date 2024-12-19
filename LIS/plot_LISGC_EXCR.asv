@@ -45,16 +45,16 @@ set(gca,'linewidth',1)
 s1.Position = [0.06 0.15 0.19 0.8];
 stn = 'EXCR-cast01';
 
-A = find(LIS.Station==stn);
-[~,B] = sort(LIS.Depth(A));
+A = find(LISO.Station==stn);
+[~,B] = sort(LISO.Depth(A));
 CH4eq = CH4sol(LIS.S(A(B)),LIS.T(A(B)),1920e-9).*1000;
 plot(CH4eq,LIS.Depth(A(B)),'--k','linewidth',1.5);
-
+%%
 errorbar(LIS.mean_CH4_nM(A(B)),LIS.Depth(A(B)),LIS.std_CH4_nM(A(B)),'horizontal','o-b','linewidth',1.5, 'markerfacecolor','b');
 
 stn = 'EXCR-cast02';
-A = find(LIS.Station==stn);
-[~,B] = sort(LIS.Depth(A));
+A = find(LISO.Station==stn);
+[~,B] = sort(LISO.Depth(A));
 errorbar(LIS.mean_CH4_nM(A(B)),LIS.Depth(A(B)),LIS.std_CH4_nM(A(B)),'horizontal','s-r','linewidth',1.5, 'markerfacecolor','r');
 %legend('EXCR-cast01','EXCR-cast02','location','northeast')
 
@@ -74,8 +74,8 @@ set(gca,'tickdir','out');
 set(gca,'linewidth',1)
 s2.Position = [0.28 0.15 0.19 0.8];
 stn = 'EXCR-cast01';
-A = find(LIS.Station==stn);
-[~,B] = sort(LIS.Depth(A));
+A = find(LISO.Station==stn);
+[~,B] = sort(LISO.Depth(A));
 
 N2Oeq = N2Osol(LIS.S(A(B)),LIS.T(A(B)),330e-9).*1000;
 
@@ -83,8 +83,8 @@ plot(N2Oeq,LIS.Depth(A(B)),'--k','linewidth',1.5);
 errorbar(LIS.mean_N2O_nM(A(B)),LIS.Depth(A(B)),LIS.std_N2O_nM(A(B)),'horizontal','o-b','linewidth',1.5, 'markerfacecolor','b');
 
 stn = 'EXCR-cast02';
-A = find(LIS.Station==stn);
-[~,B] = sort(LIS.Depth(A));
+A = find(LISO.Station==stn);
+[~,B] = sort(LISO.Depth(A));
 errorbar(LIS.mean_N2O_nM(A(B)),LIS.Depth(A(B)),LIS.std_N2O_nM(A(B)),'horizontal','s-r','linewidth',1.5, 'markerfacecolor','r');
 %legend('EXCR-cast01','EXCR-cast02','location','northeast')
 
@@ -102,14 +102,14 @@ set(gca,'tickdir','out');
 set(gca,'linewidth',1)
 s3.Position = [0.5 0.15 0.19 0.8];
 stn = 'EXCR-cast01';
-A = find(LIS.Station==stn);
-[~,B] = sort(LIS.Depth(A));
+A = find(LISO.Station==stn);
+[~,B] = sort(LISO.Depth(A));
 plot(O2sol(LIS.S(A(B)),LIS.T(A)),LIS.Depth(A(B)),'--k','linewidth',1.5);
 plot(LIS.O2_umolkg(A(B)),LIS.Depth(A(B)),'o-b','linewidth',1.5, 'markerfacecolor','b');
 
 stn = 'EXCR-cast02';
-A = find(LIS.Station==stn);
-[~,B] = sort(LIS.Depth(A));
+A = find(LISO.Station==stn);
+[~,B] = sort(LISO.Depth(A));
 plot(LIS.O2_umolkg(A(B)),LIS.Depth(A(B)),'s-r','linewidth',1.5, 'markerfacecolor','r');
 %legend('EXCR-cast01','EXCR-cast02','location','northeast')
 
@@ -127,13 +127,13 @@ set(gca,'tickdir','out');
 set(gca,'linewidth',1)
 s4.Position = [0.72 0.15 0.19 0.8];
 stn = 'EXCR-cast01';
-A = find(LIS.Station==stn);
-[~,B] = sort(LIS.Depth(A));
+A = find(LISO.Station==stn);
+[~,B] = sort(LISO.Depth(A));
 plot(LIS.T(A(B)),LIS.Depth(A(B)),'o-b','linewidth',1.5, 'markerfacecolor','b');
 
 stn = 'EXCR-cast02';
-A = find(LIS.Station==stn);
-[~,B] = sort(LIS.Depth(A));
+A = find(LISO.Station==stn);
+[~,B] = sort(LISO.Depth(A));
 plot(LIS.T(A(B)),LIS.Depth(A(B)),'s-r','linewidth',1.5, 'markerfacecolor','r');
 %legend('EXCR-cast01','EXCR-cast02','location','northeast')
 
@@ -146,7 +146,7 @@ axis ij;
 
 wysiwyg;
 
-print -dpng -r300 LISAug23_EXCR_short.png;
+%print -dpng -r300 LISAug23_EXCR_short.png;
 
 %%
 
@@ -220,7 +220,7 @@ set(gca,'yticklabel',{[]});
 set(gca,'ylim',yl);
 %ylabel('Depth (m)');
 axis ij;
-
+%%
 s3=subplot(1,4,3);
 hold on; box on;
 set(gca,'fontsize',16);
@@ -272,7 +272,7 @@ axis ij;
 
 wysiwyg;
 
-print -dpng -r300 LISOct23_EXCR_short.png;
+%print -dpng -r300 LISOct23_EXCR_short.png;
 
 %%
 yl = [0 22.5]
@@ -296,18 +296,18 @@ hold on; box on;
 set(gca,'fontsize',16);
 stn = 'EXRX-cast01';
 
-A = find(LISO.Station==stn);
+A = find(LIS.Station==stn);
 
 
-errorbar(LISO.mean_CH4_nM(A),LISO.Depth(A),LISO.std_CH4_nM(A),'horizontal','o-b','linewidth',1.5, 'markerfacecolor','b');
+errorbar(LIS.mean_CH4_nM(A),LIS.Depth(A),LIS.std_CH4_nM(A),'horizontal','o-b','linewidth',1.5, 'markerfacecolor','b');
 
 stn = 'EXRX-cast02';
-A = find(LISO.Station==stn);
+A = find(LIS.Station==stn);
 
-CH4eq = CH4sol(LISO.S(A),LISO.T(A),1920e-9).*1000;
-plot(CH4eq,LISO.Depth(A),'--k','linewidth',1.5);
+CH4eq = CH4sol(LIS.S(A),LIS.T(A),1920e-9).*1000;
+plot(CH4eq,LIS.Depth(A),'--k','linewidth',1.5);
 
-errorbar(LISO.mean_CH4_nM(A),LISO.Depth(A),LISO.std_CH4_nM(A),'horizontal','s-r','linewidth',1.5, 'markerfacecolor','r');
+errorbar(LIS.mean_CH4_nM(A),LIS.Depth(A),LIS.std_CH4_nM(A),'horizontal','s-r','linewidth',1.5, 'markerfacecolor','r');
 %legend('EXCR-cast01','EXCR-cast02','location','northeast')
 
 xlabel('CH_4 (nmol/kg)');

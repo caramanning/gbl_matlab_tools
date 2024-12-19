@@ -1,8 +1,8 @@
-%load LISAug23_CH4N2O.mat
-%GC = LISAug23_CH4N2O;
+%load LISOct23_CH4N2O.mat
+%GC = LISOct23_CH4N2O;
 
-load LISOct23_CH4N2O.mat
-GC = LISOct23_CH4N2O;
+load LISAug23_CH4N2O.mat
+GC = LISAug23_CH4N2O;
 
 
 %% rename all the cast numbers in the file
@@ -97,11 +97,12 @@ A=find(GC.Niskin=='hand');
 GC.NiskinNum(A) = 0;
 
 %%
+LISOct23_CH4N2O_CTD = GC;
+save LISOct23_CH4N2O_CTD.mat LISOct23_CH4N2O_CTD ;
+
 %LISAug23_CH4N2O_CTD = GC;
 %save LISAug23_CH4N2O_CTD.mat LISAug23_CH4N2O_CTD ;
 
-LISOct23_CH4N2O_CTD = GC;
-save LISOct23_CH4N2O_CTD.mat LISOct23_CH4N2O_CTD ;
 
 %%
 %load LISAug23btl_combo.mat;
@@ -119,12 +120,12 @@ LIS.PTemp = nan.*LIS.CastNum;
 LIS.Dens = nan.*LIS.CastNum;
 LIS.PDen = nan.*LIS.CastNum;
 LIS.O2_umolkg = nan.*LIS.CastNum;
-LIS.O2_umolkg_A = nan.*LIS.CastNum;
+%LIS.O2_umolkg_A = nan.*LIS.CastNum;
 LIS.Chl = nan.*LIS.CastNum;
 LIS.pH = nan.*LIS.CastNum;
 LIS.Lat = nan.*LIS.CastNum;
 LIS.Lon = nan.*LIS.CastNum;
-LIS.datetime = NaT(numel(LIS.Lon),1);
+%LIS.datetime = nan.*LIS.CastNum;
 %%
 for i = 1:length(GC.Cast)
 %for i = 1  

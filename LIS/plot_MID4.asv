@@ -2,8 +2,8 @@ load LISAug23_CH4N2O_CTD.mat;
 LIS = LISAug23_CH4N2O_CTD;
 %LIS.Depth(isnan(LIS.Depth)) = 20;
 
-load LISOct23_CH4N2O_CTD.mat;
-LIS = LISOct23_CH4N2O_CTD;
+%load LISOct23_CH4N2O_CTD.mat;
+%LISO = LISOct23_CH4N2O_CTD;
 
 
 UTC_to_local = -4/24;
@@ -166,9 +166,7 @@ axis ij;
 
 %%
 % Now plot as vertical profiles
-stnlist2 = unique(LIS.Station);
 
-stnlist = stnlist2(7);
 yl = [0 24];
 figure(2)
 clf; hold on;
@@ -187,7 +185,7 @@ hold on; box on;
 set(gca,'fontsize',16);
 set(gca,'tickdir','out');
 set(gca,'linewidth',1)
-s1.Position = [0.06 0.15 0.19 0.7];
+s1.Position = [0.06 0.15 0.19 0.8];
 
 for i = 1:length(stnlist)
     stn = stnlist(i);
@@ -196,15 +194,14 @@ for i = 1:length(stnlist)
     errorbar(LIS.mean_CH4_nM(A(B)),LIS.Depth(A(B)),LIS.std_CH4_nM(A(B)),'horizontal','o-','linewidth',1.5);
 end;
 axis ij;
-title([stnlist(1)]);
-ylabel('Depth [m]');
+title('CH_4')
 
 s2=subplot(1,4,2);
 hold on; box on;
 set(gca,'fontsize',16);
 set(gca,'tickdir','out');
 set(gca,'linewidth',1)
-s2.Position = [0.28 0.15 0.19 0.7];
+s2.Position = [0.28 0.15 0.19 0.8];
 stn = 'EXRX-cast01';
 
 for i = 1:length(stnlist)
@@ -214,15 +211,13 @@ A = find(LIS.Station==stn);
 errorbar(LIS.mean_N2O_nM(A(B)),LIS.Depth(A(B)),LIS.std_N2O_nM(A(B)),'horizontal','o-','linewidth',1.5);
 end;
 axis ij;
-title('N_2O');
-set(gca,'YTickLabel',[]);
 
 s3=subplot(1,4,3);
 hold on; box on;
 set(gca,'fontsize',16);
 set(gca,'tickdir','out');
 set(gca,'linewidth',1)
-s3.Position = [0.5 0.15 0.19 0.7];
+s3.Position = [0.5 0.15 0.19 0.8];
 
 for i = 1:length(stnlist)
     stn = stnlist(i);
@@ -230,30 +225,23 @@ for i = 1:length(stnlist)
     [~,B] = sort(LIS.Depth(A));
     plot(LIS.O2_umolkg(A(B)),LIS.Depth(A(B)),'o-','linewidth',1.5);
 end;
+
 axis ij;
-title('O_2');
-set(gca,'YTickLabel',[]);
 
 s4=subplot(1,4,4);
 hold on; box on;
 set(gca,'fontsize',16);
 set(gca,'tickdir','out');
 set(gca,'linewidth',1)
-s4.Position = [0.72 0.15 0.19 0.7];
+s4.Position = [0.72 0.15 0.19 0.8];
 
 for i = 1:length(stnlist)
     stn = stnlist(i);
     A = find(LIS.Station==stn);
     [~,B] = sort(LIS.Depth(A));
-    plot(LIS.S(A(B)),LIS.Depth(A(B)),'o-','linewidth',1.5);
+    plot(LIS.T(A(B)),LIS.Depth(A(B)),'o-','linewidth',1.5);
 end;
 axis ij;
-title('S');
-set(gca,'YTickLabel',[]);
-
-%print -dpng -r300 MID4_Aug23_hourly_profiles.png;
-%print -dpng -r300 MID4_Oct23_hourly_profiles.png;
-
 
 %%
 

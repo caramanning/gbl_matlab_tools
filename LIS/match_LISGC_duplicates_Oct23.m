@@ -1,6 +1,14 @@
-load LISOct23GC.mat
-LIS = LISOct23GC;
+load LISOct23GC_v2.mat
+LIS = LISOct23GC_v2;
 
+%%
+% REMOVE THE ROWS WITH BAD DATA using the note 'delete'
+toDelete = find(LIS.note=='delete');
+
+%toDelete = Tnew.Age < 30;
+LIS(toDelete,:) = [];
+
+%%
 u_SID = unique(LIS.SID); % find unique sample IDs
 u_SID(isnan(u_SID)) = []; % remove non-numeric values
 
@@ -40,7 +48,7 @@ LIS.Niskin(LIS.Niskin=='HAND') = 'hand';
 %%
 
 % run a loop to find the duplicate sample IDs
-match_SID = nan(numel(u_SID),2);nan
+match_SID = nan(numel(u_SID),2);
 
 for i = 1:length(u_SID)
     if ~isnan(u_SID(i)) % check that the SID is a non-nan value
@@ -91,10 +99,10 @@ for i=1:length(usn)
     Cast(i) = a.Cast(A);
     Station(i) = a.Station(A);
     Niskin(i) = a.Niskin(A);
-    mean_CH4_nM(i) = nanmean(a.CH4nM([A,B]));
-    std_CH4_nM(i)=nanstd(a.CH4nM([A,B]));
-    mean_N2O_nM(i) = nanmean(a.N2OnM([A,B]));
-    std_N2O_nM(i)=nanstd(a.N2OnM([A,B]));
+    mean_CH4_nM(i) = mean(a.CH4_nM([A,B]),'omitnan');
+    std_CH4_nM(i) = std(a.CH4_nM([A,B]),'omitnan');
+    mean_N2O_nM(i) = mean(a.N2O_nM([A,B]),'omitnan');
+    std_N2O_nM(i) = std(a.N2O_nM([A,B]),'omitnan');
 
 end
 
