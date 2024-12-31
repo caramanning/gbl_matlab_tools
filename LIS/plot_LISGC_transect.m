@@ -1,4 +1,4 @@
-% load in August 2023 data
+% load in August 2023 dataOct23
 load LISAug23_CH4N2O_CTD.mat
 LISA = LISAug23_CH4N2O_CTD; % August
 
@@ -6,23 +6,45 @@ load LISAug2023CastData.mat;
 LISCDA.Cast = LISAug2023CastData.Cast;
 LISCDA.Lat = LISAug2023CastData.Lat;
 LISCDA.Lon = LISAug2023CastData.Lon;
-%%
+LISCDA.Dmax = sw_dpth(LISAug2023CastData.Pmax_dbar,LISCDA.Lat);
+
+LISA.StationDepth = NaN.*LISA.Lat;
+
+for i = 1:numel(LISA.StationDepth)    
+    A = find(LISCDA.Cast==LISA.CastNum(i));
+    LISA.StationDepth(i) = LISCDA.Dmax(A);
+end;
+
 ncast = 16:22;
 km_between = m_lldist(LISCDA.Lon(ncast),LISCDA.Lat(ncast)); % distance between consecutive stations
 km_between = [0; km_between]; % add on zero for first station
 
 km_cumulativeA = cumsum(km_between); % consecutive distance
+DmaxA = LISCDA.Dmax(ncast); % max depth for station in transect based on deep cast
 
+% rename stations to be consistent
+% stn = 'EXCR-cast01';
+% A = find(LISA.Station==stn);
+% LISA.Station(A) = 'EXRX-cast01';
+% 
+% stn = 'EXCR-cast02';
+% A = find(LISA.Station==stn);
+% LISA.Station(A) = 'EXRX-cast02';
+% 
+% LISAug23_CH4N2O_CTD = LISA;
+% save LISAug23_CH4N2O_CTD.mat LISAug23_CH4N2O_CTD;
 
-
+%%
+% load in October 2023 data
 load LISOct23_CH4N2O_CTD.mat
 LISO = LISOct23_CH4N2O_CTD; % October
-LIS = LISOct23_CH4N2O_CTD;
 
 load LISOct2023CastData.mat;
 LISCDO.Cast = LISOct2023CastData.Cast;
 LISCDO.Lat = LISOct2023CastData.Lat;
 LISCDO.Lon = LISOct2023CastData.Lon;
+LISCDO.Dmax = sw_dpth(LISOct2023CastData.Pmax_dbar,LISCDO.Lat);
+
 
 ncast = 16:22;
 Cast = LISO.Cast(ncast);
@@ -34,29 +56,46 @@ km_between = m_lldist(LISCDO.Lon(ncast),LISCDO.Lat(ncast)); % distance between c
 km_between = [0; km_between]; % add on zero for first station
 
 km_cumulativeO = cumsum(km_between); % consecutive distance
+DmaxO = LISCDO.Dmax(ncast); % max depth for station in transect based on deep cast
+
+% rename stations to be consistent
+% stn = 'EXCR1-cast01';
+% A = find(LISO.Station==stn);
+% LISO.Station(A) = 'EXR1-cast01';
+% 
+% LISOct23_CH4N2O_CTD = LISO;
+% save LISOct23_CH4N2O_CTD.mat LISOct23_CH4N2O_CTD;
+
+%%
+
+% load in May 2024 data
+load LISMay24_CH4N2O_CTD.mat
+LISM = LISMay24_CH4N2O_CTD; % October
+
+load LISMay2024CastData.mat;
+LISCDM.Cast = LISMay2024CastData.Cast;
+LISCDM.Lat = LISMay2024CastData.Lat;
+LISCDM.Lon = LISMay2024CastData.Lon;
+LISCDM.Dmax = sw_dpth(LISMay2024CastData.Pmax_dbar,LISCDM.Lat);
 
 
-% for October the station names are different, need to change later
-stn = 'EXRX-cast01';
-A = find(LIS.Station==stn);
-LISO.Station(A) = 'EXCR-cast01';
-LIS.Station(A) = 'EXCR-cast01';
+ncast = 16:22;
+Cast = LISO.Cast(ncast);
+Lat = LISO.Lat(ncast);
+Lon = LISO.Lon(ncast);
 
-stn = 'EXRX-cast02';
-A = find(LIS.Station==stn);
-LISO.Station(A) = 'EXCR-cast02';
-LIS.Station(A) = 'EXCR-cast02';
+ncast = 16:22; % casts for transect;
+km_between = m_lldist(LISCDO.Lon(ncast),LISCDO.Lat(ncast)); % distance between consecutive stations
+km_between = [0; km_between]; % add on zero for first station
 
-stn = 'EXCR1-cast01';
-A = find(LIS.Station==stn);
-LISO.Station(A) = 'EXR1-cast01';
-LIS.Station(A) = 'EXR1-cast01';
+km_cumulativeM = cumsum(km_between); % consecutive distance
+DmaxM = LISCDM.Dmax(ncast); % max depth for station in transect based on deep cast
 
 %%
 % we need to make a grid that is evenly spaced so that all the casts are
 % interpolated onto the same spacing
 
-dl = [0:0.1:18]'; % depth spacing for interpolation
+dl = [0:0.1:34]'; % depth spacing for interpolation
 %x = km_cumulativeA'; % temporary x values for interpolation
 x = [-0.5 km_cumulativeA' 19]; % now set values to have a bit of extra start and end
 n_stn = numel(x);
@@ -66,13 +105,11 @@ dl_grid = repmat(dl,1,n_stn);
 % modify the station list to add a bit of distance extending past the first
 % station
 stnlist = ["EXR1-cast01"
-    "EXR1-cast01"
-    "EXCR-cast02"
+    "EXRX-cast02"
     "MID3-cast01"
     "MID4-cast14"
     "MID5-cast01"
     "WLIS-cast02"
-    "WLI6-cast01"
     "WLI6-cast01"]; % this matches cast 16-22 and x as listed above
 
 % AUGUST 2023
@@ -106,20 +143,73 @@ SiA = nan(numel(dl),n_stn); % make a blank grid for storing S
 PDeniA = nan(numel(dl),n_stn); % make a blank grid for storing PDen
 tiA = repmat(datetime(0,0,0), 1, n_stn);
 
-for i = 1:numel(stnlist)
+%for i = 1:numel(stnlist)
+for i = 1:numel(stnlist)    
     A = find(LISA.Station==stnlist(i));
     asA = [asA; A];
-    if (i ~=1 && i~= numel(stnlist))
-        LISA.km_cumulative(A) = x(i); % make sure we only do this for the real stations and not fillers
-    end;
+    LISA.km_cumulative(A) = x(i+1); % make sure we only do this for the real stations and not fillers
 
-    tiA(i) = LISA.datetime(A(1));
-    CH4iA(:,i) = interp1(LISA.Depth(A),LISA.mean_CH4_nM(A),dl);
-    N2OiA(:,i) = interp1(LISA.Depth(A),LISA.mean_N2O_nM(A),dl);
-    SiA(:,i) = interp1(LISA.Depth(A),LISA.S(A),dl);
-    O2iA(:,i) = interp1(LISA.Depth(A),LISA.O2_umolkg(A),dl);
-    PDeniA(:,i) = interp1(LISA.Depth(A),LISA.PDen(A),dl);    
+    tiA(i+1) = LISA.datetime(A(1));
+    CH4iA(:,i+1) = interp1(LISA.Depth(A),LISA.mean_CH4_nM(A),dl);
+    N2OiA(:,i+1) = interp1(LISA.Depth(A),LISA.mean_N2O_nM(A),dl);
+    SiA(:,i+1) = interp1(LISA.Depth(A),LISA.S(A),dl);
+    O2iA(:,i+1) = interp1(LISA.Depth(A),LISA.O2_umolkg(A),dl);
+    PDeniA(:,i+1) = interp1(LISA.Depth(A),LISA.PDen(A),dl); 
+
+    % fill in the values at start and end with the closest non-NaN value
+    nnC = find(~isnan(CH4iA(:,i+1)));
+    CH4iA(1:min(nnC),i+1) = CH4iA(min(nnC),i+1);
+    CH4iA(max(nnC):end,i+1) = CH4iA(max(nnC),i+1);
+
+    nnC = find(~isnan(N2OiA(:,i+1)));
+    N2OiA(1:min(nnC),i+1) = N2OiA(min(nnC),i+1);
+    N2OiA(max(nnC):end,i+1) = N2OiA(max(nnC),i+1);
+
+    nnC = find(~isnan(SiA(:,i+1)));
+    SiA(1:min(nnC),i+1) = SiA(min(nnC),i+1);
+    SiA(max(nnC):end,i+1) = SiA(max(nnC),i+1);
+
+    nnC = find(~isnan(O2iA(:,i+1)));
+    O2iA(1:min(nnC),i+1) = O2iA(min(nnC),i+1);
+    O2iA(max(nnC):end,i+1) = O2iA(max(nnC),i+1);    
+
+    nnC = find(~isnan(PDeniA(:,i+1)));
+    PDeniA(1:min(nnC),i+1) = PDeniA(min(nnC),i+1);
+    PDeniA(max(nnC):end,i+1) = PDeniA(max(nnC),i+1);    
 end;
+
+dmin = 1.6; % minimum depth to plot 
+CH4iA(dl_gridA<dmin) = NaN;
+N2OiA(dl_gridA<dmin) = NaN;
+SiA(dl_gridA<dmin) = NaN;
+O2iA(dl_gridA<dmin) = NaN;
+PDeniA(dl_gridA<dmin) = NaN;
+
+
+% now add in data at start and end 
+tiA(1) = tiA(2);
+tiA(end) = tiA(end-1);
+
+CH4iA(:,1) = CH4iA(:,2);
+CH4iA(:,end) = CH4iA(:,end-1);
+
+N2OiA(:,1) = N2OiA(:,2);
+N2OiA(:,end) = N2OiA(:,end-1);
+
+SiA(:,1) = SiA(:,2);
+SiA(:,end) = SiA(:,end-1);
+
+O2iA(:,1) = O2iA(:,2);
+O2iA(:,end) = O2iA(:,end-1);
+
+PDeniA(:,1) = PDeniA(:,2);
+PDeniA(:,end) = PDeniA(:,end-1);
+
+%DmaxA(1) = DmaxA(2);
+
+% now apply extrapolation at surface and bottom
+%CH4iA(~isnan(CH4iA));
+
 
 %%
 
@@ -157,19 +247,168 @@ tiO = repmat(datetime(0,0,0), 1, n_stn);
 for i = 1:numel(stnlist)
     s = find(LISO.Station==stnlist(i));
     asO = [asO; s];
-    if (i ~=1 && i~= numel(stnlist))
-        LISO.km_cumulative(s) = x(i); % make sure we only do this for the real stations and not fillers
-    end;
+    LISO.km_cumulative(s) = x(i+1); % make sure we only do this for the real stations and not fillers
 
-    tiO(i) = LISO.datetime(s(1));
-    CH4iO(:,i) = interp1(LISO.Depth(s),LISO.mean_CH4_nM(s),dl);
-    N2OiO(:,i) = interp1(LISO.Depth(s),LISO.mean_N2O_nM(s),dl);
-    SiO(:,i) = interp1(LISO.Depth(s),LISO.S(s),dl);
-    O2iO(:,i) = interp1(LISO.Depth(s),LISO.O2_umolkg(s),dl);
-    PDeniO(:,i) = interp1(LISO.Depth(s),LISO.PDen(s),dl);    
+    tiO(i+1) = LISO.datetime(s(1));
+    CH4iO(:,i+1) = interp1(LISO.Depth(s),LISO.mean_CH4_nM(s),dl);
+    N2OiO(:,i+1) = interp1(LISO.Depth(s),LISO.mean_N2O_nM(s),dl);
+    SiO(:,i+1) = interp1(LISO.Depth(s),LISO.S(s),dl);
+    O2iO(:,i+1) = interp1(LISO.Depth(s),LISO.O2_umolkg(s),dl);
+    PDeniO(:,i+1) = interp1(LISO.Depth(s),LISO.PDen(s),dl); 
+
+    % fill in the values at start and end with the closest non-NaN value
+    nnC = find(~isnan(CH4iO(:,i+1)));
+    CH4iO(1:min(nnC),i+1) = CH4iO(min(nnC),i+1);
+    CH4iO(max(nnC):end,i+1) = CH4iO(max(nnC),i+1);
+
+    nnC = find(~isnan(N2OiO(:,i+1)));
+    N2OiO(1:min(nnC),i+1) = N2OiO(min(nnC),i+1);
+    N2OiO(max(nnC):end,i+1) = N2OiO(max(nnC),i+1);
+
+    nnC = find(~isnan(SiO(:,i+1)));
+    SiO(1:min(nnC),i+1) = SiO(min(nnC),i+1);
+    SiO(max(nnC):end,i+1) = SiO(max(nnC),i+1);
+
+    nnC = find(~isnan(O2iO(:,i+1)));
+    O2iO(1:min(nnC),i+1) = O2iO(min(nnC),i+1);
+    O2iO(max(nnC):end,i+1) = O2iO(max(nnC),i+1);    
+
+    nnC = find(~isnan(PDeniO(:,i+1)));
+    PDeniO(1:min(nnC),i+1) = PDeniO(min(nnC),i+1);
+    PDeniO(max(nnC):end,i+1) = PDeniO(max(nnC),i+1);    
 end;
 
-% MAY 2024 will be added in here once processed
+dmin = 1.3; % minimum depth to plot 
+CH4iO(dl_gridA<dmin) = NaN;
+N2OiO(dl_gridA<dmin) = NaN;
+SiO(dl_gridA<dmin) = NaN;
+O2iO(dl_gridA<dmin) = NaN;
+PDeniO(dl_gridA<dmin) = NaN;
+
+% now add in data at start and end 
+tiO(1) = tiO(2);
+tiO(end) = tiO(end-1);
+
+CH4iO(:,1) = CH4iO(:,2);
+CH4iO(:,end) = CH4iO(:,end-1);
+
+N2OiO(:,1) = N2OiO(:,2);
+N2OiO(:,end) = N2OiO(:,end-1);
+
+SiO(:,1) = SiO(:,2);
+SiO(:,end) = SiO(:,end-1);
+
+O2iO(:,1) = O2iO(:,2);
+O2iO(:,end) = O2iO(:,end-1);
+
+PDeniO(:,1) = PDeniO(:,2);
+PDeniO(:,end) = PDeniO(:,end-1);
+
+%% MAY 2024 will be added in here once processed
+
+% MAY 2024
+km_gridM = repmat(x,length(dl),1);
+CH4iM = nan(numel(dl),n_stn); % make a blank grid for storing CH4
+N2OiM = nan(numel(dl),n_stn); % make a blank grid for storing CH4
+O2iM = nan(numel(dl),n_stn); % make a blank grid for storing CH4
+
+CH4iM = nan(numel(dl),n_stn); % make a blank grid for storing CH4
+N2OiM = nan(numel(dl),n_stn); % make a blank grid for storing N2O
+O2iM = nan(numel(dl),n_stn); % make a blank grid for storing O2
+SiM = nan(numel(dl),n_stn); % make a blank grid for storing S
+PDeniM = nan(numel(dl),n_stn); % make a blank grid for storing PDen
+tiM = repmat(datetime(0,0,0), 1, n_stn);
+
+asM = []; % indices containing samples we want to use
+
+LISM.km_cumulative = nan.*LISM.T;
+
+dl_gridM = repmat(dl,1,n_stn);
+x_gridM = repmat(x,length(dl),1);
+
+CH4iM = nan(numel(dl),n_stn); % make a blank grid for storing CH4
+N2OiM = nan(numel(dl),n_stn); % make a blank grid for storing CH4
+O2iM = nan(numel(dl),n_stn); % make a blank grid for storing CH4
+
+CH4iM = nan(numel(dl),n_stn); % make a blank grid for storing CH4
+N2Oia = nan(numel(dl),n_stn); % make a blank grid for storing N2O
+O2iM = nan(numel(dl),n_stn); % make a blank grid for storing O2
+SiM = nan(numel(dl),n_stn); % make a blank grid for storing S
+PDeniM = nan(numel(dl),n_stn); % make a blank grid for storing PDen
+tiM = repmat(datetime(0,0,0), 1, n_stn);
+
+for i = 1:numel(stnlist)
+    s = find(LISM.Station==stnlist(i));
+    asM = [asM; s];
+    LISM.km_cumulative(s) = x(i+1); % make sure we only do this for the real stations and not fillers
+
+    tiM(i+1) = LISM.datetime(s(1));
+    CH4iM(:,i+1) = interp1(LISM.Depth(s),LISM.mean_CH4_nM(s),dl);
+    N2OiM(:,i+1) = interp1(LISM.Depth(s),LISM.mean_N2O_nM(s),dl);
+    SiM(:,i+1) = interp1(LISM.Depth(s),LISM.S(s),dl);
+    O2iM(:,i+1) = interp1(LISM.Depth(s),LISM.O2_umolkg(s),dl);
+    PDeniM(:,i+1) = interp1(LISM.Depth(s),LISM.PDen(s),dl); 
+
+    % fill in the values at start and end with the closest non-NaN value
+    nnC = find(~isnan(CH4iM(:,i+1)));
+    CH4iM(1:min(nnC),i+1) = CH4iM(min(nnC),i+1);
+    CH4iM(max(nnC):end,i+1) = CH4iM(max(nnC),i+1);
+
+    nnC = find(~isnan(N2OiM(:,i+1)));
+    N2OiM(1:min(nnC),i+1) = N2OiM(min(nnC),i+1);
+    N2OiM(max(nnC):end,i+1) = N2OiM(max(nnC),i+1);
+
+    nnC = find(~isnan(SiM(:,i+1)));
+    SiM(1:min(nnC),i+1) = SiM(min(nnC),i+1);
+    SiM(max(nnC):end,i+1) = SiM(max(nnC),i+1);
+
+    nnC = find(~isnan(O2iM(:,i+1)));
+    O2iM(1:min(nnC),i+1) = O2iM(min(nnC),i+1);
+    O2iM(max(nnC):end,i+1) = O2iM(max(nnC),i+1);    
+
+    nnC = find(~isnan(PDeniM(:,i+1)));
+    PDeniM(1:min(nnC),i+1) = PDeniM(min(nnC),i+1);
+    PDeniM(max(nnC):end,i+1) = PDeniM(max(nnC),i+1);    
+end;
+
+dmin = 1.3; % minimum depth to plot 
+CH4iM(dl_gridA<dmin) = NaN;
+N2OiM(dl_gridA<dmin) = NaN;
+SiM(dl_gridA<dmin) = NaN;
+O2iM(dl_gridA<dmin) = NaN;
+PDeniM(dl_gridA<dmin) = NaN;
+
+% now add in data at start and end 
+tiM(1) = tiM(2);
+tiM(end) = tiM(end-1);
+
+CH4iM(:,1) = CH4iM(:,2);
+CH4iM(:,end) = CH4iM(:,end-1);
+
+N2OiM(:,1) = N2OiM(:,2);
+N2OiM(:,end) = N2OiM(:,end-1);
+
+SiM(:,1) = SiM(:,2);
+SiM(:,end) = SiM(:,end-1);
+
+O2iM(:,1) = O2iM(:,2);
+O2iM(:,end) = O2iM(:,end-1);
+
+PDeniM(:,1) = PDeniM(:,2);
+PDeniM(:,end) = PDeniM(:,end-1);
+
+%% PLOT THE DATA
+% help for getting ranges
+% Density
+[min(LISO.PDen) max(LISO.PDen)]
+
+[min(LISM.mean_N2O_nM) max(LISM.mean_N2O_nM)]
+%%
+[min(min(N2OiM)) max(max(N2OiM))]
+
+[min(min(CH4iM)) max(max(CH4iM))]
+
+[min(min(O2iM)) max(max(O2iM))]
 
 
 %%
@@ -178,21 +417,22 @@ nc = 3; % number of columns
 lw = 2; % default line width
 fs = 10; % default font size
 ms = 3; % default marker size
-yt = [0 5 10 15 20]; %y-axis ticks;
+yt = [0 10 20 30]; %y-axis ticks;
 xt = [0 5 10 15];
-yl = [0 20]; % y-axis limit in m
+yl = [0 32]; % y-axis limit in m
 xl = [-0.5 19]; %x-axis limit in km
-caCH4 = [25 460]; % CH4 axis limits
-clevelCH4 = [25:1:460]; %CH4 colorbar levels
 
-caN2O = [8.5 14]; % N2O axis limits
+caCH4 = [25 460]; % CH4 axis limits
+clevelCH4 = [caCH4(1):1:caCH4(2)]; %CH4 colorbar levels
+
+caN2O = [8.5 15]; % N2O axis limits
 clevelN2O = [8.5:0.02:14]; % N2O colorbar levels
 
-caO2 = [40 250];
-clevelO2 = [40:1:250];
+caO2 = [40 316];
+clevelO2 = [caO2(1):1:caO2(2)];
 
-caPDen = [17.35 18.8]; % N2O axis limits
-clevelPDen = [17.35:0.02:18.8]; % N2O colorbar levels
+caPDen = [15.7 18.8]; % PDen axis limits
+clevelPDen = [caPDen(1):0.02:caPDen(2)]; % PDen colorbar levels
 
 fig=figure(23);
 clf;
@@ -229,6 +469,10 @@ subplot(sp(1))
     ylabel('Depth [m]');
     title('August');
 
+    %add in plot of bathymetry
+    dmA = [yl(2) DmaxA(1) DmaxA' DmaxA(end) yl(2)];
+    kcA = [x_gridA(1,1) x_gridA(1,:) x_gridA(1,end)];
+    fill(kcA,dmA,[0.5 0.5 0.5],'edgecolor','none');
     axis ij;
 
 % SUBPLOT 2
@@ -253,8 +497,14 @@ subplot(sp(2))
     %set(gca,'yticklabel',yt);
     set(gca,'xtick',xt);
     %set(gca,'xticklabel',xt);
-    axis ij;
     title('October');
+
+    %add in plot of bathymetry
+    dmO = [yl(2) DmaxO(1) DmaxO' DmaxO(end) yl(2)];
+    kcO = [x_gridO(1,1) x_gridO(1,:) x_gridO(1,end)];
+    fill(kcO,dmO,[0.5 0.5 0.5],'edgecolor','none');
+    axis ij;
+
 
 % SUBPLOT 3
 subplot(sp(3))
@@ -264,8 +514,8 @@ subplot(sp(3))
 
     clevel = [25:1:460];
     ca = [25 460]; %colorbar limits
-    C = contourf(x_gridO,dl_grid,CH4iO,clevelCH4,'edgecolor','none');
-    plot(LISO.km_cumulative(asO),LISO.Depth(asO),'+k', 'linewidth', 2, 'markersize',ms)
+    C = contourf(x_gridM,dl_grid,CH4iM,clevelCH4,'edgecolor','none');
+    plot(LISM.km_cumulative(asM),LISM.Depth(asM),'+k', 'linewidth', 2, 'markersize',ms)
 
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
@@ -280,8 +530,13 @@ subplot(sp(3))
     %set(gca,'yticklabel',yt);
     set(gca,'xtick',xt);
     %set(gca,'xticklabel',xt);
+    title(['May'])
+
+    %add in plot of bathymetry
+    dmM = [yl(2) DmaxM(1) DmaxM' DmaxM(end) yl(2)];
+    kcM = [x_gridM(1,1) x_gridM(1,:) x_gridM(1,end)];
+    fill(kcM,dmM,[0.5 0.5 0.5],'edgecolor','none');
     axis ij;
-    title(['May - fake data'])
 
 %SUBPLOT 4
 subplot(sp(4))
@@ -307,7 +562,12 @@ subplot(sp(4))
     ylabel('Depth [m]');
     %title('August');
 
+    %add in plot of bathymetry
+    dmA = [yl(2) DmaxA(1) DmaxA' DmaxA(end) yl(2)];
+    kcA = [x_gridA(1,1) x_gridA(1,:) x_gridA(1,end)];
+    fill(kcA,dmA,[0.5 0.5 0.5],'edgecolor','none');
     axis ij;
+
 
 % SUBPLOT 5
 subplot(sp(5))
@@ -331,8 +591,12 @@ subplot(sp(5))
     %set(gca,'yticklabel',yt);
     set(gca,'xtick',xt);
     %set(gca,'xticklabel',xt);
+
+    %add in plot of bathymetry
+    dmM = [yl(2) DmaxO(1) DmaxO' DmaxO(end) yl(2)];
+    kcO = [x_gridO(1,1) x_gridO(1,:) x_gridO(1,end)];
+    fill(kcO,dmO,[0.5 0.5 0.5],'edgecolor','none');
     axis ij;
-    %title('October');
 
 % SUBPLOT 6
 subplot(sp(6))
@@ -340,8 +604,8 @@ subplot(sp(6))
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
 
-    C = contourf(x_gridO,dl_grid,N2OiO,clevelN2O,'edgecolor','none');
-    plot(LISO.km_cumulative(asO),LISO.Depth(asO),'+k', 'linewidth', 2, 'markersize',ms)
+    C = contourf(x_gridM,dl_grid,N2OiM,clevelN2O,'edgecolor','none');
+    plot(LISM.km_cumulative(asM),LISM.Depth(asM),'+k', 'linewidth', 2, 'markersize',ms)
 
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
@@ -356,8 +620,12 @@ subplot(sp(6))
     %set(gca,'yticklabel',yt);
     set(gca,'xtick',xt);
     %set(gca,'xticklabel',xt);
+
+    %add in plot of bathymetry
+    dmM = [yl(2) DmaxM(1) DmaxM' DmaxM(end) yl(2)];
+    kcM = [x_gridM(1,1) x_gridM(1,:) x_gridM(1,end)];
+    fill(kcM,dmM,[0.5 0.5 0.5],'edgecolor','none');
     axis ij;
-    %title(['May - temp fake data'])
 
 %SUBPLOT 7
 subplot(sp(7))
@@ -383,7 +651,12 @@ subplot(sp(7))
     ylabel('Depth [m]');
     %title('August');
 
+    %add in plot of bathymetry
+    dmA = [yl(2) DmaxA(1) DmaxA' DmaxA(end) yl(2)];
+    kcA = [x_gridA(1,1) x_gridA(1,:) x_gridA(1,end)];
+    fill(kcA,dmA,[0.5 0.5 0.5],'edgecolor','none');
     axis ij;
+
 
 % SUBPLOT 8
 subplot(sp(8))
@@ -407,8 +680,12 @@ subplot(sp(8))
     %set(gca,'yticklabel',yt);
     set(gca,'xtick',xt);
     %set(gca,'xticklabel',xt);
+
+    %add in plot of bathymetry
+    dmO = [yl(2) DmaxO(1) DmaxO' DmaxO(end) yl(2)];
+    kcO = [x_gridO(1,1) x_gridO(1,:) x_gridO(1,end)];
+    fill(kcO,dmO,[0.5 0.5 0.5],'edgecolor','none');
     axis ij;
-    %title('October');
 
 % SUBPLOT 9
 subplot(sp(9))
@@ -416,8 +693,8 @@ subplot(sp(9))
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
 
-    C = contourf(x_gridO,dl_grid,O2iO,clevelO2,'edgecolor','none');
-    plot(LISO.km_cumulative(asO),LISO.Depth(asO),'+k', 'linewidth', 2, 'markersize',ms)
+    C = contourf(x_gridM,dl_grid,O2iM,clevelO2,'edgecolor','none');
+    plot(LISM.km_cumulative(asM),LISM.Depth(asM),'+k', 'linewidth', 2, 'markersize',ms)
 
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
@@ -432,8 +709,12 @@ subplot(sp(9))
     %set(gca,'yticklabel',yt);
     set(gca,'xtick',xt);
     %set(gca,'xticklabel',xt);
+
+    %add in plot of bathymetry
+    dmM = [yl(2) DmaxM(1) DmaxM' DmaxM(end) yl(2)];
+    kcM = [x_gridM(1,1) x_gridM(1,:) x_gridM(1,end)];
+    fill(kcM,dmM,[0.5 0.5 0.5],'edgecolor','none');
     axis ij;
-    %title(['May - temp fake data'])
 
 
 %SUBPLOT 10
@@ -460,7 +741,12 @@ subplot(sp(10))
     ylabel('Depth [m]');
     %title('August');
 
+    %add in plot of bathymetry
+    dmA = [yl(2) DmaxA(1) DmaxA' DmaxA(end) yl(2)];
+    kcA = [x_gridA(1,1) x_gridA(1,:) x_gridA(1,end)];
+    fill(kcA,dmA,[0.5 0.5 0.5],'edgecolor','none');
     axis ij;
+
 
 % SUBPLOT 11
 subplot(sp(11))
@@ -485,8 +771,12 @@ subplot(sp(11))
     set(gca,'xtick',xt);
     set(gca,'xticklabel',xt);
     xlabel('Transect distance [km]');
+
+    %add in plot of bathymetry
+    dmM = [yl(2) DmaxO(1) DmaxO' DmaxO(end) yl(2)];
+    kcO = [x_gridO(1,1) x_gridO(1,:) x_gridO(1,end)];
+    fill(kcO,dmO,[0.5 0.5 0.5],'edgecolor','none');
     axis ij;
-    %title('October');
 
 % SUBPLOT 12
 subplot(sp(12))
@@ -494,10 +784,10 @@ subplot(sp(12))
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
 
-    C = contourf(x_gridO,dl_grid,PDeniO,clevelPDen,'edgecolor','none');
-  %  C = surf(x_grid,dl_grid,PDeniO,clevelPDen,'facecolor','interp','edgecolor','interp');
+    C = contourf(x_gridM,dl_grid,PDeniM,clevelPDen,'edgecolor','none');
+  %  C = surf(x_grid,dl_grid,PDeniM,clevelPDen,'facecolor','interp','edgecolor','interp');
   %  surf instead, with 'FaceColor','interp', 'EdgeColor','interp' and %view(0,90)’.  
-    plot(LISO.km_cumulative(asO),LISO.Depth(asO),'+k', 'linewidth', 2, 'markersize',ms)
+    plot(LISM.km_cumulative(asM),LISM.Depth(asM),'+k', 'linewidth', 2, 'markersize',ms)
 
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
@@ -513,15 +803,18 @@ subplot(sp(12))
     set(gca,'xtick',xt);
     set(gca,'xticklabel',xt);
     xlabel('Transect distance [km]');
-    axis ij;
-    %title(['May - temp fake data'])
 
+    %add in plot of bathymetry
+    dmM = [yl(2) DmaxM(1) DmaxM' DmaxM(end) yl(2)];
+    kcM = [x_gridM(1,1) x_gridM(1,:) x_gridM(1,end)];
+    fill(kcM,dmM,[0.5 0.5 0.5],'edgecolor','none');
+    axis ij;
     
     wysiwyg;
 
-%print(gcf, '-dpng', '-r300', 'LIS_Transect_CH4_N2O_O2_PDen.png');
-%print(gcf,'-depsc','-vector','LIS_Transect_CH4_N2O_O2_PDen.eps');
-%epsclean('LIS_Transect_CH4_N2O_O2_PDen.eps','LIS_Transect_CH4_N2O_O2_PDen.eps');
+print(gcf, '-dpng', '-r300', 'LIS_Transect_CH4_N2O_O2_PDen.png');
+print(gcf,'-depsc','-vector','LIS_Transect_CH4_N2O_O2_PDen.eps');
+epsclean('LIS_Transect_CH4_N2O_O2_PDen.eps','LIS_Transect_CH4_N2O_O2_PDen.eps');
 
 %%
 

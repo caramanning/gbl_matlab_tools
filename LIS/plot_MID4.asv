@@ -3,7 +3,7 @@ LIS = LISAug23_CH4N2O_CTD;
 %LIS.Depth(isnan(LIS.Depth)) = 20;
 
 %load LISOct23_CH4N2O_CTD.mat;
-%LISO = LISOct23_CH4N2O_CTD;
+%LIS = LISOct23_CH4N2O_CTD;
 
 
 UTC_to_local = -4/24;
@@ -54,7 +54,18 @@ for i = 1:numel(stnlist)
     PDeni(:,i) = interp1(LIS.Depth(A),LIS.PDen(A),dl);    
 end;
 
-
+%%
+% set values above the first sample to the value of the top sample
+sdl = find(dl>1.5,1);
+for i = 1:length(CH4i(1,:))
+    % find first non-NaN value
+    fnn = find(~isnan(CH4i(:,i)),1);
+    CH4i(sdl:fnn-1,i) = CH4i(fnn,i);
+    N2Oi(sdl:fnn-1,i) = N2Oi(fnn,i);
+    Si(sdl:fnn-1,i) = Si(fnn,i);
+    O2i(sdl:fnn-1,i) = O2i(fnn,i);
+    PDeni(sdl:fnn-1,i) = PDeni(fnn,i);
+end;
 %%
 
 % for OCTOBER set to EDT
@@ -105,7 +116,7 @@ datetick;
 axis ij;
 %print -dpng -r300 plot_MID4_N2O_Aug.png;
 %print -dpng -r300 plot_MID4_N2O_Oct.png;
-
+%%
 figure(4)
 clf; hold on;
 box on;
@@ -160,13 +171,15 @@ c.Label.String = '\sigma_{\theta} [kg/m^3]';
 c.Label.FontSize = 16;
 datetick;
 axis ij;
-%print -dpng -r300 plot_MID4_PDen_Aug.png;
+print -dpng -r300 plot_MID4_PDen_Aug.png;
 %print -dpng -r300 plot_MID4_PDen_Oct.png;
 
 
 %%
 % Now plot as vertical profiles
+stnlist2 = unique(LIS.Station);
 
+stnlist = stnlist2(1);
 yl = [0 24];
 figure(2)
 clf; hold on;
@@ -185,7 +198,7 @@ hold on; box on;
 set(gca,'fontsize',16);
 set(gca,'tickdir','out');
 set(gca,'linewidth',1)
-s1.Position = [0.06 0.15 0.19 0.8];
+s1.Position = [0.06 0.15 0.19 0.7];
 
 for i = 1:length(stnlist)
     stn = stnlist(i);
@@ -194,14 +207,16 @@ for i = 1:length(stnlist)
     errorbar(LIS.mean_CH4_nM(A(B)),LIS.Depth(A(B)),LIS.std_CH4_nM(A(B)),'horizontal','o-','linewidth',1.5);
 end;
 axis ij;
-title('CH_4')
+title([stnlist(1)]);
+ylabel('Depth [m]');
+xlabel('CH_4');
 
 s2=subplot(1,4,2);
 hold on; box on;
 set(gca,'fontsize',16);
 set(gca,'tickdir','out');
 set(gca,'linewidth',1)
-s2.Position = [0.28 0.15 0.19 0.8];
+s2.Position = [0.28 0.15 0.19 0.7];
 stn = 'EXRX-cast01';
 
 for i = 1:length(stnlist)
@@ -211,13 +226,15 @@ A = find(LIS.Station==stn);
 errorbar(LIS.mean_N2O_nM(A(B)),LIS.Depth(A(B)),LIS.std_N2O_nM(A(B)),'horizontal','o-','linewidth',1.5);
 end;
 axis ij;
+title('N_2O');
+set(gca,'YTickLabel',[]);
 
 s3=subplot(1,4,3);
 hold on; box on;
 set(gca,'fontsize',16);
 set(gca,'tickdir','out');
 set(gca,'linewidth',1)
-s3.Position = [0.5 0.15 0.19 0.8];
+s3.Position = [0.5 0.15 0.19 0.7];
 
 for i = 1:length(stnlist)
     stn = stnlist(i);
@@ -225,23 +242,140 @@ for i = 1:length(stnlist)
     [~,B] = sort(LIS.Depth(A));
     plot(LIS.O2_umolkg(A(B)),LIS.Depth(A(B)),'o-','linewidth',1.5);
 end;
-
 axis ij;
+title('O_2');
+set(gca,'YTickLabel',[]);
 
 s4=subplot(1,4,4);
 hold on; box on;
 set(gca,'fontsize',16);
 set(gca,'tickdir','out');
 set(gca,'linewidth',1)
-s4.Position = [0.72 0.15 0.19 0.8];
+s4.Position = [0.72 0.15 0.19 0.7];
 
 for i = 1:length(stnlist)
     stn = stnlist(i);
     A = find(LIS.Station==stn);
     [~,B] = sort(LIS.Depth(A));
+    plot(LIS.S(A(B)),LIS.Depth(A(B)),'o-','linewidth',1.5);
+end;
+axis ij;
+title('S');
+set(gca,'YTickLabel',[]);
+
+%print -dpng -r300 MID4_Aug23_hourly_profiles.png;
+%print -dpng -r300 MID4_Oct23_hourly_profiles.png;
+
+
+%%
+
+% 3 mg/L * 1 mol/32000 mg * 1e6 umol/mol
+
+% plot O2, S, Density
+stnlist2 = unique(LIS.Station);
+
+stnlist = stnlist2(7);
+yl = [0 24];
+figure(2)
+clf; hold on;
+
+%sp=tight_subplot(nr,nc,[0.12 .03],[.15 .06],[.1 .04]);
+hold on; box on;
+%set(gcf,'color','w');
+set(gcf, 'PaperUnits', 'inches');
+set(gcf,'renderer','painters');
+set(gcf, 'PaperPosition', [0 0 10 6]);
+set(gca,'linewidth',0.75);
+    set(gcf,'GraphicsSmoothing','on')
+
+
+s1=subplot(1,3,1);
+hold on; box on;
+set(gca,'fontsize',16);
+set(gca,'tickdir','out');
+set(gca,'linewidth',1)
+s1.Position = [0.1 0.25 0.25 0.65];
+
+for i = 1:length(stnlist)
+    stn = stnlist(i);
+    A = find(LIS.Station==stn);
+    [~,B] = sort(LIS.Depth(A));
+    B(numel(B)) = []; % remove the deepest point
+    plot(LIS.O2_umolkg(A(B)),LIS.Depth(A(B)),'o-','linewidth',1.5);
+end;
+
+%plot([90 90], [min(LIS.Depth(A(B))),max(LIS.Depth(A(B)))],'--k');
+axis ij;
+title([stnlist(1)]);
+xlabel('O_2 [\mumol/kg]')
+%set(gca,'YTickLabel',[]);
+ylabel('Depth [m]')
+set(gca,'xlim',[0 240]);
+set(gca,'ylim',yl);
+
+s2=subplot(1,3,2);
+hold on; box on;
+set(gca,'fontsize',16);
+set(gca,'tickdir','out');
+set(gca,'linewidth',1)
+s2.Position = [0.4 0.25 0.25 0.65];
+
+for i = 1:length(stnlist)
+    stn = stnlist(i);
+    A = find(LIS.Station==stn);
+    [~,B] = sort(LIS.Depth(A));
+    B(numel(B)) = []; % remove the deepest
+    plot(LIS.S(A(B)),LIS.Depth(A(B)),'o-','linewidth',1.5);
+end;
+axis ij;
+xlabel('Salinity [pss]');
+set(gca,'YTickLabel',[]);
+set(gca,'xlim',[26 27.2]);
+set(gca,'ylim',yl);
+
+% s3=subplot(1,3,3);
+% hold on; box on;
+% set(gca,'fontsize',16);
+% set(gca,'tickdir','out');
+% set(gca,'linewidth',1)
+% s3.Position = [0.7 0.25 0.25 0.65];
+% 
+% for i = 1:length(stnlist)
+%     stn = stnlist(i);
+%     A = find(LIS.Station==stn);
+%     [~,B] = sort(LIS.Depth(A));
+%     plot(LIS.PDen(A(B)),LIS.Depth(A(B)),'o-','linewidth',1.5);
+% end;
+% axis ij;
+% xlabel('\sigma_{\theta} [kg/m^3]');
+% set(gca,'YTickLabel',[]);
+% %set(gca,'xlim',[26 27]);
+
+s3=subplot(1,3,3);
+hold on; box on;
+set(gca,'fontsize',16);
+set(gca,'tickdir','out');
+set(gca,'linewidth',1)
+s3.Position = [0.7 0.25 0.25 0.65];
+
+for i = 1:length(stnlist)
+    stn = stnlist(i);
+    A = find(LIS.Station==stn);
+    [~,B] = sort(LIS.Depth(A));
+    B(numel(B)) = []; % remove the deepest
     plot(LIS.T(A(B)),LIS.Depth(A(B)),'o-','linewidth',1.5);
 end;
 axis ij;
+xlabel('Temperature [^oC]');
+set(gca,'YTickLabel',[]);
+set(gca,'xlim',[19.5 24]);
+set(gca,'ylim',yl);
+
+wysiwyg;
+
+print -dpng -r300 profile_Aug_MID4-cast05.png;
+%print -dpng -r300 MID4_Oct23_hourly_profiles.png;
+
 
 %%
 

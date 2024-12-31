@@ -90,9 +90,9 @@ A=find(GC.Niskin=='Ni12');
 GC.NiskinNum(A) = 12;
 
 
-LISAug23_CH4N2O_CTD = GC;
+LISOct23_CH4N2O_CTD = GC;
 
-save LISOct23_CH4N2O_CTD.mat LISAug23_CH4N2O_CTD ;
+save LISOct23_CH4N2O_CTD.mat LISOct23_CH4N2O_CTD ;
 
 %%
 load LISOct23btl.mat;

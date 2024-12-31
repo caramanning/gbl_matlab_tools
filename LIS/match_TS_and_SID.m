@@ -10,28 +10,19 @@
 load LISOct23btl_combo.mat;
 btl = LISOct23btl_combo;
 
-% find sample IDs for a list
-SID = [32
-80
-88
-58
-94
-26
-79
-92
-69
-82
-28
-74
-86
-56
-76
-46
-77
-90
-64
-78
+load LISMay24btl_combo.mat;
+btl = LISMay24btl_combo;
 
+% find sample IDs for a list
+SID = [11
+37
+29
+7
+47
+49
+27
+45
+1
 ];
 
 A = nan.*SID;
