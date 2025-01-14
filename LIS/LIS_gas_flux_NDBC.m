@@ -92,8 +92,8 @@ gd.ch4_nmolkg = LIS_s.mean_CH4_nM./sw_dens(gd.S,gd.T,gd.P).*1000;
 
 % need to use the exact atmospheric concentration corrected for water vapor here, just approximating
 % for now, need to go back and get exact values for each month
-N2Oatm_dry = 335e-9; %dry mole fraction
-CH4atm_dry = 1920e-9; %dry mole fraction
+N2Oatm_dry = 338e-9; %dry mole fraction
+CH4atm_dry = 2020e-9; %dry mole fraction
 
 
 % calculate n2o concentration with water vapor pressure at saturation

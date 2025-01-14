@@ -8,7 +8,17 @@ stnlist = ["MID4-cast01"
     "MID4-cast13"
     "MID4-cast14"];
 
+% equilibrium CH4 and N2O
+% cruise 1: August 2-3, 2023 = julian day 214.5, year 2023.588
+% N2O 337, CH4 2020
+% cruise 2: October 19-20, 2023 = julian day 292.5, year 2023.801 
+% N2O 338, CH4 2024
+% cruise 3: May 22-23, 2024 = julian day 142.5, year 2024.390
+% N2O 338, CH4 2021
 
+% Dry atmospheric concentrations for all three cruises were set as 338
+% ppb N2O and 2020 ppb CH4 based on preliminary surface flask data from
+% Mashpee Masschusetts
 %%
 %load LISAug23_CH4N2O_CTD.mat;
 %LIS = LISAug23_CH4N2O_CTD;
@@ -28,9 +38,15 @@ stnlist = ["MID4-cast01"
 % 
 % %LIS = LISO;
 %% AUGUST
+
+% using same dry atmospheric concentration for all cruises for now
+% this is the DRY atmospheric concentration
+CH4atmdry = 2020e-9;
+N2Oatmdry = 338e-9;
+
 UTC_to_local = -4/24;
-CH4airA = 1920e-9;
-N2OairA = 335e-9;
+CH4atmdryA = CH4atmdry;
+N2OatmdryA = N2Oatmdry;
 
 load LISAug23_CH4N2O_CTD.mat
 LISA = LISAug23_CH4N2O_CTD; % August
@@ -42,12 +58,18 @@ LISA.N2O_mean_nmolkg = LISA.mean_N2O_nM./(1000+LISA.PDen).*1000;
 LISA.CH4_std_nmolkg = LISA.std_CH4_nM./(1000+LISA.PDen).*1000;
 LISA.N2O_std_nmolkg = LISA.std_N2O_nM./(1000+LISA.PDen).*1000;
 
-LISA.DCH4_nmolkg = LISA.CH4_mean_nmolkg - CH4sol(LISA.S,LISA.T,CH4airA)'.*1000;
-LISA.DN2O_nmolkg = LISA.N2O_mean_nmolkg - N2Osol(LISA.S,LISA.T,N2OairA).*1000;
+LISA.N2Oatm_H2Osat = N2OatmdryA .* (1 - vpress(LISA.S,LISA.T));
+LISA.N2O_eq_nmolkg = N2Osol(LISA.S,LISA.T,LISA.N2Oatm_H2Osat).*1000;
+
+LISA.CH4atm_H2Osat = CH4atmdryA .* (1 - vpress(LISA.S,LISA.T));
+LISA.CH4_eq_nmolkg = CH4sol(LISA.S,LISA.T,LISA.CH4atm_H2Osat)'.*1000;
+
+LISA.DCH4_nmolkg = LISA.CH4_mean_nmolkg - LISA.CH4_eq_nmolkg;
+LISA.DN2O_nmolkg = LISA.N2O_mean_nmolkg - LISA.N2O_eq_nmolkg;
 LISA.DO2_umolkg = LISA.O2_umolkg - O2sol(LISA.S,LISA.T);
 
-LISA.DCH4 = (LISA.DCH4_nmolkg./CH4sol(LISA.S,LISA.T,CH4airA)'.*1000 - 1).*100;
-LISA.DN2O = (LISA.DN2O_nmolkg./N2Osol(LISA.S,LISA.T,N2OairA).*1000 - 1).* 100;
+LISA.DCH4 = (LISA.CH4_mean_nmolkg./LISA.CH4_eq_nmolkg - 1).*100;
+LISA.DN2O = (LISA.N2O_mean_nmolkg./LISA.N2O_eq_nmolkg - 1).* 100;
 LISA.DO2 = (LISA.O2_umolkg./O2sol(LISA.S,LISA.T) - 1).*100;
 
 
@@ -81,10 +103,14 @@ end;
 DmaxA = LISCDA.Dmax(MID4castA); % max depth for station in transect based on deep cast
 dnlocalA = LISCDA.dn_local(MID4castA); % local datetime for MID4 casts
 
+
+LISAug23_CH4N2O_CTD = LISA;
+%save LISAug23_CH4N2O_CTD.mat LISAug23_CH4N2O_CTD;
+
 %% OCTOBER
 UTC_to_local = -4/24;
-CH4airO = 1920e-9;
-N2OairO = 335e-9;
+CH4atmdryP = CH4atmdry;
+N2OatmdryO = N2Oatmdry;
 
 load LISOct23_CH4N2O_CTD.mat
 LISO = LISOct23_CH4N2O_CTD; % Octust
@@ -96,12 +122,18 @@ LISO.N2O_mean_nmolkg = LISO.mean_N2O_nM./(1000+LISO.PDen).*1000;
 LISO.CH4_std_nmolkg = LISO.std_CH4_nM./(1000+LISO.PDen).*1000;
 LISO.N2O_std_nmolkg = LISO.std_N2O_nM./(1000+LISO.PDen).*1000;
 
-LISO.DCH4_nmolkg = LISO.CH4_mean_nmolkg - CH4sol(LISO.S,LISO.T,CH4airA)'.*1000;
-LISO.DN2O_nmolkg = LISO.N2O_mean_nmolkg - N2Osol(LISO.S,LISO.T,N2OairA).*1000;
+LISO.N2Oatm_H2Osat = N2OatmdryA .* (1 - vpress(LISO.S,LISO.T));
+LISO.N2O_eq_nmolkg = N2Osol(LISO.S,LISO.T,LISO.N2Oatm_H2Osat).*1000;
+
+LISO.CH4atm_H2Osat = CH4atmdryA .* (1 - vpress(LISO.S,LISO.T));
+LISO.CH4_eq_nmolkg = CH4sol(LISO.S,LISO.T,LISO.CH4atm_H2Osat)'.*1000;
+
+LISO.DCH4_nmolkg = LISO.CH4_mean_nmolkg - LISO.CH4_eq_nmolkg;
+LISO.DN2O_nmolkg = LISO.N2O_mean_nmolkg - LISO.N2O_eq_nmolkg;
 LISO.DO2_umolkg = LISO.O2_umolkg - O2sol(LISO.S,LISO.T);
 
-LISO.DCH4 = (LISO.DCH4_nmolkg./CH4sol(LISO.S,LISO.T,CH4airA)'.*1000 - 1).*100;
-LISO.DN2O = (LISO.DN2O_nmolkg./N2Osol(LISO.S,LISO.T,N2OairA).*1000 - 1).* 100;
+LISO.DCH4 = (LISO.CH4_mean_nmolkg./LISO.CH4_eq_nmolkg - 1).*100;
+LISO.DN2O = (LISO.N2O_mean_nmolkg./LISO.N2O_eq_nmolkg - 1).* 100;
 LISO.DO2 = (LISO.O2_umolkg./O2sol(LISO.S,LISO.T) - 1).*100;
 
 
@@ -135,11 +167,13 @@ end;
 DmaxO = LISCDO.Dmax(MID4castA); % max depth for station in transect based on deep cast
 dnlocalO = LISCDO.dn_local(MID4castA); % local datetime for MID4 casts
 
+LISOct23_CH4N2O_CTD = LISO;
+%save LISOct23_CH4N2O_CTD.mat LISOct23_CH4N2O_CTD;
 
 %% MAY
 UTC_to_local = -4/24;
-CH4airM = 1920e-9;
-N2OairM = 335e-9;
+CH4atmdryM = CH4atmdry;
+N2OatmdryM = N2Oatmdry;
 
 load LISMay24_CH4N2O_CTD.mat
 LISM = LISMay24_CH4N2O_CTD; % August
@@ -151,12 +185,18 @@ LISM.N2O_mean_nmolkg = LISM.mean_N2O_nM./(1000+LISM.PDen).*1000;
 LISM.CH4_std_nmolkg = LISM.std_CH4_nM./(1000+LISM.PDen).*1000;
 LISM.N2O_std_nmolkg = LISM.std_N2O_nM./(1000+LISM.PDen).*1000;
 
-LISM.DCH4_nmolkg = LISM.CH4_mean_nmolkg - CH4sol(LISM.S,LISM.T,CH4airA)'.*1000;
-LISM.DN2O_nmolkg = LISM.N2O_mean_nmolkg - N2Osol(LISM.S,LISM.T,N2OairA).*1000;
+LISM.N2Oatm_H2Osat = N2OatmdryA .* (1 - vpress(LISM.S,LISM.T));
+LISM.N2O_eq_nmolkg = N2Osol(LISM.S,LISM.T,LISM.N2Oatm_H2Osat).*1000;
+
+LISM.CH4atm_H2Osat = CH4atmdryA .* (1 - vpress(LISM.S,LISM.T));
+LISM.CH4_eq_nmolkg = CH4sol(LISM.S,LISM.T,LISM.CH4atm_H2Osat)'.*1000;
+
+LISM.DCH4_nmolkg = LISM.CH4_mean_nmolkg - LISM.CH4_eq_nmolkg;
+LISM.DN2O_nmolkg = LISM.N2O_mean_nmolkg - LISM.N2O_eq_nmolkg;
 LISM.DO2_umolkg = LISM.O2_umolkg - O2sol(LISM.S,LISM.T);
 
-LISM.DCH4 = (LISM.DCH4_nmolkg./CH4sol(LISM.S,LISM.T,CH4airA)'.*1000 - 1).*100;
-LISM.DN2O = (LISM.DN2O_nmolkg./N2Osol(LISM.S,LISM.T,N2OairA).*1000 - 1).* 100;
+LISM.DCH4 = (LISM.CH4_mean_nmolkg./LISM.CH4_eq_nmolkg - 1).*100;
+LISM.DN2O = (LISM.N2O_mean_nmolkg./LISM.N2O_eq_nmolkg - 1).* 100;
 LISM.DO2 = (LISM.O2_umolkg./O2sol(LISM.S,LISM.T) - 1).*100;
 
 load LISMay2024CastData.mat;
@@ -188,6 +228,11 @@ end;
 
 DmaxM = LISCDM.Dmax(MID4castM); % max depth for station in transect based on deep cast
 dnlocalM = LISCDM.dn_local(MID4castM); % local datetime for MID4 casts
+
+LISMay24_CH4N2O_CTD = LISM;
+%save LISMay24_CH4N2O_CTD.mat LISMay24_CH4N2O_CTD;
+
+
 %%
 % AUGUST INTERPOLATION
 % we need to make a grid that is evenly spaced so that all the casts are
@@ -215,9 +260,20 @@ PDeniA = nan(numel(dl),n_stn); % make a blank grid for storing PDen
 DCH4iA = nan(numel(dl),n_stn); % make a blank grid for storing CH4
 DN2OiA = nan(numel(dl),n_stn); % make a blank grid for storing N2O
 DO2iA = nan(numel(dl),n_stn); % make a blank grid for storing O2
+DCH4_nmolkgiA = nan(numel(dl),n_stn); % make a blank grid for storing CH4
+DN2O_nmolkgiA = nan(numel(dl),n_stn); % make a blank grid for storing N2O
+DO2_umolkgiA = nan(numel(dl),n_stn); % make a blank grid for storing O2
 tiA = repmat(datetime(0,0,0), 1, n_stn);
 dl_gridA = repmat(dl,1,n_stn);
 x_gridA = repmat(x,length(dl),1);
+
+CH4iavgA = nan(1,n_stn);
+N2OiavgA = nan(1,n_stn);
+O2iavgA = nan(1,n_stn);
+
+CH4avgA = nan(1,n_stn);
+N2OavgA = nan(1,n_stn);
+O2avgA = nan(1,n_stn);
 
 
 asA = []; % indices containing samples we want to use
@@ -227,14 +283,27 @@ for i = 1:numel(stnlist)
     asA = [asA; q];
 
     tiA(i+1) = LISA.datetime(q(1));
-    CH4iA(:,i+1) = interp1(LISA.Depth(q),LISA.mean_CH4_nM(q),dl);
-    N2OiA(:,i+1) = interp1(LISA.Depth(q),LISA.mean_N2O_nM(q),dl);
+    CH4iA(:,i+1) = interp1(LISA.Depth(q),LISA.CH4_mean_nmolkg(q),dl);
+    N2OiA(:,i+1) = interp1(LISA.Depth(q),LISA.N2O_mean_nmolkg(q),dl);
     SiA(:,i+1) = interp1(LISA.Depth(q),LISA.S(q),dl);
     O2iA(:,i+1) = interp1(LISA.Depth(q),LISA.O2_umolkg(q),dl);
     PDeniA(:,i+1) = interp1(LISA.Depth(q),LISA.PDen(q),dl); 
     DCH4iA(:,i+1) = interp1(LISA.Depth(q),LISA.DCH4(q),dl);
     DN2OiA(:,i+1) = interp1(LISA.Depth(q),LISA.DN2O(q),dl);
     DO2iA(:,i+1) = interp1(LISA.Depth(q),LISA.DO2(q),dl);    
+    DCH4_nmolkgiA(:,i+1) = interp1(LISA.Depth(q),LISA.DCH4_nmolkg(q),dl);
+    DN2O_nmolkgiA(:,i+1) = interp1(LISA.Depth(q),LISA.DN2O_nmolkg(q),dl);
+    DO2_umolkgiA(:,i+1) = interp1(LISA.Depth(q),LISA.DO2_umolkg(q),dl); 
+
+    % average based on measured values
+    CH4avgA(i+1) = mean(LISA.CH4_mean_nmolkg(q));
+    N2OavgA(i+1) = mean(LISA.N2O_mean_nmolkg(q));
+    O2avgA(i+1) = mean(LISA.O2_umolkg(q));
+
+    % average based on interpolated surface to bottom
+    CH4iavgA(i+1) = mean(CH4iA(:,i+1),'omitnan');    
+    N2OiavgA(i+1) = mean(N2OiA(:,i+1),'omitnan');
+    O2iavgA(i+1) = mean(O2iA(:,i+1),'omitnan');    
 
     % fill in the values at start and end with the closest non-NaN value
     nnC = find(~isnan(CH4iA(:,i+1)));
@@ -267,7 +336,20 @@ for i = 1:numel(stnlist)
 
     nnC = find(~isnan(DO2iA(:,i+1)));
     DO2iA(1:min(nnC),i+1) = DO2iA(min(nnC),i+1);
-    DO2iA(max(nnC):end,i+1) = DO2iA(max(nnC),i+1);     
+    DO2iA(max(nnC):end,i+1) = DO2iA(max(nnC),i+1);   
+
+    nnC = find(~isnan(DCH4_nmolkgiA(:,i+1)));
+    DCH4_nmolkgiA(1:min(nnC),i+1) = DCH4_nmolkgiA(min(nnC),i+1);
+    DCH4_nmolkgiA(max(nnC):end,i+1) = DCH4_nmolkgiA(max(nnC),i+1);
+
+    nnC = find(~isnan(DN2O_nmolkgiA(:,i+1)));
+    DN2O_nmolkgiA(1:min(nnC),i+1) = DN2O_nmolkgiA(min(nnC),i+1);
+    DN2O_nmolkgiA(max(nnC):end,i+1) = DN2O_nmolkgiA(max(nnC),i+1);
+
+    nnC = find(~isnan(DO2_umolkgiA(:,i+1)));
+    DO2_umolkgiA(1:min(nnC),i+1) = DO2_umolkgiA(min(nnC),i+1);
+    DO2_umolkgiA(max(nnC):end,i+1) = DO2_umolkgiA(max(nnC),i+1);  
+
 end;
 
 dmin = 1.4; % minimum depth to plot 
@@ -279,6 +361,9 @@ PDeniA(dl_gridA<dmin) = NaN;
 DCH4iA(dl_gridA<dmin) = NaN;
 DN2OiA(dl_gridA<dmin) = NaN;
 DO2iA(dl_gridA<dmin) = NaN;
+DCH4_nmolkgiA(dl_gridA<dmin) = NaN;
+DN2O_nmolkgiA(dl_gridA<dmin) = NaN;
+DO2_umolkgiA(dl_gridA<dmin) = NaN;
 
 
 % now add in data at start and end 
@@ -309,6 +394,16 @@ DN2OiA(:,end) = DN2OiA(:,end-1);
 DO2iA(:,1) = DO2iA(:,2);
 DO2iA(:,end) = DO2iA(:,end-1);
 
+DCH4_nmolkgiA(:,1) = DCH4_nmolkgiA(:,2);
+DCH4_nmolkgiA(:,end) = DCH4_nmolkgiA(:,end-1);
+
+DN2O_nmolkgiA(:,1) = DN2O_nmolkgiA(:,2);
+DN2O_nmolkgiA(:,end) = DN2O_nmolkgiA(:,end-1);
+
+DO2_umolkgiA(:,1) = DO2_umolkgiA(:,2);
+DO2_umolkgiA(:,end) = DO2_umolkgiA(:,end-1);
+
+
 %%
 % OCTOBER INTERPOLATION
 % we need to make a grid that is evenly spaced so that all the casts are
@@ -333,6 +428,9 @@ PDeniO = nan(numel(dl),n_stn); % make a blank grid for storing PDen
 DCH4iO = nan(numel(dl),n_stn); % make a blank grid for storing CH4
 DN2OiO = nan(numel(dl),n_stn); % make a blank grid for storing N2O
 DO2iO = nan(numel(dl),n_stn); % make a blank grid for storing O
+DCH4_nmolkgiO = nan(numel(dl),n_stn); % make a blank grid for storing CH4
+DN2O_nmolkgiO = nan(numel(dl),n_stn); % make a blank grid for storing N2O
+DO2_umolkgiO = nan(numel(dl),n_stn); % make a blank grid for storing O2
 tiO = repmat(datetime(0,0,0), 1, n_stn);
 dl_gridO = repmat(dl,1,n_stn);
 x_gridO = repmat(x,length(dl),1);
@@ -342,14 +440,17 @@ for i = 1:numel(stnlist)
     q = find(LISO.Station==stnlist(i));
     asO = [asO; q];
     tiO(i+1) = LISO.datetime(q(1));
-    CH4iO(:,i+1) = interp1(LISO.Depth(q),LISO.mean_CH4_nM(q),dl);
-    N2OiO(:,i+1) = interp1(LISO.Depth(q),LISO.mean_N2O_nM(q),dl);
+    CH4iO(:,i+1) = interp1(LISO.Depth(q),LISO.CH4_mean_nmolkg(q),dl);
+    N2OiO(:,i+1) = interp1(LISO.Depth(q),LISO.N2O_mean_nmolkg(q),dl);
     SiO(:,i+1) = interp1(LISO.Depth(q),LISO.S(q),dl);
     O2iO(:,i+1) = interp1(LISO.Depth(q),LISO.O2_umolkg(q),dl);
     PDeniO(:,i+1) = interp1(LISO.Depth(q),LISO.PDen(q),dl); 
     DCH4iO(:,i+1) = interp1(LISO.Depth(q),LISO.DCH4(q),dl);
     DN2OiO(:,i+1) = interp1(LISO.Depth(q),LISO.DN2O(q),dl);
     DO2iO(:,i+1) = interp1(LISO.Depth(q),LISO.DO2(q),dl);        
+    DCH4_nmolkgiO(:,i+1) = interp1(LISO.Depth(q),LISO.DCH4_nmolkg(q),dl);
+    DN2O_nmolkgiO(:,i+1) = interp1(LISO.Depth(q),LISO.DN2O_nmolkg(q),dl);
+    DO2_umolkgiO(:,i+1) = interp1(LISO.Depth(q),LISO.DO2_umolkg(q),dl); 
 
     % fill in the values at start and end with the closest non-NaN value
     nnC = find(~isnan(CH4iO(:,i+1)));
@@ -382,7 +483,19 @@ for i = 1:numel(stnlist)
 
     nnC = find(~isnan(DO2iO(:,i+1)));
     DO2iO(1:min(nnC),i+1) = DO2iO(min(nnC),i+1);
-    DO2iO(max(nnC):end,i+1) = DO2iO(max(nnC),i+1);     
+    DO2iO(max(nnC):end,i+1) = DO2iO(max(nnC),i+1);  
+
+    nnC = find(~isnan(DCH4_nmolkgiO(:,i+1)));
+    DCH4_nmolkgiO(1:min(nnC),i+1) = DCH4_nmolkgiO(min(nnC),i+1);
+    DCH4_nmolkgiO(max(nnC):end,i+1) = DCH4_nmolkgiO(max(nnC),i+1);
+
+    nnC = find(~isnan(DN2O_nmolkgiO(:,i+1)));
+    DN2O_nmolkgiO(1:min(nnC),i+1) = DN2O_nmolkgiO(min(nnC),i+1);
+    DN2O_nmolkgiO(max(nnC):end,i+1) = DN2O_nmolkgiO(max(nnC),i+1);
+
+    nnC = find(~isnan(DO2_umolkgiO(:,i+1)));
+    DO2_umolkgiO(1:min(nnC),i+1) = DO2_umolkgiO(min(nnC),i+1);
+    DO2_umolkgiO(max(nnC):end,i+1) = DO2_umolkgiO(max(nnC),i+1);  
 end;
 
 dmin = 1.4; % minimum depth to plot 
@@ -394,7 +507,9 @@ PDeniO(dl_gridO<dmin) = NaN;
 DCH4iO(dl_gridO<dmin) = NaN;
 DN2OiO(dl_gridO<dmin) = NaN;
 DO2iO(dl_gridO<dmin) = NaN;
-
+DCH4_nmolkgiO(dl_gridO<dmin) = NaN;
+DN2O_nmolkgiO(dl_gridO<dmin) = NaN;
+DO2_umolkgiO(dl_gridO<dmin) = NaN;
 
 % now add in data at start and end 
 tiO(1) = tiO(2);
@@ -424,6 +539,15 @@ DN2OiO(:,end) = DN2OiO(:,end-1);
 DO2iO(:,1) = DO2iO(:,2);
 DO2iO(:,end) = DO2iO(:,end-1);
 
+DCH4_nmolkgiO(:,1) = DCH4_nmolkgiO(:,2);
+DCH4_nmolkgiO(:,end) = DCH4_nmolkgiO(:,end-1);
+
+DN2O_nmolkgiO(:,1) = DN2O_nmolkgiO(:,2);
+DN2O_nmolkgiO(:,end) = DN2O_nmolkgiO(:,end-1);
+
+DO2_umolkgiO(:,1) = DO2_umolkgiO(:,2);
+DO2_umolkgiO(:,end) = DO2_umolkgiO(:,end-1);
+
 %%
 % MAY INTERPOLATION
 % we need to make a grid that is evenly spaced so that all the casts are
@@ -448,6 +572,9 @@ PDeniM = nan(numel(dl),n_stn); % make a blank grid for storing PDen
 DCH4iM = nan(numel(dl),n_stn); % make a blank grid for storing CH4
 DN2OiM = nan(numel(dl),n_stn); % make a blank grid for storing N2O
 DO2iM = nan(numel(dl),n_stn); % make a blank grid for storing O
+DCH4_nmolkgiM = nan(numel(dl),n_stn); % make a blank grid for storing CH4
+DN2O_nmolkgiM = nan(numel(dl),n_stn); % make a blank grid for storing N2O
+DO2_umolkgiM = nan(numel(dl),n_stn); % make a blank grid for storing O2
 tiM = repmat(datetime(0,0,0), 1, n_stn);
 dl_gridM = repmat(dl,1,n_stn);
 x_gridM = repmat(x,length(dl),1);
@@ -461,14 +588,17 @@ for i = 1:numel(stnlist)
     asM = [asM; q];
 
     tiM(i+1) = LISM.datetime(q(1));
-    CH4iM(:,i+1) = interp1(LISM.Depth(q),LISM.mean_CH4_nM(q),dl);
-    N2OiM(:,i+1) = interp1(LISM.Depth(q),LISM.mean_N2O_nM(q),dl);
+    CH4iM(:,i+1) = interp1(LISM.Depth(q),LISM.CH4_mean_nmolkg(q),dl);
+    N2OiM(:,i+1) = interp1(LISM.Depth(q),LISM.N2O_mean_nmolkg(q),dl);
     SiM(:,i+1) = interp1(LISM.Depth(q),LISM.S(q),dl);
     O2iM(:,i+1) = interp1(LISM.Depth(q),LISM.O2_umolkg(q),dl);
     PDeniM(:,i+1) = interp1(LISM.Depth(q),LISM.PDen(q),dl); 
     DCH4iM(:,i+1) = interp1(LISM.Depth(q),LISM.DCH4(q),dl);
     DN2OiM(:,i+1) = interp1(LISM.Depth(q),LISM.DN2O(q),dl);
     DO2iM(:,i+1) = interp1(LISM.Depth(q),LISM.DO2(q),dl);        
+    DCH4_nmolkgiM(:,i+1) = interp1(LISM.Depth(q),LISM.DCH4_nmolkg(q),dl);
+    DN2O_nmolkgiM(:,i+1) = interp1(LISM.Depth(q),LISM.DN2O_nmolkg(q),dl);
+    DO2_umolkgiM(:,i+1) = interp1(LISM.Depth(q),LISM.DO2_umolkg(q),dl); 
 
     % fill in the values at start and end with the closest non-NaN value
     nnC = find(~isnan(CH4iM(:,i+1)));
@@ -501,7 +631,19 @@ for i = 1:numel(stnlist)
 
     nnC = find(~isnan(DO2iM(:,i+1)));
     DO2iM(1:min(nnC),i+1) = DO2iM(min(nnC),i+1);
-    DO2iM(max(nnC):end,i+1) = DO2iM(max(nnC),i+1);     
+    DO2iM(max(nnC):end,i+1) = DO2iM(max(nnC),i+1);   
+
+    nnC = find(~isnan(DCH4_nmolkgiM(:,i+1)));
+    DCH4_nmolkgiM(1:min(nnC),i+1) = DCH4_nmolkgiM(min(nnC),i+1);
+    DCH4_nmolkgiM(max(nnC):end,i+1) = DCH4_nmolkgiM(max(nnC),i+1);
+
+    nnC = find(~isnan(DN2O_nmolkgiM(:,i+1)));
+    DN2O_nmolkgiM(1:min(nnC),i+1) = DN2O_nmolkgiM(min(nnC),i+1);
+    DN2O_nmolkgiM(max(nnC):end,i+1) = DN2O_nmolkgiM(max(nnC),i+1);
+
+    nnC = find(~isnan(DO2_umolkgiM(:,i+1)));
+    DO2_umolkgiM(1:min(nnC),i+1) = DO2_umolkgiM(min(nnC),i+1);
+    DO2_umolkgiM(max(nnC):end,i+1) = DO2_umolkgiM(max(nnC),i+1);      
 end;
 
 
@@ -514,6 +656,9 @@ PDeniM(dl_gridM<dmin) = NaN;
 DCH4iM(dl_gridM<dmin) = NaN;
 DN2OiM(dl_gridM<dmin) = NaN;
 DO2iM(dl_gridM<dmin) = NaN;
+DCH4_nmolkgiM(dl_gridM<dmin) = NaN;
+DN2O_nmolkgiM(dl_gridM<dmin) = NaN;
+DO2_umolkgiM(dl_gridM<dmin) = NaN;
 
 % now add in data at start and end 
 tiM(1) = tiM(2);
@@ -542,6 +687,16 @@ DN2OiM(:,end) = DN2OiM(:,end-1);
 
 DO2iM(:,1) = DO2iM(:,2);
 DO2iM(:,end) = DO2iM(:,end-1);
+
+DCH4_nmolkgiM(:,1) = DCH4_nmolkgiM(:,2);
+DCH4_nmolkgiM(:,end) = DCH4_nmolkgiM(:,end-1);
+
+DN2O_nmolkgiM(:,1) = DN2O_nmolkgiM(:,2);
+DN2O_nmolkgiM(:,end) = DN2O_nmolkgiM(:,end-1);
+
+DO2_umolkgiM(:,1) = DO2_umolkgiM(:,2);
+DO2_umolkgiM(:,end) = DO2_umolkgiM(:,end-1);
+
 
 %%
 % set values above the first sample to the value of the top sample
@@ -574,6 +729,15 @@ disp('DN2O ranges A O M')
 [min(min(DN2OiA)) max(max(DN2OiA))
 min(min(DN2OiO)) max(max(DN2OiO))
 min(min(DN2OiM)) max(max(DN2OiM))]
+% range is 2 to 73
+
+%%
+disp('DN2O nmol/kg ranges A O M')
+[min(min(DN2O_nmolkgiA)) max(max(DN2O_nmolkgiA))
+min(min(DN2O_nmolkgiO)) max(max(DN2O_nmolkgiO))
+min(min(DN2O_nmolkgiM)) max(max(DN2O_nmolkgiM))]
+
+% range 0.3 to 7
 
 %%
 disp('DCH4 ranges A O M')
@@ -581,11 +745,23 @@ disp('DCH4 ranges A O M')
 min(min(DCH4iO)) max(max(DCH4iO))
 min(min(DCH4iM)) max(max(DCH4iM))]
 
+% range is 730 to 1.81e4
+
+%%
+disp('DCH4 nmol/kg ranges A O M')
+[min(min(DCH4_nmolkgiA)) max(max(DCH4_nmolkgiA))
+min(min(DCH4_nmolkgiO)) max(max(DCH4_nmolkgiO))
+min(min(DCH4_nmolkgiM)) max(max(DCH4_nmolkgiM))]
+
+% range 22 to 436
+
 %%
 disp('DO2 ranges A O M')
 [min(min(DO2iA)) max(max(DO2iA))
 min(min(DO2iO)) max(max(DO2iO))
 min(min(DO2iM)) max(max(DO2iM))]
+
+% range is -84 to 25
 
 %%
 disp('PDen ranges A O M')
@@ -630,10 +806,10 @@ mean(LISM.CH4_mean_nmolkg(asM)) median(LISM.CH4_mean_nmolkg(asM)) min(LISM.CH4_m
 min(min(DN2OiM)) max(max(DN2OiM))]
 
 
-%% SUBPLOT WITH
-% ROW 1: DCH4
-% ROW 2: DN2O
-% ROW 3: DO2
+%% SUBPLOT WITH DELTA VALUES FOR CONCENTRATION
+% ROW 1: DCH4_nmolkg
+% ROW 2: DN2O_nmolkg
+% ROW 3: DO2_umolkg
 % ROW 4: PDEN
 
 nr = 4; % number of rows
@@ -656,14 +832,31 @@ yl = [0 20]; % y-axis limit in m
 xlA = [min(min(x_gridA)) max(max(x_gridA))]; %x-axis limit in time
 xlO = [min(min(x_gridO)) max(max(x_gridO))]; %x-axis limit in time
 xlM = [min(min(x_gridM)) max(max(x_gridM))]; %x-axis limit in time
-caDCH4 = [20 90]; % CH4 axis limits
-clevelDCH4 = [caDCH4(1):1:caDCH4(2)]; %CH4 colorbar levels
 
-caDN2O = [0 5]; % N2O axis limits
-clevelDN2O = [caDN2O(1):0.02:caDN2O(2)]; % N2O colorbar levels
+[min(min(DCH4_nmolkgiA)) max(max(DCH4_nmolkgiA))
+min(min(DCH4_nmolkgiO)) max(max(DCH4_nmolkgiO))
+min(min(DCH4_nmolkgiM)) max(max(DCH4_nmolkgiM))]
 
-caDO2 = [-230 110];
-clevelDO2 = [caDO2(1):1:caDO2(2)];
+[min(min(DN2O_nmolkgiA)) max(max(DN2O_nmolkgiA))
+min(min(DN2O_nmolkgiO)) max(max(DN2O_nmolkgiO))
+min(min(DN2O_nmolkgiM)) max(max(DN2O_nmolkgiM))]
+
+[min(min(DO2_umolkgiA)) max(max(DO2_umolkgiA))
+min(min(DO2_umolkgiO)) max(max(DO2_umolkgiO))
+min(min(DO2_umolkgiM)) max(max(DO2_umolkgiM))]
+
+[min(min(PDeniA)) max(max(PDeniA))
+min(min(PDeniO)) max(max(PDeniO))
+min(min(PDeniM)) max(max(PDeniM))]
+
+caDCH4_nmolkg = [22 82]; % CH4 axis limits
+clevelDCH4_nmolkg = [caDCH4_nmolkg(1):1:caDCH4_nmolkg(2)]; %CH4 colorbar levels
+
+caDN2O_nmolkg = [0 5]; % N2O axis limits
+clevelDN2O_nmolkg = [caDN2O_nmolkg(1):0.02:caDN2O_nmolkg(2)]; % N2O colorbar levels
+
+caDO2_umolkg = [-230 120];
+clevelDO2_umolkg = [caDO2_umolkg(1):1:caDO2_umolkg(2)];
 
 caPDen = [15.7 18.7]; % PDen axis limits
 clevelPDen = [caPDen(1):0.02:caPDen(2)]; % PDen colorbar levels
@@ -673,7 +866,7 @@ clf;
 sp=tight_subplot(nr,nc,[.025 .025],[.08 .04],[.08 .04]);
 set(gcf, 'PaperUnits', 'inches');
 set(gcf, 'PaperPositionMode', 'manual');
-set(gcf, 'PaperPosition', [0 0 8 6]);
+set(gcf, 'PaperPosition', [0 0 12 8]);
 set(gcf,'renderer','painters');
 set(gcf,'GraphicsSmoothing','on');
 
@@ -685,10 +878,10 @@ subplot(sp(1))
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
 
-    C = contourf(x_gridA,dl_grid,DCH4iA,clevelDCH4,'edgecolor','none');
+    C = contourf(x_gridA,dl_grid,DCH4_nmolkgiA,clevelDCH4_nmolkg,'edgecolor','none');
     plot(LISA.dn_local(asA),LISA.Depth(asA),'+k', 'linewidth', 2, 'markersize',ms)
 
-    caxis(caDCH4)
+    caxis(caDCH4_nmolkg)
     %c = colorbar('location','eastoutside');
     %c.Label.String = 'CH_4 (nmol/kg)';
     %c.FontSize = fs;
@@ -715,12 +908,12 @@ subplot(sp(2))
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
 
-    C = contourf(x_gridO,dl_grid,DCH4iO,clevelDCH4,'edgecolor','none');
+    C = contourf(x_gridO,dl_grid,DCH4_nmolkgiO,clevelDCH4_nmolkg,'edgecolor','none');
     plot(LISO.dn_local(asO),LISO.Depth(asO),'+k', 'linewidth', 2, 'markersize',ms)
 
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
-    caxis(caDCH4)
+    caxis(caDCH4_nmolkg)
     %c = colorbar('location','eastoutside');
     %c.Label.String = 'CH_4 (nmol/kg)';
     %c.FontSize = fs;
@@ -748,14 +941,14 @@ subplot(sp(3))
 
     clevel = [25:1:460];
     ca = [25 460]; %colorbar limits
-    C = contourf(x_gridM,dl_grid,DCH4iM,clevelDCH4,'edgecolor','none');
+    C = contourf(x_gridM,dl_grid,DCH4_nmolkgiM,clevelDCH4_nmolkg,'edgecolor','none');
     plot(LISM.dn_local(asM),LISM.Depth(asM),'+k', 'linewidth', 2, 'markersize',ms)
 
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
-    caxis(caDCH4)
+    caxis(caDCH4_nmolkg)
     c = colorbar('location','eastoutside');
-    c.Label.String = 'CH_4 (nmol/kg)';
+    c.Label.String = '\DeltaCH_4 (nmol/kg)';
     c.FontSize = fs;
     set(gca,'layer','top');
     ylim(yl);
@@ -778,10 +971,10 @@ subplot(sp(4))
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
 
-    C = contourf(x_gridA,dl_grid,DN2OiA,clevelDN2O,'edgecolor','none');
+    C = contourf(x_gridA,dl_grid,DN2O_nmolkgiA,clevelDN2O_nmolkg,'edgecolor','none');
     plot(LISA.dn_local(asA),LISA.Depth(asA),'+k', 'linewidth', 2, 'markersize',ms)
 
-    caxis(caDN2O)
+    caxis(caDN2O_nmolkg)
     %c = colorbar('location','eastoutside');
     %c.Label.String = 'N_2O (nmol/kg)';
     %c.FontSize = fs;
@@ -809,12 +1002,12 @@ subplot(sp(5))
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
 
-    C = contourf(x_gridO,dl_grid,DN2OiO,clevelDN2O,'edgecolor','none');
+    C = contourf(x_gridO,dl_grid,DN2O_nmolkgiO,clevelDN2O_nmolkg,'edgecolor','none');
     plot(LISO.dn_local(asO),LISO.Depth(asO),'+k', 'linewidth', 2, 'markersize',ms)
 
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
-    caxis(caDN2O)
+    caxis(caDN2O_nmolkg)
     %c = colorbar('location','eastoutside');
     %c.Label.String = 'CH_4 (nmol/kg)';
     %c.FontSize = fs;
@@ -838,14 +1031,14 @@ subplot(sp(6))
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
 
-    C = contourf(x_gridM,dl_grid,DN2OiM,clevelDN2O,'edgecolor','none');
+    C = contourf(x_gridM,dl_grid,DN2O_nmolkgiM,clevelDN2O_nmolkg,'edgecolor','none');
     plot(LISM.dn_local(asM),LISM.Depth(asM),'+k', 'linewidth', 2, 'markersize',ms)
 
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
-    caxis(caDN2O)
+    caxis(caDN2O_nmolkg)
     c = colorbar('location','eastoutside');
-    c.Label.String = 'N_2O (nmol/kg)';
+    c.Label.String = '\DeltaN_2O (nmol/kg)';
     c.FontSize = fs;
     set(gca,'layer','top');
     ylim(yl);
@@ -867,10 +1060,10 @@ subplot(sp(7))
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
 
-    C = contourf(x_gridA,dl_grid,DO2iA,clevelDO2,'edgecolor','none');
+    C = contourf(x_gridA,dl_grid,DO2_umolkgiA,clevelDO2_umolkg,'edgecolor','none');
     plot(LISA.dn_local(asA),LISA.Depth(asA),'+k', 'linewidth', 2, 'markersize',ms)
 
-    caxis(caDO2)
+    caxis(caDO2_umolkg)
     %c = colorbar('location','eastoutside');
     %c.Label.String = 'N_2O (nmol/kg)';
     %c.FontSize = fs;
@@ -898,12 +1091,12 @@ subplot(sp(8))
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
 
-    C = contourf(x_gridO,dl_grid,DO2iO,clevelDO2,'edgecolor','none');
+    C = contourf(x_gridO,dl_grid,DO2_umolkgiO,clevelDO2_umolkg,'edgecolor','none');
     plot(LISO.dn_local(asO),LISO.Depth(asO),'+k', 'linewidth', 2, 'markersize',ms)
 
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
-    caxis(caDO2)
+    caxis(caDO2_umolkg)
     %c = colorbar('location','eastoutside');
     %c.Label.String = 'CH_4 (nmol/kg)';
     %c.FontSize = fs;
@@ -927,14 +1120,14 @@ subplot(sp(9))
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
 
-    C = contourf(x_gridM,dl_grid,DO2iM,clevelDO2,'edgecolor','none');
+    C = contourf(x_gridM,dl_grid,DO2_umolkgiM,clevelDO2_umolkg,'edgecolor','none');
     plot(LISM.dn_local(asM),LISM.Depth(asM),'+k', 'linewidth', 2, 'markersize',ms)
 
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
-    caxis(caDO2)
+    caxis(caDO2_umolkg)
     c = colorbar('location','eastoutside');
-    c.Label.String = 'O_2 (\mumol/kg)';
+    c.Label.String = '\DeltaO_2 (\mumol/kg)';
     c.FontSize = fs;
     set(gca,'layer','top');
     ylim(yl);
@@ -1046,12 +1239,12 @@ subplot(sp(12))
     
     wysiwyg;
 
-%print(gcf, '-dpng', '-r300', 'MID4_DCH4_DN2O_DO2_PDen.png');
-%print(gcf,'-depsc','-vector','MID4_DCH4_DN2O_DO2_PDen.eps');
-%epsclean('MID4_DCH4_DN2O_DO2_PDen.eps','MID4_DCH4_DN2O_DO2_PDen.eps');
+print(gcf, '-dpng', '-r300', 'MID4_DCH4_nmolkg_DN2O_nmolkg_DO2_umolkg_PDen.png');
+print(gcf,'-depsc','-vector','MID4_DCH4_nmolkg_DN2O_nmolkg_DO2_umolkg_PDen.eps');
+epsclean('MID4_DCH4_nmolkg_DN2O_nmolkg_DO2_umolkg_PDen.eps','MID4_DCH4_nmolkg_DN2O_nmolkg_DO2_umolkg_PDen.eps');
 
 
-%%
+%% PLOT CONCENTRATIONS OF CH4, N2O, and O2
 
 nr = 4; % number of rows
 nc = 3; % number of columns
@@ -1463,9 +1656,9 @@ subplot(sp(12))
     
     wysiwyg;
 
-%print(gcf, '-dpng', '-r300', 'MID4_CH4_N2O_O2_PDen.png');
-%print(gcf,'-depsc','-vector','MID4_CH4_N2O_O2_PDen.eps');
-%epsclean('MID4_CH4_N2O_O2_PDen.eps','MID4_CH4_N2O_O2_PDen.eps');
+print(gcf, '-dpng', '-r300', 'MID4_CH4_N2O_O2_PDen.png');
+print(gcf,'-depsc','-vector','MID4_CH4_N2O_O2_PDen.eps');
+epsclean('MID4_CH4_N2O_O2_PDen.eps','MID4_CH4_N2O_O2_PDen.eps');
 %%
 
 % for OCTOBER set to EDT
@@ -1790,3 +1983,32 @@ stn = stnlist(2);
 A = find(LIS.Station==stn);
 [~,B] = sort(LIS.Depth(A));
 plot(LIS.T(A(B)),LIS.Depth(A(B)),'s-r','linewidth',1.5, 'markerfacecolor','r');
+
+
+%%
+
+figure(37)
+clf; hold on;
+for i = 5
+plot(CH4iA(:,i),dl_gridA(:,i),'o');
+q = find(LISA.Station==stnlist(i-1));
+plot(LISA.CH4_mean_nmolkg(q),LISA.Depth(q),'ok');
+end;
+
+for i = 6
+plot(CH4iA(:,i),dl_gridA(:,i));
+q = find(LISA.Station==stnlist(i-1));
+plot(LISA.CH4_mean_nmolkg(q),LISA.Depth(q),'+k');
+end;
+%legend('MID4-1','MID4-3','MID4-5','MID4-7','MID4-9')
+axis ij;
+
+%%
+stnlist = ["MID4-cast01"
+    "MID4-cast03"
+    "MID4-cast05"
+    "MID4-cast07"
+    "MID4-cast09"
+    "MID4-cast11"
+    "MID4-cast13"
+    "MID4-cast14"];

@@ -133,11 +133,7 @@ dl_gridA = repmat(dl,1,n_stn);
 x_gridA = repmat(x,length(dl),1);
 
 CH4iA = nan(numel(dl),n_stn); % make a blank grid for storing CH4
-N2OiA = nan(numel(dl),n_stn); % make a blank grid for storing CH4
-O2iA = nan(numel(dl),n_stn); % make a blank grid for storing CH4
-
-CH4iA = nan(numel(dl),n_stn); % make a blank grid for storing CH4
-N2Oia = nan(numel(dl),n_stn); % make a blank grid for storing N2O
+N2OiA = nan(numel(dl),n_stn); % make a blank grid for storing N2O
 O2iA = nan(numel(dl),n_stn); % make a blank grid for storing O2
 SiA = nan(numel(dl),n_stn); % make a blank grid for storing S
 PDeniA = nan(numel(dl),n_stn); % make a blank grid for storing PDen
@@ -234,11 +230,7 @@ dl_gridO = repmat(dl,1,n_stn);
 x_gridO = repmat(x,length(dl),1);
 
 CH4iO = nan(numel(dl),n_stn); % make a blank grid for storing CH4
-N2OiO = nan(numel(dl),n_stn); % make a blank grid for storing CH4
-O2iO = nan(numel(dl),n_stn); % make a blank grid for storing CH4
-
-CH4iO = nan(numel(dl),n_stn); % make a blank grid for storing CH4
-N2Oia = nan(numel(dl),n_stn); % make a blank grid for storing N2O
+N2OiO = nan(numel(dl),n_stn); % make a blank grid for storing N2O
 O2iO = nan(numel(dl),n_stn); % make a blank grid for storing O2
 SiO = nan(numel(dl),n_stn); % make a blank grid for storing S
 PDeniO = nan(numel(dl),n_stn); % make a blank grid for storing PDen
@@ -304,7 +296,7 @@ O2iO(:,end) = O2iO(:,end-1);
 PDeniO(:,1) = PDeniO(:,2);
 PDeniO(:,end) = PDeniO(:,end-1);
 
-%% MAY 2024 will be added in here once processed
+%% MAY 2024 
 
 % MAY 2024
 km_gridM = repmat(x,length(dl),1);
@@ -404,12 +396,26 @@ PDeniM(:,end) = PDeniM(:,end-1);
 
 [min(LISM.mean_N2O_nM) max(LISM.mean_N2O_nM)]
 %%
-[min(min(N2OiM)) max(max(N2OiM))]
 
-[min(min(CH4iM)) max(max(CH4iM))]
+[min(min(CH4iA)) max(max(CH4iA))
+min(min(N2OiA)) max(max(N2OiA))
+min(min(O2iA)) max(max(O2iA))]
 
-[min(min(O2iM)) max(max(O2iM))]
+% August
+% 44.5834  445.6192
+% 8.5353   13.7525
+% 39.5337  211.9365
 
+
+% October
+% 25.7143  187.9974
+% 9.4866   14.1598
+% 197.4300  246.3629
+
+% May
+% 26.3480   87.7741
+% 10.7882   16.5057
+% 199.6387  323.3287
 
 %%
 nr = 4; % number of rows
@@ -422,13 +428,13 @@ xt = [0 5 10 15];
 yl = [0 32]; % y-axis limit in m
 xl = [-0.5 19]; %x-axis limit in km
 
-caCH4 = [25 460]; % CH4 axis limits
+caCH4 = [25 350]; % CH4 axis limits
 clevelCH4 = [caCH4(1):1:caCH4(2)]; %CH4 colorbar levels
 
-caN2O = [8.5 15]; % N2O axis limits
-clevelN2O = [8.5:0.02:14]; % N2O colorbar levels
+caN2O = [8.5 16.6]; % N2O axis limits
+clevelN2O = [caN2O(1):0.1:caN2O(2)]; % N2O colorbar levels
 
-caO2 = [40 316];
+caO2 = [35 325];
 clevelO2 = [caO2(1):1:caO2(2)];
 
 caPDen = [15.7 18.8]; % PDen axis limits
@@ -439,7 +445,7 @@ clf;
 sp=tight_subplot(nr,nc,[.025 .025],[.08 .04],[.08 .04]);
 set(gcf, 'PaperUnits', 'inches');
 set(gcf, 'PaperPositionMode', 'manual');
-set(gcf, 'PaperPosition', [0 0 8 6]);
+set(gcf, 'PaperPosition', [0 0 12 8]);
 set(gcf,'renderer','painters');
     set(gcf,'GraphicsSmoothing','on')
 
@@ -812,9 +818,9 @@ subplot(sp(12))
     
     wysiwyg;
 
-print(gcf, '-dpng', '-r300', 'LIS_Transect_CH4_N2O_O2_PDen.png');
-print(gcf,'-depsc','-vector','LIS_Transect_CH4_N2O_O2_PDen.eps');
-epsclean('LIS_Transect_CH4_N2O_O2_PDen.eps','LIS_Transect_CH4_N2O_O2_PDen.eps');
+%print(gcf, '-dpng', '-r300', 'LIS_Transect_CH4_N2O_O2_PDen.png');
+%print(gcf,'-depsc','-vector','LIS_Transect_CH4_N2O_O2_PDen.eps');
+%epsclean('LIS_Transect_CH4_N2O_O2_PDen.eps','LIS_Transect_CH4_N2O_O2_PDen.eps');
 
 %%
 
@@ -1036,6 +1042,6 @@ ylim([0 18]);
 axis ij;
 
 %print -dpng -r300 LIS_O2_transect_Aug.png;
-print -dpng -r300 LIS_O2_transect_Oct.png;
+%print -dpng -r300 LIS_O2_transect_Oct.png;
 
 wysiwyg;
