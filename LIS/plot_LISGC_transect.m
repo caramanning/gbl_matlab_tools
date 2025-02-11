@@ -70,7 +70,7 @@ DmaxO = LISCDO.Dmax(ncast); % max depth for station in transect based on deep ca
 
 % load in May 2024 data
 load LISMay24_CH4N2O_CTD.mat
-LISM = LISMay24_CH4N2O_CTD; % October
+LISM = LISMay24_CH4N2O_CTD; % May
 
 load LISMay2024CastData.mat;
 LISCDM.Cast = LISMay2024CastData.Cast;
