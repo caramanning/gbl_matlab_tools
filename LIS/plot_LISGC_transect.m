@@ -33,6 +33,17 @@ DmaxA = LISCDA.Dmax(ncast); % max depth for station in transect based on deep ca
 % 
 % LISAug23_CH4N2O_CTD = LISA;
 % save LISAug23_CH4N2O_CTD.mat LISAug23_CH4N2O_CTD;
+    asA = [];
+    for i = 1:length(stnlist)
+        A = find(LISA.Station==stnlist(i));
+        asA = [asA; A];
+    end;
+
+    CH4A = LISA.CH4_mean_nmolkg(asA);
+    O2A = LISA.O2_umolkg(asA);
+
+    [min(CH4A) max(CH4A) mean(CH4A) median(CH4A)]
+    [min(O2A) max(O2A) mean(O2A) median(O2A)]
 
 %%
 % load in October 2023 data
@@ -90,6 +101,19 @@ km_between = [0; km_between]; % add on zero for first station
 
 km_cumulativeM = cumsum(km_between); % consecutive distance
 DmaxM = LISCDM.Dmax(ncast); % max depth for station in transect based on deep cast
+
+    asM = [];
+    for i = 1:length(stnlist)
+        M = find(LISM.Station==stnlist(i));
+        asM = [asM; M];
+    end;
+
+    CH4M = LISM.CH4_mean_nmolkg(asM);
+    O2M = LISM.O2_umolkg(asM);
+
+    [min(CH4M) max(CH4M) mean(CH4M) median(CH4M)]
+    [min(O2M) max(O2M) mean(O2M) median(O2M)]
+
 
 %%
 % we need to make a grid that is evenly spaced so that all the casts are
