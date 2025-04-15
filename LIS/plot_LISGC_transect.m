@@ -33,6 +33,16 @@ DmaxA = LISCDA.Dmax(ncast); % max depth for station in transect based on deep ca
 % 
 % LISAug23_CH4N2O_CTD = LISA;
 % save LISAug23_CH4N2O_CTD.mat LISAug23_CH4N2O_CTD;
+
+stnlist = ["EXR1-cast01"
+    "EXRX-cast02"
+    "MID3-cast01"
+    "MID4-cast14"
+    "MID5-cast01"
+    "WLIS-cast02"
+    "WLI6-cast01"]; % this matches cast 16-22 and x as listed above
+
+
     asA = [];
     for i = 1:length(stnlist)
         A = find(LISA.Station==stnlist(i));
