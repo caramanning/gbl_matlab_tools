@@ -57,6 +57,7 @@ stnlist = ["EXR1-cast01"
     DO2A = LISA.DO2(asA);
         
     TA = LISA.T(asA);
+    SA = LISA.S(asA)
 
     [median(CH4A) prctile(CH4A,25) prctile(CH4A,75)]
     [mean(CH4A) std(CH4A)]
@@ -75,6 +76,12 @@ stnlist = ["EXR1-cast01"
 
     [median(DO2A) prctile(DO2A,25) prctile(DO2A,75)]
     [mean(DO2A) std(DO2A)]
+
+    [median(TA) prctile(TA,25) prctile(TA,75)]
+    [mean(TA) std(TA)]
+
+    [median(SA) prctile(SA,25) prctile(SA,75)]
+    [mean(SA) std(SA)]  
 
 %    [min(O2A) max(O2A) mean(O2A) median(O2A)]
 %    [min(DCH4A) max(DCH4A) mean(DCH4A) median(DCH4A)]
@@ -116,6 +123,9 @@ DmaxO = LISCDO.Dmax(ncast); % max depth for station in transect based on deep ca
     DCH4O = LISO.DCH4(asA);
     DN2OO = LISO.DN2O(asA);
     DO2O = LISO.DO2(asA);
+    TO = LISO.T(asA);
+    SO = LISO.S(asA);   
+
 
     [median(CH4O) prctile(CH4O,25) prctile(CH4O,75)]
     [mean(CH4O) std(CH4O)]
@@ -135,7 +145,11 @@ DmaxO = LISCDO.Dmax(ncast); % max depth for station in transect based on deep ca
     [median(DO2O) prctile(DO2O,25) prctile(DO2O,75)]
     [mean(DO2O) std(DO2O)]
 
+    [median(TO) prctile(TO,25) prctile(TO,75)]
+    [mean(TO) std(TO)]
 
+    [median(SO) prctile(SO,25) prctile(SO,75)]
+    [mean(SO) std(SO)]  
 
 % rename stations to be consistent
 % stn = 'EXCR1-cast01';
@@ -182,6 +196,7 @@ DmaxM = LISCDM.Dmax(ncast); % max depth for station in transect based on deep ca
     DCH4M = LISM.DCH4(asA);
     DN2OM = LISM.DN2O(asA);
     TM = LISM.T(asA);
+    SM = LISM.S(asA);    
     DO2M = LISM.DO2(asA);
 
     [median(CH4M) prctile(CH4M,25) prctile(CH4M,75)]
@@ -195,14 +210,18 @@ DmaxM = LISCDM.Dmax(ncast); % max depth for station in transect based on deep ca
 
     [median(DN2OM) prctile(DN2OM,25) prctile(DN2OM,75)]
     [mean(DN2OM) std(DN2OM)]
-%%
+
     [median(O2M) prctile(O2M,25) prctile(O2M,75)]
     [mean(O2M) std(O2M)]
 
     [median(DO2M) prctile(DO2M,25) prctile(DO2M,75)]
     [mean(DO2M) std(DO2M)]
 
+    [median(TM) prctile(TM,25) prctile(TM,75)]
+    [mean(TM) std(TM)]
 
+    [median(SM) prctile(SM,25) prctile(SM,75)]
+    [mean(SM) std(SM)]    
 %%
 % we need to make a grid that is evenly spaced so that all the casts are
 % interpolated onto the same spacing
