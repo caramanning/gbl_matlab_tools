@@ -37,6 +37,60 @@ KO = KingsPoint_Oct2023;
 load KingsPoint_May2024;
 KM = KingsPoint_May2024;
 
+%%
+PO = LIS1035_pred_Oct23;
+
+xlO = ([datenum(2023,10,19) datenum(2023,10,21)]);
+
+figure(1);
+clf;
+subplot(3,1,1)
+    hold on; box on;
+    set(gca,'tickdir','out');
+    set(gca,'fontsize',fs);
+
+    plot(datenum(BO.Datetime_local),BO.Verifiedft);
+    plot(datenum(KO.Datetime_local),KO.Verifiedft);
+    legend('Bridgeport','Kings Point','location','north')
+    datetick;
+    xlim(xlO);
+
+subplot(3,1,2)
+    hold on; box on;
+    set(gca,'tickdir','out');
+    set(gca,'fontsize',fs);
+
+    plot(datenum(PO.Date_TimeLST_LDT),PO.Speedknots);
+    datetick;
+
+    xlim(xlO);
+  %  legend('Bridgeport','Kings Point','location','north')
+
+figure(2);
+clf;
+    hold on; box on;
+    set(gca,'tickdir','out');
+    set(gca,'fontsize',fs);
+
+    plot(datenum(BO.Datetime_local),BO.Verifiedft);
+    plot(datenum(KO.Datetime_local),KO.Verifiedft);
+    plot(datenum(PO.Date_TimeLST_LDT),(PO.Speedknots*2+5));
+    legend('Bridgeport','Kings Point','Currents', 'location','north')
+    datetick;
+    xlim(xlO);
+ %%   
+subplot(3,1,2)
+    hold on; box on;
+    set(gca,'tickdir','out');
+    set(gca,'fontsize',fs);
+
+    plot(datenum(PO.Date_TimeLST_LDT),PO.Speedknots);
+    datetick;
+
+    xlim(xlO);
+  %  legend('Bridgeport','Kings Point','location','north')
+
+
 
 %%
 %load LISAug23_CH4N2O_CTD.mat;

@@ -4,7 +4,7 @@ LISA = LISAug23_CH4N2O_CTD; % August
 load LISOct23_CH4N2O_CTD.mat
 LISO = LISOct23_CH4N2O_CTD; % Oct
 
-load LISAug23_CH4N2O_CTD.mat
+load LISMay24_CH4N2O_CTD.mat
 LISM = LISMay24_CH4N2O_CTD; % May
 
 
@@ -65,8 +65,8 @@ ylim(Tl);
 xlabel('S'); ylabel('T');
 
 %%
-Sl = [22 27];
-Tl = [8 25];
+Sl = [22 27.3];
+Tl = [9 25];
 ms=30;
 figure(1)
 clf; 
@@ -85,17 +85,16 @@ xlim(Sl);
 ylim(Tl);
 xlabel('S'); ylabel('T');
 
-Sl = [22 27];
-Tl = [8 25];
-figure(1)
+
+figure(2)
 clf; 
 hold on; box on;
 [~,i] = sort(LISA.mean_N2O_nM);
-scatter(LISA.S(i),LISA.T(i),20,LISA.mean_N2O_nM(i),'filled','o');
+scatter(LISA.S(i),LISA.T(i),ms,LISA.mean_N2O_nM(i),'filled','o');
 [~,i] = sort(LISO.mean_N2O_nM);
-scatter(LISO.S(i),LISO.T(i),20,LISO.mean_N2O_nM(i),'filled','o');
+scatter(LISO.S(i),LISO.T(i),ms,LISO.mean_N2O_nM(i),'filled','o');
 [~,i] = sort(LISM.mean_N2O_nM);
-scatter(LISM.S(i),LISM.T(i),20,LISM.mean_N2O_nM(i),'filled','o');
+scatter(LISM.S(i),LISM.T(i),ms,LISM.mean_N2O_nM(i),'filled','o');
 colorbar;
 title('N_2O');
 % set(gca,'xlim',xl);
@@ -103,6 +102,25 @@ title('N_2O');
 xlim(Sl);
 ylim(Tl);
 xlabel('S'); ylabel('T');
+
+
+figure(3)
+clf; 
+hold on; box on;
+%[~,i] = sort(LISA.mean_N2O_nM);
+%scatter(LISA.S(i),LISA.T(i),ms,LISA.O2_umolkg(i),'filled','o');
+%[~,i] = sort(LISO.mean_N2O_nM);
+%scatter(LISO.S(i),LISO.T(i),ms,LISO.O2_umolkg(i),'filled','o');
+[~,i] = sort(LISM.mean_N2O_nM);
+scatter(LISM.S(i),LISM.T(i),ms,LISM.O2_umolkg(i),'filled','o');
+colorbar;
+title('O_2');
+% set(gca,'xlim',xl);
+% set(gca, 'ylim',yl);
+xlim(Sl);
+ylim(Tl);
+xlabel('S'); ylabel('T');
+
 
 %%
 figure(2)
