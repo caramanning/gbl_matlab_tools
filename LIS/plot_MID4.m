@@ -37,6 +37,19 @@ KO = KingsPoint_Oct2023;
 load KingsPoint_May2024;
 KM = KingsPoint_May2024;
 
+ms_per_knt = 0.5144444444;
+load LIS1035_pred_Aug23;
+PA = LIS1035_pred_Aug23;
+PA.Speedms = PA.Speedknots.*ms_per_knt;
+load LIS1035_pred_Oct23;
+PO = LIS1035_pred_Oct23;
+PO.Speedms = PO.Speedknots.*ms_per_knt;
+load LIS1035_pred_May24;
+PM = LIS1035_pred_May24;
+PM.Speedms = PM.Speedknots.*ms_per_knt;
+
+
+
 %%
 PO = LIS1035_pred_Oct23;
 
@@ -74,7 +87,7 @@ clf;
 
     plot(datenum(BO.Datetime_local),BO.Verifiedft);
     plot(datenum(KO.Datetime_local),KO.Verifiedft);
-    plot(datenum(PO.Date_TimeLST_LDT),(PO.Speedknots*2+5));
+    plot(datenum(PO.Datetime_local),(PO.Speedknots*2+5));
     legend('Bridgeport','Kings Point','Currents', 'location','north')
     datetick;
     xlim(xlO);
@@ -1342,6 +1355,13 @@ xtlM = ['08:00';'12:00';'16:00';'20:00';'00:00';'04:00';'08:00'];
 
 
 yl = [0 20]; % y-axis limit in m
+lwC = 2; % linewidth for current
+cb = [0.7 0.7 0.7]; %color for bathymetry
+
+ylcurrent = [-0.41 0.41];
+ytcurrent = [-0.4 0 0.4];
+ytlcurrent = [-0.4 0 0.4];
+
 xlA = [min(min(x_gridA)) max(max(x_gridA))]; %x-axis limit in time
 xlO = [min(min(x_gridO)) max(max(x_gridO))]; %x-axis limit in time
 xlM = [min(min(x_gridM)) max(max(x_gridM))]; %x-axis limit in time
@@ -1384,9 +1404,69 @@ set(gcf,'renderer','painters');
 set(gcf,'GraphicsSmoothing','on');
 
 % rows: Aug / Oct / May
-% columns: CH4 / N2O / O2 / Density
-% SUBPLOT 1
+% columns: current / CH4 / N2O / O2 / Density
+
+% SUBPLOT 1 - tides
 subplot(sp(1))
+    hold on; box on;
+    set(gca,'tickdir','out');
+    set(gca,'fontsize',fs);
+    plot([xlA],[0 0],'-k');
+    uc = unique(LISA.dn_local(asA));
+    for i =1:length(uc)
+        plot([uc(i) uc(i)],[-1 1],'--','color',[0.5 0.5 0.5]);
+    end;
+    plot(datenum(PA.Datetime_local),PA.Speedms,'linewidth',lwC,'color','b');
+    
+    title('August');
+    set(gca,'xtick',xtA);
+%    plot(datenum(KA.Datetime_local),KA.Verifiedft);
+    xlim(xlA);
+    ylim(ylcurrent);
+    ylabel('current speed [m s^{-1}]');
+    set(gca,'ytick',ytcurrent);
+    set(gca,'yticklabel',ytlcurrent);
+%    legend('Bridgeport','Kings Point','location','north')
+
+
+% SUBPLOT 2 - tides
+subplot(sp(2))
+    hold on; box on;
+    set(gca,'tickdir','out');
+    set(gca,'fontsize',fs);
+    plot([xlO],[0 0],'-k');
+    uc = unique(LISO.dn_local(asO));
+    for i =1:length(uc)
+        plot([uc(i) uc(i)],[-1 1],'--','color',[0.5 0.5 0.5]);
+    end;  
+    plot(datenum(PO.Datetime_local),PO.Speedms,'linewidth',lwC,'color','b');
+    title('October');
+    set(gca,'xtick',xtO);
+%    plot(datenum(KO.Datetime_local),KO.Verifiedft);
+    xlim(xlO);
+    ylim(ylcurrent);
+%    legend('Bridgeport','Kings Point','location','north')
+
+% SUBPLOT 3 - tides
+subplot(sp(3))
+    hold on; box on;
+    set(gca,'tickdir','out');
+    set(gca,'fontsize',fs);
+    plot([xlM],[0 0],'-k');
+    uc = unique(LISM.dn_local(asM));
+    for i =1:length(uc)
+        plot([uc(i) uc(i)],[-1 1],'--','color',[0.5 0.5 0.5]);
+    end;   
+    plot(datenum(PM.Datetime_local),PM.Speedms,'linewidth',lwC,'color','b');    
+    title('May');
+    set(gca,'xtick',xtM);
+%    plot(datenum(KM.Datetime_local),KM.Verifiedft);
+    xlim(xlM);
+    ylim(ylcurrent);
+%    legend('Bridgeport','Kings Point','location','north')
+
+% SUBPLOT 4
+subplot(sp(4))
     hold on; box on;
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
@@ -1407,16 +1487,15 @@ subplot(sp(1))
     %set(gca,'xticklabel',xtlA);
     %xlabel('Transect distance [km]');
     ylabel('Depth [m]');
-    title('August');
 
     %add in plot of bathymetry
     dmA = [yl(2) DmaxA(1) DmaxA' DmaxA(end) yl(2)];
     kcA = [x_gridA(1,1) x_gridA(1,:) x_gridA(1,end)];
-    fill(datenum(kcA),dmA,[0.5 0.5 0.5],'edgecolor','none');
+    fill(datenum(kcA),dmA,cb,'edgecolor','none');
     axis ij;
 
-% SUBPLOT 2
-subplot(sp(2))
+% SUBPLOT 5
+subplot(sp(5))
     hold on; box on;
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
@@ -1437,17 +1516,17 @@ subplot(sp(2))
     %set(gca,'yticklabel',yt);
     set(gca,'xtick',xtO);
     %set(gca,'xticklabel',xtlM);
-    title('October');
+   % title('October');
 
     %add in plot of bathymetry
     dmO = [yl(2) DmaxO(1) DmaxO' DmaxO(end) yl(2)];
     kcO = [x_gridO(1,1) x_gridO(1,:) x_gridO(1,end)];
-    fill(kcO,dmO,[0.5 0.5 0.5],'edgecolor','none');
+    fill(kcO,dmO,cb,'edgecolor','none');
     axis ij;
 
 
-% SUBPLOT 3
-subplot(sp(3))
+% SUBPLOT 6
+subplot(sp(6))
     hold on; box on;
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
@@ -1459,10 +1538,10 @@ subplot(sp(3))
 
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
-    caxis(caDCH4_nmolkg)
-    c = colorbar('location','eastoutside');
-    c.Label.String = '\DeltaCH_4 (nmol/kg)';
-    c.FontSize = fs;
+  %  caxis(caDCH4_nmolkg)
+  %  c = colorbar('location','eastoutside');
+  %  c.Label.String = '\DeltaCH_4 (nmol/kg)';
+  %  c.FontSize = fs;
     set(gca,'layer','top');
     ylim(yl);
     xlim(xlM);
@@ -1470,16 +1549,16 @@ subplot(sp(3))
     %set(gca,'yticklabel',yt);
     set(gca,'xtick',xtM);
     %set(gca,'xticklabel',xt);
-    title(['May'])
+    %title(['May'])
 
     %add in plot of bathymetry
     dmM = [yl(2) DmaxM(1) DmaxM' DmaxM(end) yl(2)];
     kcM = [x_gridM(1,1) x_gridM(1,:) x_gridM(1,end)];
-    fill(kcM,dmM,[0.5 0.5 0.5],'edgecolor','none');
+    fill(kcM,dmM,cb,'edgecolor','none');
     axis ij;
 
-%SUBPLOT 4
-subplot(sp(4))
+%SUBPLOT 7
+subplot(sp(7))
     hold on; box on;
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
@@ -1505,12 +1584,12 @@ subplot(sp(4))
     %add in plot of bathymetry
     dmA = [yl(2) DmaxA(1) DmaxA' DmaxA(end) yl(2)];
     kcA = [x_gridA(1,1) x_gridA(1,:) x_gridA(1,end)];
-    fill(kcA,dmA,[0.5 0.5 0.5],'edgecolor','none');
+    fill(kcA,dmA,cb,'edgecolor','none');
     axis ij;
 
 
-% SUBPLOT 5
-subplot(sp(5))
+% SUBPLOT 8
+subplot(sp(8))
     hold on; box on;
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
@@ -1535,11 +1614,11 @@ subplot(sp(5))
     %add in plot of bathymetry
     dmM = [yl(2) DmaxO(1) DmaxO' DmaxO(end) yl(2)];
     kcO = [x_gridO(1,1) x_gridO(1,:) x_gridO(1,end)];
-    fill(kcO,dmO,[0.5 0.5 0.5],'edgecolor','none');
+    fill(kcO,dmO,cb,'edgecolor','none');
     axis ij;
 
-% SUBPLOT 6
-subplot(sp(6))
+% SUBPLOT 9
+subplot(sp(9))
     hold on; box on;
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
@@ -1549,10 +1628,10 @@ subplot(sp(6))
 
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
-    caxis(caDN2O_nmolkg)
-    c = colorbar('location','eastoutside');
-    c.Label.String = '\DeltaN_2O (nmol/kg)';
-    c.FontSize = fs;
+ %   caxis(caDN2O_nmolkg)
+ %   c = colorbar('location','eastoutside');
+ %   c.Label.String = '\DeltaN_2O (nmol/kg)';
+ %   c.FontSize = fs;
     set(gca,'layer','top');
     ylim(yl);
     xlim(xlM);
@@ -1564,11 +1643,11 @@ subplot(sp(6))
     %add in plot of bathymetry
     dmM = [yl(2) DmaxM(1) DmaxM' DmaxM(end) yl(2)];
     kcM = [x_gridM(1,1) x_gridM(1,:) x_gridM(1,end)];
-    fill(kcM,dmM,[0.5 0.5 0.5],'edgecolor','none');
+    fill(kcM,dmM,cb,'edgecolor','none');
     axis ij;
 
-%SUBPLOT 7
-subplot(sp(7))
+%SUBPLOT 10
+subplot(sp(10))
     hold on; box on;
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
@@ -1594,12 +1673,12 @@ subplot(sp(7))
     %add in plot of bathymetry
     dmA = [yl(2) DmaxA(1) DmaxA' DmaxA(end) yl(2)];
     kcA = [x_gridA(1,1) x_gridA(1,:) x_gridA(1,end)];
-    fill(kcA,dmA,[0.5 0.5 0.5],'edgecolor','none');
+    fill(kcA,dmA,cb,'edgecolor','none');
     axis ij;
 
 
-% SUBPLOT 8
-subplot(sp(8))
+% SUBPLOT 11
+subplot(sp(11))
     hold on; box on;
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
@@ -1624,11 +1703,11 @@ subplot(sp(8))
     %add in plot of bathymetry
     dmO = [yl(2) DmaxO(1) DmaxO' DmaxO(end) yl(2)];
     kcO = [x_gridO(1,1) x_gridO(1,:) x_gridO(1,end)];
-    fill(kcO,dmO,[0.5 0.5 0.5],'edgecolor','none');
+    fill(kcO,dmO,cb,'edgecolor','none');
     axis ij;
 
-% SUBPLOT 9
-subplot(sp(9))
+% SUBPLOT 12
+subplot(sp(12))
     hold on; box on;
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
@@ -1639,9 +1718,9 @@ subplot(sp(9))
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
     caxis(caDO2_umolkg)
-    c = colorbar('location','eastoutside');
-    c.Label.String = '\DeltaO_2 (\mumol/kg)';
-    c.FontSize = fs;
+ %   c = colorbar('location','eastoutside');
+ %   c.Label.String = '\DeltaO_2 (\mumol/kg)';
+ %   c.FontSize = fs;
     set(gca,'layer','top');
     ylim(yl);
     xlim(xlM);
@@ -1653,12 +1732,12 @@ subplot(sp(9))
     %add in plot of bathymetry
     dmM = [yl(2) DmaxM(1) DmaxM' DmaxM(end) yl(2)];
     kcM = [x_gridM(1,1) x_gridM(1,:) x_gridM(1,end)];
-    fill(kcM,dmM,[0.5 0.5 0.5],'edgecolor','none');
+    fill(kcM,dmM,cb,'edgecolor','none');
     axis ij;
 
 
-%SUBPLOT 10
-subplot(sp(10))
+%SUBPLOT 13
+subplot(sp(13))
     hold on; box on;
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
@@ -1684,12 +1763,12 @@ subplot(sp(10))
     %add in plot of bathymetry
     dmA = [yl(2) DmaxA(1) DmaxA' DmaxA(end) yl(2)];
     kcA = [x_gridA(1,1) x_gridA(1,:) x_gridA(1,end)];
-    fill(kcA,dmA,[0.5 0.5 0.5],'edgecolor','none');
+    fill(kcA,dmA,cb,'edgecolor','none');
     axis ij;
 
 
-% SUBPLOT 11
-subplot(sp(11))
+% SUBPLOT 14
+subplot(sp(14))
     hold on; box on;
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
@@ -1715,11 +1794,11 @@ subplot(sp(11))
     %add in plot of bathymetry
     dmM = [yl(2) DmaxO(1) DmaxO' DmaxO(end) yl(2)];
     kcO = [x_gridO(1,1) x_gridO(1,:) x_gridO(1,end)];
-    fill(kcO,dmO,[0.5 0.5 0.5],'edgecolor','none');
+    fill(kcO,dmO,cb,'edgecolor','none');
     axis ij;
 
-% SUBPLOT 12
-subplot(sp(12))
+% SUBPLOT 15
+subplot(sp(15))
     hold on; box on;
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
@@ -1732,9 +1811,9 @@ subplot(sp(12))
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
     clim(caPDen)
-    c = colorbar('location','eastoutside');
-    c.Label.String = '\sigma_{\theta} (kg/m^3)';
-    c.FontSize = fs;
+ %   c = colorbar('location','eastoutside');
+ %   c.Label.String = '\sigma_{\theta} (kg/m^3)';
+ %   c.FontSize = fs;
     set(gca,'layer','top');
     ylim(yl);
     xlim(xlM);
@@ -1747,48 +1826,16 @@ subplot(sp(12))
     %add in plot of bathymetry
     dmM = [yl(2) DmaxM(1) DmaxM' DmaxM(end) yl(2)];
     kcM = [x_gridM(1,1) x_gridM(1,:) x_gridM(1,end)];
-    fill(kcM,dmM,[0.5 0.5 0.5],'edgecolor','none');
+    fill(kcM,dmM,cb,'edgecolor','none');
     axis ij;
 
-% SUBPLOT 13 - tides
-subplot(sp(13))
-    hold on; box on;
-    set(gca,'tickdir','out');
-    set(gca,'fontsize',fs);
 
-    plot(datenum(BA.Datetime_local),BA.Verifiedft);
-    plot(datenum(KA.Datetime_local),KA.Verifiedft);
-    xlim(xlA);
-    legend('Bridgeport','Kings Point','location','north')
-
-
-% SUBPLOT 14 - tides
-subplot(sp(14))
-    hold on; box on;
-    set(gca,'tickdir','out');
-    set(gca,'fontsize',fs);
-
-    plot(datenum(BO.Datetime_local),BO.Verifiedft);
-    plot(datenum(KO.Datetime_local),KO.Verifiedft);
-    xlim(xlO);
-    legend('Bridgeport','Kings Point','location','north')
-
-% SUBPLOT 15 - tides
-subplot(sp(15))
-    hold on; box on;
-    set(gca,'tickdir','out');
-    set(gca,'fontsize',fs);
-
-    plot(datenum(BM.Datetime_local),BM.Verifiedft);
-    plot(datenum(KM.Datetime_local),KM.Verifiedft);
-    xlim(xlM);
-    legend('Bridgeport','Kings Point','location','north')
     
     wysiwyg;
 
-%print(gcf, '-dpng', '-r300', 'MID4_DCH4_nmolkg_DN2O_nmolkg_DO2_umolkg_PDen.png');
-%print(gcf,'-depsc','-vector','MID4_DCH4_nmolkg_DN2O_nmolkg_DO2_umolkg_PDen.eps');
-%epsclean('MID4_DCH4_nmolkg_DN2O_nmolkg_DO2_umolkg_PDen.eps','MID4_DCH4_nmolkg_DN2O_nmolkg_DO2_umolkg_PDen.eps');
+print(gcf, '-dpng', '-r300', 'MID4_Current_DCH4_nmolkg_DN2O_nmolkg_DO2_umolkg_PDen.png');
+print(gcf,'-depsc','-vector','MID4_Current_DCH4_nmolkg_DN2O_nmolkg_DO2_umolkg_PDen.eps');
+epsclean('MID4_Current_DCH4_nmolkg_DN2O_nmolkg_DO2_umolkg_PDen.eps','MID4_Current_DCH4_nmolkg_DN2O_nmolkg_DO2_umolkg_PDen.eps');
 
 
 %% PLOT CONCENTRATIONS OF CH4, N2O, and O2
