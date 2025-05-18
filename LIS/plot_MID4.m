@@ -199,7 +199,7 @@ CH4atmdryP = CH4atmdry;
 N2OatmdryO = N2Oatmdry;
 
 load LISOct23_CH4N2O_CTD.mat
-LISO = LISOct23_CH4N2O_CTD; % Octust
+LISO = LISOct23_CH4N2O_CTD; % October
 LISO.datetime_local = LISO.datetime + UTC_to_local;
 LISO.dn_local = datenum(LISO.datetime_local);
 
