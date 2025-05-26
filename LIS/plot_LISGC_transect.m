@@ -173,12 +173,12 @@ LISCDM.Dmax = sw_dpth(LISMay2024CastData.Pmax_dbar,LISCDM.Lat);
 
 
 ncast = 16:22;
-Cast = LISO.Cast(ncast);
-Lat = LISO.Lat(ncast);
-Lon = LISO.Lon(ncast);
+Cast = LISM.Cast(ncast);
+Lat = LISM.Lat(ncast);
+Lon = LISM.Lon(ncast);
 
 ncast = 16:22; % casts for transect;
-km_between = m_lldist(LISCDO.Lon(ncast),LISCDO.Lat(ncast)); % distance between consecutive stations
+km_between = m_lldist(LISCDM.Lon(ncast),LISCDM.Lat(ncast)); % distance between consecutive stations
 km_between = [0; km_between]; % add on zero for first station
 
 km_cumulativeM = cumsum(km_between); % consecutive distance
