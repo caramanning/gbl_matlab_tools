@@ -206,6 +206,9 @@ mec = [0.5 0.5 0.5]; % marker edge color
 mec = 'none';
 mfa = 0.5; % marker face alpha (transparency)
 
+cch4 = [25 440];
+cn2o = [8.3 16.4];
+
 ms=60;
 
 nr = 1; % number of rows
@@ -228,19 +231,20 @@ clabel(c,h,'LabelSpacing',1000);
 set(gca,'fontsize',fsl);
 
 colormap('turbo')
-[~,i] = sort(LISA.mean_CH4_nM);
+[~,i] = sort(LISA.CH4_mean_nmolkg);
 s = scatter(LISA.S(i),LISA.T(i),ms,LISA.CH4_mean_nmolkg(i),'filled','o','markeredgecolor',mec);
 s.MarkerFaceAlpha = mfa;
 s.MarkerEdgeAlpha = mfa;
-[~,i] = sort(LISO.mean_CH4_nM);
+[~,i] = sort(LISO.CH4_mean_nmolkg);
 s = scatter(LISO.S(i),LISO.T(i),ms,LISO.CH4_mean_nmolkg(i),'filled','d','markeredgecolor',mec);
 s.MarkerFaceAlpha = mfa;
 s.MarkerEdgeAlpha = mfa;
-[~,i] = sort(LISM.mean_CH4_nM);
+[~,i] = sort(LISM.CH4_mean_nmolkg);
 s = scatter(LISM.S(i),LISM.T(i),ms,LISM.CH4_mean_nmolkg(i),'filled','^','markeredgecolor',mec);
 s.MarkerFaceAlpha = mfa;
 s.MarkerEdgeAlpha = mfa;
 a = colorbar('location','southoutside');
+caxis(cch4);
 a.Label.String = 'CH_4 [nmol kg^{-1}]';
 a.Label.FontSize = fsl;
 %title('CH_4');
@@ -264,20 +268,21 @@ set(gca,'linewidth',lw);
 clabel(c,h,'LabelSpacing',1000);
 set(gca,'fontsize',fsl);
 
-[~,i] = sort(LISA.mean_N2O_nM);
-s = scatter(LISA.S(i),LISA.T(i),ms,LISA.mean_N2O_nM(i),'filled','o','markeredgecolor',mec);
+[~,i] = sort(LISA.N2O_mean_nmolkg);
+s = scatter(LISA.S(i),LISA.T(i),ms,LISA.N2O_mean_nmolkg(i),'filled','o','markeredgecolor',mec);
 s.MarkerFaceAlpha = mfa;
 s.MarkerEdgeAlpha = mfa;
 
 [~,i] = sort(LISO.mean_N2O_nM);
-s = scatter(LISO.S(i),LISO.T(i),ms,LISO.mean_N2O_nM(i),'filled','d','markeredgecolor',mec);
+s = scatter(LISO.S(i),LISO.T(i),ms,LISO.N2O_mean_nmolkg(i),'filled','d','markeredgecolor',mec);
 s.MarkerFaceAlpha = mfa;
 s.MarkerEdgeAlpha = mfa;
 [~,i] = sort(LISM.mean_N2O_nM);
-s = scatter(LISM.S(i),LISM.T(i),ms,LISM.mean_N2O_nM(i),'filled','^','markeredgecolor',mec);
+s = scatter(LISM.S(i),LISM.T(i),ms,LISM.N2O_mean_nmolkg(i),'filled','^','markeredgecolor',mec);
 s.MarkerFaceAlpha = mfa;
 s.MarkerEdgeAlpha = mfa;
 a = colorbar('location','southoutside');
+caxis(cn2o);
 a.Label.String = 'N_2O [nmol kg^{-1}]';
 a.Label.FontSize = fsl;
 %title('N_2O');
@@ -322,7 +327,8 @@ ylim(yl);
     set(gca,'xticklabel',xt);    
     xlabel('Salinity [PSS]')
 wysiwyg;
-print -dpng -r300 WLIS_TSplot.png;
+
+%print -dpng -r300 WLIS_TSplot.png;
 %%
 figure(2)
 clf; hold on;

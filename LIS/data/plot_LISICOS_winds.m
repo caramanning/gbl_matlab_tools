@@ -28,6 +28,9 @@ save clisMet_adj.mat clisMet_adj;
 
 %%
 
+load exrxMet_adj.mat;
+exrxMet = exrxMet_adj;
+%%
 % cruise dates
 % Aug 2-3 2023 - EXRX and CLIS
 % Oct 19-20 2023 - EXRX and CLIS
@@ -54,11 +57,16 @@ if(isempty(C))
 end;
 %%
 % note
+d1 = datetime(2023,9,10,0,0,0);
+d2 = datetime(2023,10,31,0,0,0);
+Ai = (exrxMet.TIMESTAMP>=d1) & (exrxMet.TIMESTAMP<=d2) & ~isnan(exrxMet.windSpd_MS);
+A = find(Ai);
+
 figure(1)
 clf; hold on;
 plot(exrxMet.TIMESTAMP(A),exrxMet.windSpd_MS(A));
 %plot(wlisMet.TIMESTAMP(B),wlisMet.windSpd_MS(B));
-plot(clisMet.TIMESTAMP(C),clisMet.windSpd_MS(C));
+%plot(clisMet.TIMESTAMP(C),clisMet.windSpd_MS(C));
 %legend('exrx','wlis','clis')
 ylim([0,15]);
 
