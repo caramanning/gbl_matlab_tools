@@ -55,8 +55,8 @@ wd = exrxMet_adj;
 % find the unique values in exrx
 [unique_times_exrx, ~, idx] = unique(wd.TIMESTAMP);  % idx gives the group index for each key
 num_keys = numel(unique_times_exrx);
-avg_wspd_exrx = accumarray(idx(:), wd.windSpd_MS(:), [], @mean);
-avg_slp_exrx = accumarray(idx(:), wd.baroPress_atm(:), [], @mean);
+avg_wspd_exrx = accumarray(idx(:), wd.windSpd_MS(:), [], @mean); % take average if there are repeats
+avg_slp_exrx = accumarray(idx(:), wd.baroPress_atm(:), [], @mean); % take average if there are repeats
 
 i_wspd_exrx = interp1(unique_times_exrx,avg_wspd_exrx,dl); % interpolate to fill in the gaps
 i_slp_exrx = interp1(unique_times_exrx,avg_slp_exrx,dl); % interpolate to fill in the gaps
@@ -65,6 +65,10 @@ i_wspd_exrx = naninterp(i_wspd_exrx);
 i_slp_exrx = naninterp(i_slp_exrx);
 
 wspd_exrx_dl = nan(size(dl));
+
+
+% if there are repeats, take the average of all values, otherwise just
+% insert existing
 
 for i = 1:length(dl)
     A = find(unique_times_exrx == dl(i));
@@ -303,9 +307,10 @@ gd.F_N2O_inst = gd.k_inst_N2O.*(s_n2o-s_n2o_eq.*slp_inst)./1000.*sw_dens(s_S,s_T
 % calculate 30-day weighted gas transfer velocity corrected for ice cover
 gd.k_wt_15_CH4 = nan.*s_time; % initialize variable
 gd.k_wt_15_N2O = nan.*s_time; % initialize variable
+gd.wt_30 = nan.*s_time;
 
 for kk = 1:length(Scmat_CH4(:,1))
-    gd.k_wt_15_CH4(kk) = kw_weighting(k.CH4(kk,:), int/24, wt_t, zMLmat(kk,:)); % m/d
+    [gd.k_wt_15_CH4(kk) gd.wt_15(kk,:)] = kw_weighting(k.CH4(kk,:), int/24, wt_t, zMLmat(kk,:)); % m/d
     gd.k_wt_15_N2O(kk) = kw_weighting(k.N2O(kk,:), int/24, wt_t, zMLmat(kk,:)); % m/d
 end
 
@@ -416,9 +421,10 @@ gd.F_N2O_inst = gd.k_inst_N2O.*(s_n2o-s_n2o_eq.*slp_inst)./1000.*sw_dens(s_S,s_T
 % calculate 30-day weighted gas transfer velocity corrected for ice cover
 gd.k_wt_30_CH4 = nan.*s_time; % initialize variable
 gd.k_wt_30_N2O = nan.*s_time; % initialize variable
+gd.wt_30 = nan.*s_time;
 
 for kk = 1:length(Scmat_CH4(:,1))
-    gd.k_wt_30_CH4(kk) = kw_weighting(k.CH4(kk,:), int/24, wt_t, zMLmat(kk,:)); % m/d
+    [gd.k_wt_30_CH4(kk) gd.wt_30(kk,:)] = kw_weighting(k.CH4(kk,:), int/24, wt_t, zMLmat(kk,:)); % m/d
     gd.k_wt_30_N2O(kk) = kw_weighting(k.N2O(kk,:), int/24, wt_t, zMLmat(kk,:)); % m/d
 end
 

@@ -91,7 +91,7 @@ set(gcf, 'PaperUnits', 'inches');
 set(gcf, 'PaperPositionMode', 'manual');
 set(gcf, 'PaperPosition', [0 0 10 5]);
 
-lonlim = [-74.2 -71.8];
+lonlim = [-74 -71.8];
 latlim = [40.5 41.35];
 
 m_proj('lambert','lon',lonlim,'lat',latlim);
@@ -105,7 +105,10 @@ m_gshhs_f('patch',[.6 .6 .6],'edgecol','none');
 %m_gshhs('fr','patch',[0.6 0.6 0.6],'edgecol','none');              % Intermediate resolution rivers
 %m_gshhs('fr');
 
-s_ll = [-73.73683,40.87200
+
+
+
+s_ll = [-73.73683,40.8710
     -73.72917,40.8830
     -73.69200,40.90533
     -73.65533,40.92333
@@ -113,21 +116,41 @@ s_ll = [-73.73683,40.87200
     -73.582167,40.957167
     -73.55767,40.96167];
 
+% s_ll = [-73.72863	40.88312333
+% -73.72685	40.88502
+% -73.69131	40.90469
+% -73.65494	40.92345833
+% -73.61414	40.940435
+% -73.58215	40.95661667
+% -73.55767	40.96254333];
+
 m_line(s_ll(:,1),s_ll(:,2),'color','r');
 
-m_line(-73.73683,40.87200,'marker','d','markersize',ms-5,'color','k','markerfacecol','r'); % EXR1
+for i = 1:7
+m_line(s_ll(i,1), s_ll(i,2),'marker','d','markersize',ms-5,'color','k','markerfacecol','r'); % EXR1
+end;
 
-m_line(-73.72917,40.8830,'marker','d','markersize',ms-5,'color','k','markerfacecol','r'); % EXRX
+% m_line(-73.7369, 40.8710,'marker','.','markersize',ms-5,'color','k','markerfacecol','g'); % EXR1 Aug
+% m_line(-73.7360, 40.8710,'marker','.','markersize',ms-5,'color','k','markerfacecol','g'); % EXR1 Aug
+% m_line(-73.7368, 40.8720,'marker','.','markersize',ms-5,'color','k','markerfacecol','g'); % EXR1 Aug
+% 
+% m_line(-73.5814, 40.9558,'marker','.','markersize',ms-5,'color','k','markerfacecol','g'); % EXR1 Aug
+% m_line(-73.5840, 40.9572,'marker','.','markersize',ms-5,'color','k','markerfacecol','g'); % EXR1 Aug
+% m_line(-73.5822, 40.9572,'marker','.','markersize',ms-5,'color','k','markerfacecol','g'); % EXR1 Aug
 
-m_line(-73.69200,40.90533,'marker','d','markersize',ms-5,'color','k','markerfacecol','r'); % MID3
 
-m_line(-73.65533,40.92333,'marker','d','markersize',ms-5,'color','k','markerfacecol','r'); % MID4
 
-m_line(-73.614333,40.94000,'marker','d','markersize',ms-5,'color','k','markerfacecol','r'); % MID5
-
-m_line(-73.582167,40.957167,'marker','d','markersize',ms-5,'color','k','markerfacecol','r'); % WLIS
-
-m_line(-73.55767,40.96167,'marker','d','markersize',ms-5,'color','k','markerfacecol','r'); % WLI6
+% m_line(-73.72917,40.8830,'marker','d','markersize',ms-5,'color','k','markerfacecol','r'); % EXRX
+% 
+% m_line(-73.69200,40.90533,'marker','d','markersize',ms-5,'color','k','markerfacecol','r'); % MID3
+% 
+% m_line(-73.65533,40.92333,'marker','d','markersize',ms-5,'color','k','markerfacecol','r'); % MID4
+% 
+% m_line(-73.614333,40.94000,'marker','d','markersize',ms-5,'color','k','markerfacecol','r'); % MID5
+% 
+% m_line(-73.582167,40.957167,'marker','d','markersize',ms-5,'color','k','markerfacecol','r'); % WLIS
+% 
+% m_line(-73.55767,40.96167,'marker','d','markersize',ms-5,'color','k','markerfacecol','r'); % WLI6
 
 %m_line(-73.5355,40.96683,'marker','o','markersize',ms-5,'color','k','markerfacecol','k'); % WLI7
 
@@ -135,66 +158,100 @@ m_line(-73.28683,41.01117,'marker','o','markersize',ms-5,'color','k','markerface
 
 m_line(-72.65550,41.13833,'marker','o','markersize',ms-5,'color','k','markerfacecol','k'); % CLIS
 
-m_text(-74.15,41.3,'stations east to west','color','k','fontsize',fs-2);
-m_text(-74.15,41.3-0.05,'WLI6','color','r','fontsize',fs-2);
-m_text(-74.15,41.3-2*0.05,'WLIS','color','r','fontsize',fs-2);
-m_text(-74.15,41.3-3*0.05,'MID5','color','r','fontsize',fs-2);
-m_text(-74.15,41.3-4*0.05,'MID4','color','r','fontsize',fs-2);
-m_text(-74.15,41.3-5*0.05,'MID3','color','r','fontsize',fs-2);
-m_text(-74.15,41.3-6*0.05,'EXRX','color','r','fontsize',fs-2);
-m_text(-74.15,41.3-7*0.05,'EXR1','color','r','fontsize',fs-2);
-m_text(-73.25,41.05,'ARTG','color','k','fontsize',fs-2);
-m_text(-72.65,41.18,'CLIS','color','k','fontsize',fs-2);
-%m_text(-71.5, 40.9,'depth (m)','vertical','color','k','fontsize',fs);
+lt = -73.9;
+% m_text(lt,41.3,'stations east to west','color','k','fontsize',fs-2);
+% m_text(lt,41.3-0.05,'WLI6','color','r','fontsize',fs-2);
+% m_text(lt,41.3-2*0.05,'WLIS','color','r','fontsize',fs-2);
+% m_text(lt,41.3-3*0.05,'MID5','color','r','fontsize',fs-2);
+% m_text(lt,41.3-4*0.05,'MID4','color','r','fontsize',fs-2);
+% m_text(lt,41.3-5*0.05,'MID3','color','r','fontsize',fs-2);
+% m_text(lt,41.3-6*0.05,'EXRX','color','r','fontsize',fs-2);
+% m_text(lt,41.3-7*0.05,'EXR1','color','r','fontsize',fs-2);
+% m_text(-73.25,41.05,'ARTG','color','k','fontsize',fs-2);
+% m_text(-72.65,41.18,'CLIS','color','k','fontsize',fs-2);
+% %m_text(-71.5, 40.9,'depth (m)','vertical','color','k','fontsize',fs);
 
-
-
-
-%b=flipud(bathymetry);
-%colormap(b);
 b=flipud(m_colmap('blues'));
 colormap(b);
-%caxis([-4000 000]);
 
-
-
-%m_proj('lambert','lon',lonlim,'lat',latlim);
-%m_grid('tickdirection','out','linewidth',1);
-
-%m_etopo4('contourf',[-3000 -2250 -2000 -1750 -1500 -1250 -1000 -750 -500 -250 -100 -50 -20 -5 0],'edgecolor','none');
-
-
-%m_proj('mercator','lon',[-90 -48],'lat',[60 82])
-%m_grid('tickdirection','out','linewidth',3,'backgroundcolor',bathymetry(1,:))
-%m_gshhs_l('patch',[.6 .6 .6],'edgecol','none')
-
-%set(findobj('tag','m_grid_color'),'facecolor','none') 
-
-
-%b=flipud(bathymetry);
-
-%colormap(m_colmap('blues'));  
-%caxis([-2500 000]);
- % m_line(AN1902_CTD.Lon(c(1)),AN1902_CTD.Lat(c(1)),'marker','d','markersize',ms,'color','r','markerfacecol','r'); 
-% m_line(xx,yy,'markersize',ms-5,'color','r','markerfacecol','r','linewi',5); 
-
-%   BB2
-%%%%%  m_line(-66.9933,72.7537,'marker','d','markersize',ms-5,'color','r','markerfacecol','r'); 
-
- % m_line(-56.803,60.686,'marker','d','markersize',ms-5,'color','r','markerfacecol','r'); 
-
- 
-%colormap(b)
-colorbar;
+colorbar('location','westoutside');
 wysiwyg;
 
-print -dpng -r300 LIS_Map.png;
+print -dpng -r300 20250707_LIS_Map.png;
 
-print -depsc -r300 LIS_Map.eps;
+print -depsc -r300 20250707_LIS_Map.eps;
 
-print(gcf,'-depsc','LIS_Map.eps');
-epsclean('LIS_Map.eps','LIS_Map_epsclean.eps');
+print(gcf,'-depsc','20250707_LIS_Map.eps');
+epsclean('20250707_LIS_Map.eps','20250707_LIS_Map_epsclean.eps');
 
+
+%%
+
+ms=9;
+fs=16;
+figure(12)
+clf; hold on;
+set(gcf,'color','w');
+set(gca,'fontsize',fs);
+set(gcf, 'PaperUnits', 'inches');
+set(gcf, 'PaperPositionMode', 'manual');
+set(gcf, 'PaperPosition', [0 0 5 5]);
+
+lonlim = [-73.8 -73.5];
+latlim = [40.75 41];
+
+m_proj('lambert','lon',lonlim,'lat',latlim);
+m_grid('linestyle','none','tickdirection','out','linewidth',1);
+
+%[cs,ch]=m_etopo_Ddrive('contourf',[-80:2:-8 -4 -3 -2 -1],'color','none');
+%m_gshhs_f('patch',[.6 .6 .6],'edgecol','none');
+m_gshhs_f('patch',[.6 .6 .6],'edgecol','none');
+%m_gshhs('lc','patch','r');  % Low resolution filled coastline
+%m_gshhs('fb1');             % Full resolution national borders
+%m_gshhs('fr','patch',[0.6 0.6 0.6],'edgecol','none');              % Intermediate resolution rivers
+%m_gshhs('fr');
+
+
+m_line(s_ll(:,1),s_ll(:,2),'color','r','linewidth',2);
+
+for i = 1:7
+    m_line(s_ll(i,1), s_ll(i,2),'marker','d','markersize',ms,'color','k','markerfacecol','r'); % EXR1
+end;
+% 
+% m_line(-73.7369, 40.8710,'marker','.','markersize',ms-5,'color','k','markerfacecol','g'); % EXR1 Aug
+% m_line(-73.7360, 40.8710,'marker','.','markersize',ms-5,'color','k','markerfacecol','g'); % EXR1 Aug
+% m_line(-73.7368, 40.8720,'marker','.','markersize',ms-5,'color','k','markerfacecol','g'); % EXR1 Aug
+% 
+% m_line(-73.5814, 40.9558,'marker','.','markersize',ms-5,'color','k','markerfacecol','g'); % EXR1 Aug
+% m_line(-73.5840, 40.9572,'marker','.','markersize',ms-5,'color','k','markerfacecol','g'); % EXR1 Aug
+% m_line(-73.5822, 40.9572,'marker','.','markersize',ms-5,'color','k','markerfacecol','g'); % EXR1 Aug
+
+lt = -73.9;
+% m_text(lt,41.3,'stations east to west','color','k','fontsize',fs-2);
+% m_text(lt,41.3-0.05,'WLI6','color','r','fontsize',fs-2);
+% m_text(lt,41.3-2*0.05,'WLIS','color','r','fontsize',fs-2);
+% m_text(lt,41.3-3*0.05,'MID5','color','r','fontsize',fs-2);
+% m_text(lt,41.3-4*0.05,'MID4','color','r','fontsize',fs-2);
+% m_text(lt,41.3-5*0.05,'MID3','color','r','fontsize',fs-2);
+% m_text(lt,41.3-6*0.05,'EXRX','color','r','fontsize',fs-2);
+% m_text(lt,41.3-7*0.05,'EXR1','color','r','fontsize',fs-2);
+% m_text(-73.25,41.05,'ARTG','color','k','fontsize',fs-2);
+% m_text(-72.65,41.18,'CLIS','color','k','fontsize',fs-2);
+%m_text(-71.5, 40.9,'depth (m)','vertical','color','k','fontsize',fs);
+
+%b=flipud(m_colmap('blues'));
+%colormap(b);
+
+%colorbar;
+wysiwyg;
+
+print -dpng -r300 20250707_LIS_Map_inset.png;
+
+print -depsc -r300 20250707_LIS_Map_inset.eps;
+
+print(gcf,'-depsc','20250707_LIS_Map_inset.eps');
+
+epsclean('20250707_LIS_Map_inset.eps','20250707_LIS_Map_epsclean_inset.eps');
 
 
 %%
