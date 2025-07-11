@@ -1,6 +1,6 @@
 % figure out appropriate ranges for the plots
-theta=[9 25];
-s=[22 27.3];
+theta=[10 25];
+s=[22 28];
 
 smin=min(s)-0.01.*min(s);
 smax=max(s)+0.01.*max(s);
@@ -19,6 +19,27 @@ for j=1:ydim
 end
 
 dens=dens-1000;
+
+% figure out appropriate ranges for the plots
+
+SAmin=min(s)-0.01.*min(s);
+SAmax=max(s)+0.01.*max(s);
+thetamin=min(theta)-0.1*max(theta);
+thetamax=max(theta)+0.1*max(theta);
+xdim=round((smax-smin)./0.1+1);
+ydim=round((thetamax-thetamin)+1);
+dens_SA_CT=zeros(ydim,xdim);
+thetai=((1:ydim)-1)*1+thetamin;
+si=((1:xdim)-1)*0.1+smin;
+disp(xdim);disp(ydim);
+for j=1:ydim
+    for i=1:xdim
+        dens_SA_CT(j,i)=gsw_rho(si(i),thetai(j),0);
+    end
+end
+
+dens_SA_CT=dens_SA_CT-1000;
+
 
 %%
 load LISAug23_CH4N2O_CTD.mat
@@ -55,6 +76,10 @@ LISA.DCH4 = (LISA.CH4_mean_nmolkg./LISA.CH4_eq_nmolkg - 1).*100;
 LISA.DN2O = (LISA.N2O_mean_nmolkg./LISA.N2O_eq_nmolkg - 1).* 100;
 LISA.DO2 = (LISA.O2_umolkg./O2sol(LISA.S,LISA.T) - 1).*100;
 
+LISA.SA = gsw_SA_from_SP(LISA.S,LISA.P,LISA.Lon,LISA.Lat);
+LISA.CT =  gsw_CT_from_t(LISA.SA,LISA.T,LISA.P);
+LISA.PDen_SA_CT = gsw_rho(LISA.SA,LISA.CT,0);
+
 %%
 
 UTC_to_local = -4/24;
@@ -86,6 +111,10 @@ LISO.DO2_umolkg = LISO.O2_umolkg - O2sol(LISO.S,LISO.T);
 LISO.DCH4 = (LISO.CH4_mean_nmolkg./LISO.CH4_eq_nmolkg - 1).*100;
 LISO.DN2O = (LISO.N2O_mean_nmolkg./LISO.N2O_eq_nmolkg - 1).* 100;
 LISO.DO2 = (LISO.O2_umolkg./O2sol(LISO.S,LISO.T) - 1).*100;
+
+LISO.SA = gsw_SA_from_SP(LISO.S,LISO.P,LISO.Lon,LISO.Lat);
+LISO.CT =  gsw_CT_from_t(LISO.SA,LISO.T,LISO.P);
+LISO.PDen_SA_CT = gsw_rho(LISO.SA,LISO.CT,0);
 
 %%
 
@@ -121,19 +150,22 @@ LISM.DCH4 = (LISM.CH4_mean_nmolkg./LISM.CH4_eq_nmolkg - 1).*100;
 LISM.DN2O = (LISM.N2O_mean_nmolkg./LISM.N2O_eq_nmolkg - 1).* 100;
 LISM.DO2 = (LISM.O2_umolkg./O2sol(LISM.S,LISM.T) - 1).*100;
 
+LISM.SA = gsw_SA_from_SP(LISM.S,LISM.P,LISM.Lon,LISM.Lat);
+LISM.CT =  gsw_CT_from_t(LISM.SA,LISM.T,LISM.P);
+LISM.PDen_SA_CT = gsw_rho(LISM.SA,LISM.CT,0);
 
 %%
 
 [mean(LISA.T) std(LISA.T) min(LISA.T) max(LISA.T)]
-[mean(LISA.S) std(LISA.S) min(LISA.S) max(LISA.S)]
+[mean(LISA.SA) std(LISA.SA) min(LISA.SA) max(LISA.SA)]
 %%
 
 [mean(LISO.T) std(LISO.T) min(LISO.T) max(LISO.T)]
-[mean(LISO.S) std(LISO.S) min(LISO.S) max(LISO.S)]
+[mean(LISO.SA) std(LISO.SA) min(LISO.SA) max(LISO.SA)]
 
 %%
 [mean(LISM.T) std(LISM.T) min(LISM.T) max(LISM.T)]
-[mean(LISM.S) std(LISM.S) min(LISM.S) max(LISM.S)]
+[mean(LISM.SA) std(LISM.SA) min(LISM.SA) max(LISM.SA)]
 %%
 
 
@@ -159,8 +191,8 @@ xlabel('Dens'); ylabel('N2O');
 
 %%
 
-Sl = [22 27];
-Tl = [8 25];
+Sl = [22.4 27.2];
+Tl = [11 25];
 figure(10)
 clf; 
 subplot(1,3,1)
@@ -194,13 +226,13 @@ ylim(Tl);
 xlabel('S'); ylabel('T');
 
 %%
-Sl = [22 27.3];
-Tl = [9 25];
+Sl = [22 27.4];
+Tl = [10 25];
 
 yt = [10 15 20 25]; % yaxis ticks
 xt = [22 23 24 25 26 27]; %x axis ticks
-yl = [9 25]; %yaxls limit
-xl = [22 27.3]; %x axis limit
+yl = [10 25]; %yaxls limit
+xl = [22 27.4]; %x axis limit
 
 mec = [0.5 0.5 0.5]; % marker edge color
 mec = 'none';
@@ -220,14 +252,16 @@ clf;
 sp=tight_subplot(nr,nc,[.05 .03],[.15 .1],[.08 .04]);
 set(gcf, 'PaperUnits', 'inches');
 set(gcf, 'PaperPositionMode', 'manual');
-set(gcf, 'PaperPosition', [0 0 8 5]);
+set(gcf, 'PaperPosition', [0 0 8 5.5]);
 
 
 subplot(sp(1))
 hold on; box on;
 set(gca,'linewidth',lw);
+set(gca, 'FontName', 'Arial')
 [c,h]=contour(si,thetai,dens,'--','color',[0.5 0.5 0.5]);
-clabel(c,h,'LabelSpacing',1000);
+%[c,h]=contour(si,thetai,dens,'--','color','r');
+%clabel(c,h,'LabelSpacing',1000);
 set(gca,'fontsize',fsl);
 
 colormap('turbo')
@@ -244,6 +278,7 @@ s = scatter(LISM.S(i),LISM.T(i),ms,LISM.CH4_mean_nmolkg(i),'filled','^','markere
 s.MarkerFaceAlpha = mfa;
 s.MarkerEdgeAlpha = mfa;
 a = colorbar('location','southoutside');
+a.TickDirection = 'out';
 caxis(cch4);
 a.Label.String = 'CH_4 [nmol kg^{-1}]';
 a.Label.FontSize = fsl;
@@ -257,15 +292,15 @@ ylim(yl);
     set(gca,'xtick',xt);
     set(gca,'yticklabel',yt,'fontsize',fsl);
     set(gca,'xticklabel',xt);
-    xlabel('Salinity [PSS]')
+    xlabel('Salinity [PSS-78]');
     ylabel('Temperature [^oC]');
-
 
 subplot(sp(2))
 hold on; box on;
 set(gca,'linewidth',lw);
+set(gca, 'FontName', 'Arial')
 [c,h]=contour(si,thetai,dens,'--','color',[0.5 0.5 0.5]);
-clabel(c,h,'LabelSpacing',1000);
+%clabel(c,h,'LabelSpacing',1000);
 set(gca,'fontsize',fsl);
 
 [~,i] = sort(LISA.N2O_mean_nmolkg);
@@ -282,6 +317,7 @@ s = scatter(LISM.S(i),LISM.T(i),ms,LISM.N2O_mean_nmolkg(i),'filled','^','markere
 s.MarkerFaceAlpha = mfa;
 s.MarkerEdgeAlpha = mfa;
 a = colorbar('location','southoutside');
+a.TickDirection = 'out';
 caxis(cn2o);
 a.Label.String = 'N_2O [nmol kg^{-1}]';
 a.Label.FontSize = fsl;
@@ -292,13 +328,14 @@ ylim(yl);
     set(gca,'ytick',yt);
     set(gca,'xtick',xt);
     set(gca,'xticklabel',xt);
-    xlabel('Salinity [PSS]')
+    xlabel('Salinity [PSS-78]');
 
 subplot(sp(3))
 hold on; box on;
 set(gca,'linewidth',lw);
+set(gca, 'FontName', 'Arial')
 [c,h]=contour(si,thetai,dens,'--','color',[0.5 0.5 0.5]);
-clabel(c,h,'LabelSpacing',1000);
+%clabel(c,h,'LabelSpacing',1000);
 set(gca,'fontsize',fsl);
 [~,i] = sort(LISA.mean_N2O_nM);
 s=scatter(LISA.S(i),LISA.T(i),ms,LISA.O2_umolkg(i),'filled','o','markeredgecolor',mec);
@@ -314,6 +351,7 @@ s.MarkerFaceAlpha = mfa;
 s.MarkerEdgeAlpha = mfa;
 colorbar('location','southoutside');
 a = colorbar('location','southoutside');
+a.TickDirection = 'out';
 a.Label.String = 'O_2 [\mumol kg^{-1}]';
 a.Label.FontSize = fsl;
 %title('O_2')
@@ -325,10 +363,16 @@ ylim(yl);
     set(gca,'ytick',yt);
     set(gca,'xtick',xt);
     set(gca,'xticklabel',xt);    
-    xlabel('Salinity [PSS]')
+    xlabel('Salinity [PSS-78]');
+
+
 wysiwyg;
 
-%print -dpng -r300 WLIS_TSplot.png;
+print -dpng -r300 20250709_WLIS_TSplot_noclabel.png;
+print(gcf,'-depsc','-vector','20250709_WLIS_TSplot_noclabel.eps');
+print(gcf,'-dpdf','-vector','20250709_WLIS_TSplot_noclabel.pdf');
+epsclean('20250709_WLIS_TSplot_noclabel.eps','20250709_WLIS_TSplot_noclabel_clean.eps');
+
 %%
 figure(2)
 clf; hold on;
