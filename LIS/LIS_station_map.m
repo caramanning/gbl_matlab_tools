@@ -97,7 +97,8 @@ latlim = [40.5 41.35];
 m_proj('lambert','lon',lonlim,'lat',latlim);
 m_grid('linestyle','none','tickdirection','out','linewidth',1);
 
-[cs,ch]=m_etopo_Ddrive('contourf',[-80:2:-8 -4 -3 -2 -1],'color','none');
+%[cs,ch]=m_etopo_Ddrive('contourf',[-80:2:-8 -4 -3 -2 -1],'color','none');
+[cs,ch]=m_etopo2_Cdrive('contourf',[-80:2:-8 -4 -3 -2 -1],'color','none');
 m_gshhs_f('patch',[.6 .6 .6],'edgecol','none');
 %m_gshhs_f('patch',[.6 .6 .6],'edgecol','none');
 %m_gshhs('lc','patch','r');  % Low resolution filled coastline
@@ -115,6 +116,8 @@ s_ll = [-73.73683,40.8710
     -73.614333,40.94000
     -73.582167,40.957167
     -73.55767,40.96167];
+
+Matinecock_Pt = [-73.6559, 40.9246];
 
 % s_ll = [-73.72863	40.88312333
 % -73.72685	40.88502
@@ -157,6 +160,9 @@ end;
 m_line(-73.28683,41.01117,'marker','o','markersize',ms-5,'color','k','markerfacecol','k'); % ARTG
 
 m_line(-72.65550,41.13833,'marker','o','markersize',ms-5,'color','k','markerfacecol','k'); % CLIS
+
+%m_line(Matinecock_Pt(1),Matinecock_Pt(2),'marker','o','markersize',ms-5,'color','k','markerfacecol','k'); % CLIS
+
 
 lt = -73.9;
 % m_text(lt,41.3,'stations east to west','color','k','fontsize',fs-2);

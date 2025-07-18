@@ -191,39 +191,178 @@ xlabel('Dens'); ylabel('N2O');
 
 %%
 
-Sl = [22.4 27.2];
-Tl = [11 25];
+Cl = [0 500];
+Ol = [-250 150];
+Nl = [0 7];
+
 figure(10)
 clf; 
-subplot(1,3,1)
+subplot(1,2,1)
 hold on; box on;
-[~,i] = sort(LISA.mean_CH4_nM);
-scatter(LISA.S(i),LISA.T(i),20,LISA.mean_CH4_nM(i),'filled','o');
+[~,i] = sort(LISA.PDen); 
+i = flipud(i);
+scatter(LISA.DCH4_nmolkg(i),LISA.DO2_umolkg(i),20,LISA.PDen(i),'filled','o');
+
+[~,i] = sort(LISO.PDen); 
+i = flipud(i);
+scatter(LISO.DCH4_nmolkg(i),LISO.DO2_umolkg(i),20,LISO.PDen(i),'filled','d');
+
+[~,i] = sort(LISM.PDen); 
+i = flipud(i);
+scatter(LISM.DCH4_nmolkg(i),LISM.DO2_umolkg(i),20,LISM.PDen(i),'filled','^');
 colorbar;
 title('CH_4');
 % set(gca,'xlim',xl);
 % set(gca, 'ylim',yl);
-xlim(Sl);
-ylim(Tl);
-xlabel('S'); ylabel('T');
+xlim(xl);
+ylim(Ol);
+xlabel('\DeltaCH_4'); ylabel('\DeltaO_2');
 
-subplot(1,3,2)
+subplot(1,2,2)
 hold on; box on;
-scatter(LISO.S,LISO.T,20,LISO.mean_CH4_nM,'filled','o');
+[~,i] = sort(LISA.PDen); 
+i = flipud(i);
+scatter(LISA.DN2O_nmolkg(i),LISA.DO2_umolkg(i),20,LISA.PDen(i),'filled','o');
+
+[~,i] = sort(LISO.PDen); 
+i = flipud(i);
+scatter(LISO.DN2O_nmolkg(i),LISO.DO2_umolkg(i),20,LISO.PDen(i),'filled','d');
+
+[~,i] = sort(LISM.PDen); 
+i = flipud(i);
+scatter(LISM.DN2O_nmolkg(i),LISM.DO2_umolkg(i),20,LISM.PDen(i),'filled','^');
+colorbar;
+title('N_2O');
+%xlim(Sl);
+%ylim(Tl);
+xlabel('\DeltaN_2O'); ylabel('\DeltaO_2');
+
+%%
+Cl = [0 500];
+Ol = [-250 150];
+Nl = [0 7];
+
+nr = 2; nc = 3;
+
+figure(10)
+clf;
+sp=tight_subplot(nr,nc,[.05 .03],[.15 .1],[.08 .04]);
+set(gcf, 'PaperUnits', 'inches');
+set(gcf, 'PaperPositionMode', 'manual');
+set(gcf, 'PaperPosition', [0 0 8 5.5]);
+
+subplot(sp(1))
+hold on; box on;
+[~,i] = sort(LISA.PDen); 
+i = flipud(i);
+scatter(LISA.DO2_umolkg(i),LISA.DCH4_nmolkg(i),20,LISA.PDen(i),'filled','o');
+
+colorbar;
+title('Aug');
+% set(gca,'xlim',xl);
+% set(gca, 'ylim',yl);
+xlim(Ol);
+ylim(Cl);
+ylabel('\DeltaCH_4'); xlabel('\DeltaO_2');
+
+subplot(sp(2))
+hold on; box on;
+[~,i] = sort(LISO.PDen); 
+i = flipud(i);
+scatter(LISO.DO2_umolkg(i),LISO.DCH4_nmolkg(i),20,LISO.PDen(i),'filled','d');
+
+colorbar;
+title('Oct');
+% set(gca,'xlim',xl);
+% set(gca, 'ylim',yl);
+xlim(Ol);
+ylim(Cl);
+ylabel('\DeltaCH_4');
+xlabel('\DeltaO_2');
+
+subplot(sp(3));
+hold on; box on;
+[~,i] = sort(LISM.PDen); 
+i = flipud(i);
+scatter(LISM.DO2_umolkg(i),LISM.DCH4_nmolkg(i),20,LISM.PDen(i),'filled','^');
 colorbar;
 title('CH_4');
-xlim(Sl);
-ylim(Tl);
-xlabel('S'); ylabel('T');
+% set(gca,'xlim',xl);
+% set(gca, 'ylim',yl);
+xlim(Ol);
+ylim(Cl);
+ylabel('\DeltaCH_4'); 
+xlabel('\DeltaO_2');
 
-subplot(1,3,3)
+subplot(sp(4))
 hold on; box on;
-scatter(LISM.S,LISM.T,20,LISM.mean_CH4_nM,'filled','o');
+[~,i] = sort(LISA.PDen); 
+i = flipud(i);
+scatter(LISA.DO2_umolkg(i),LISA.DN2O_nmolkg(i),20,LISA.PDen(i),'filled','o');
+
 colorbar;
 title('CH_4');
-xlim(Sl);
-ylim(Tl);
-xlabel('S'); ylabel('T');
+% set(gca,'xlim',xl);
+% set(gca, 'ylim',yl);
+xlim(Ol);
+ylim(Nl);
+ylabel('\DeltaN_2O'); xlabel('\DeltaO_2');
+
+subplot(sp(5))
+hold on; box on;
+[~,i] = sort(LISO.PDen); 
+i = flipud(i);
+scatter(LISO.DO2_umolkg(i),LISO.DN2O_nmolkg(i),20,LISO.PDen(i),'filled','d');
+
+colorbar;
+title('CH_4');
+% set(gca,'xlim',xl);
+% set(gca, 'ylim',yl);
+xlim(Ol);
+ylim(Nl);
+xlabel('\DeltaO_2');
+
+subplot(sp(6))
+hold on; box on;
+[~,i] = sort(LISM.PDen); 
+i = flipud(i);
+scatter(LISM.DO2_umolkg(i),LISM.DN2O_nmolkg(i),20,LISM.PDen(i),'filled','^');
+colorbar;
+title('CH_4');
+% set(gca,'xlim',xl);
+% set(gca, 'ylim',yl);
+xlim(Ol);
+ylim(Nl);
+xlabel('\DeltaO_2');
+
+wysiwyg;
+
+print -dpng -r300 20250712_LIS_scatter_O2_CH4_N2O.png;
+
+print -depsc -r300 20250707_LIS_scatter_O2_CH4_N2O.eps;
+
+
+%%
+
+subplot(1,2,2)
+hold on; box on;
+[~,i] = sort(LISA.PDen); 
+i = flipud(i);
+scatter(LISA.DN2O_nmolkg(i),LISA.DO2_umolkg(i),20,LISA.PDen(i),'filled','o');
+
+[~,i] = sort(LISO.PDen); 
+i = flipud(i);
+scatter(LISO.DN2O_nmolkg(i),LISO.DO2_umolkg(i),20,LISO.PDen(i),'filled','d');
+
+[~,i] = sort(LISM.PDen); 
+i = flipud(i);
+scatter(LISM.DN2O_nmolkg(i),LISM.DO2_umolkg(i),20,LISM.PDen(i),'filled','^');
+colorbar;
+title('N_2O');
+%xlim(Sl);
+%ylim(Tl);
+xlabel('\DeltaN_2O'); ylabel('\DeltaO_2');
+
 
 %%
 Sl = [22 27.4];

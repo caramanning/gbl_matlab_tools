@@ -772,10 +772,44 @@ set(gcf, 'PaperPosition', [0 0 12 8]);
 set(gcf,'renderer','painters');
     set(gcf,'GraphicsSmoothing','on')
 
-% rows: Aug / Oct / May
+% rows: May / Aug / Oct
 % columns: CH4 / N2O / O2 / Density
+
 % SUBPLOT 1
 subplot(sp(1))
+    hold on; box on;
+    set(gca,'tickdir','out');
+    set(gca,'fontsize',fs);
+
+    clevel = [25:1:460];
+    ca = [25 460]; %colorbar limits
+    C = contourf(x_gridM,dl_grid,CH4iM,clevelCH4,'edgecolor','none');
+    plot(LISM.km_cumulative(asM),LISM.Depth(asM),'+k', 'linewidth', 2, 'markersize',ms)
+
+    %xlabel('Transect distance [km]');
+    %ylabel('Depth [m]');
+    caxis(caCH4)
+    %c = colorbar('location','eastoutside');
+    %c.Label.String = 'CH_4 (nmol/kg)';
+    %c.FontSize = fs;
+    set(gca,'layer','top');
+    ylim(yl);
+    xlim(xl);
+    set(gca,'ytick',yt);
+    set(gca,'yticklabel',yt);
+    set(gca,'xtick',xt);
+    %set(gca,'xticklabel',xt);
+    ylabel('Depth [m]');
+    title(['May'])
+
+    %add in plot of bathymetry
+    dmM = [yl(2) DmaxM(1) DmaxM' DmaxM(end) yl(2)];
+    kcM = [x_gridM(1,1) x_gridM(1,:) x_gridM(1,end)];
+    fill(kcM,dmM,[0.5 0.5 0.5],'edgecolor','none');
+    axis ij;
+
+% SUBPLOT 2
+subplot(sp(2))
     hold on; box on;
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
@@ -791,11 +825,11 @@ subplot(sp(1))
     ylim(yl);
     xlim(xl);
     set(gca,'ytick',yt);
-    set(gca,'yticklabel',yt);
+    %set(gca,'yticklabel',yt);
     set(gca,'xtick',xt);
     %set(gca,'xticklabel',xt);
     %xlabel('Transect distance [km]');
-    ylabel('Depth [m]');
+    %ylabel('Depth [m]');
     title('August');
 
     %add in plot of bathymetry
@@ -804,8 +838,8 @@ subplot(sp(1))
     fill(kcA,dmA,[0.5 0.5 0.5],'edgecolor','none');
     axis ij;
 
-% SUBPLOT 2
-subplot(sp(2))
+% SUBPLOT 3
+subplot(sp(3))
     hold on; box on;
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
@@ -816,9 +850,9 @@ subplot(sp(2))
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
     caxis(caCH4)
-    %c = colorbar('location','eastoutside');
-    %c.Label.String = 'CH_4 (nmol/kg)';
-    %c.FontSize = fs;
+    c = colorbar('location','eastoutside');
+    c.Label.String = 'CH_4 (nmol/kg)';
+    c.FontSize = fs;
     set(gca,'layer','top');
     ylim(yl);
     xlim(xl);
@@ -835,40 +869,9 @@ subplot(sp(2))
     axis ij;
 
 
-% SUBPLOT 3
-subplot(sp(3))
-    hold on; box on;
-    set(gca,'tickdir','out');
-    set(gca,'fontsize',fs);
 
-    clevel = [25:1:460];
-    ca = [25 460]; %colorbar limits
-    C = contourf(x_gridM,dl_grid,CH4iM,clevelCH4,'edgecolor','none');
-    plot(LISM.km_cumulative(asM),LISM.Depth(asM),'+k', 'linewidth', 2, 'markersize',ms)
-
-    %xlabel('Transect distance [km]');
-    %ylabel('Depth [m]');
-    caxis(caCH4)
-    c = colorbar('location','eastoutside');
-    c.Label.String = 'CH_4 (nmol/kg)';
-    c.FontSize = fs;
-    set(gca,'layer','top');
-    ylim(yl);
-    xlim(xl);
-    set(gca,'ytick',yt);
-    %set(gca,'yticklabel',yt);
-    set(gca,'xtick',xt);
-    %set(gca,'xticklabel',xt);
-    title(['May'])
-
-    %add in plot of bathymetry
-    dmM = [yl(2) DmaxM(1) DmaxM' DmaxM(end) yl(2)];
-    kcM = [x_gridM(1,1) x_gridM(1,:) x_gridM(1,end)];
-    fill(kcM,dmM,[0.5 0.5 0.5],'edgecolor','none');
-    axis ij;
-
-%SUBPLOT 4
-subplot(sp(4))
+%SUBPLOT 5 - Aug N2O
+subplot(sp(5))
     hold on; box on;
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
@@ -888,7 +891,7 @@ subplot(sp(4))
     set(gca,'xtick',xt);
     %set(gca,'xticklabel',xt);
     %xlabel('Transect distance [km]');
-    ylabel('Depth [m]');
+    %ylabel('Depth [m]');
     %title('August');
 
     %add in plot of bathymetry
@@ -898,8 +901,8 @@ subplot(sp(4))
     axis ij;
 
 
-% SUBPLOT 5
-subplot(sp(5))
+% SUBPLOT 6 - Oct DN2O
+subplot(sp(6))
     hold on; box on;
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
@@ -910,9 +913,9 @@ subplot(sp(5))
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
     caxis(caN2O)
-    %c = colorbar('location','eastoutside');
-    %c.Label.String = 'CH_4 (nmol/kg)';
-    %c.FontSize = fs;
+    c = colorbar('location','eastoutside');
+    c.Label.String = 'CH_4 (nmol/kg)';
+    c.FontSize = fs;
     set(gca,'layer','top');
     ylim(yl);
     xlim(xl);
@@ -927,8 +930,8 @@ subplot(sp(5))
     fill(kcO,dmO,[0.5 0.5 0.5],'edgecolor','none');
     axis ij;
 
-% SUBPLOT 6
-subplot(sp(6))
+% SUBPLOT 4 - May DN2O
+subplot(sp(4))
     hold on; box on;
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
@@ -939,16 +942,17 @@ subplot(sp(6))
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
     caxis(caN2O)
-    c = colorbar('location','eastoutside');
-    c.Label.String = 'N_2O (nmol/kg)';
-    c.FontSize = fs;
+    %c = colorbar('location','eastoutside');
+    %c.Label.String = 'N_2O (nmol/kg)';
+    %c.FontSize = fs;
     set(gca,'layer','top');
     ylim(yl);
     xlim(xl);
     set(gca,'ytick',yt);
-    %set(gca,'yticklabel',yt);
+    set(gca,'yticklabel',yt);
     set(gca,'xtick',xt);
     %set(gca,'xticklabel',xt);
+    ylabel('Depth [m]');
 
     %add in plot of bathymetry
     dmM = [yl(2) DmaxM(1) DmaxM' DmaxM(end) yl(2)];
@@ -956,8 +960,8 @@ subplot(sp(6))
     fill(kcM,dmM,[0.5 0.5 0.5],'edgecolor','none');
     axis ij;
 
-%SUBPLOT 7
-subplot(sp(7))
+%SUBPLOT 8 - Aug O2
+subplot(sp(8))
     hold on; box on;
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
@@ -973,11 +977,11 @@ subplot(sp(7))
     ylim(yl);
     xlim(xl);
     set(gca,'ytick',yt);
-    set(gca,'yticklabel',yt);
+    %set(gca,'yticklabel',yt);
     set(gca,'xtick',xt);
     %set(gca,'xticklabel',xt);
     %xlabel('Transect distance [km]');
-    ylabel('Depth [m]');
+    %ylabel('Depth [m]');
     %title('August');
 
     %add in plot of bathymetry
@@ -987,8 +991,8 @@ subplot(sp(7))
     axis ij;
 
 
-% SUBPLOT 8
-subplot(sp(8))
+% SUBPLOT 9 - Oct O2
+subplot(sp(9))
     hold on; box on;
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
@@ -999,9 +1003,9 @@ subplot(sp(8))
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
     caxis(caO2)
-    %c = colorbar('location','eastoutside');
-    %c.Label.String = 'CH_4 (nmol/kg)';
-    %c.FontSize = fs;
+    c = colorbar('location','eastoutside');
+    c.Label.String = 'CH_4 (nmol/kg)';
+    c.FontSize = fs;
     set(gca,'layer','top');
     ylim(yl);
     xlim(xl);
@@ -1016,8 +1020,8 @@ subplot(sp(8))
     fill(kcO,dmO,[0.5 0.5 0.5],'edgecolor','none');
     axis ij;
 
-% SUBPLOT 9
-subplot(sp(9))
+% SUBPLOT 7 - May O2
+subplot(sp(7))
     hold on; box on;
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
@@ -1028,14 +1032,14 @@ subplot(sp(9))
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
     caxis(caO2)
-    c = colorbar('location','eastoutside');
-    c.Label.String = 'O_2 (\mumol/kg)';
-    c.FontSize = fs;
+    %c = colorbar('location','eastoutside');
+    %c.Label.String = 'O_2 (\mumol/kg)';
+    %c.FontSize = fs;
     set(gca,'layer','top');
     ylim(yl);
     xlim(xl);
     set(gca,'ytick',yt);
-    %set(gca,'yticklabel',yt);
+    set(gca,'yticklabel',yt);
     set(gca,'xtick',xt);
     %set(gca,'xticklabel',xt);
 
@@ -1046,8 +1050,8 @@ subplot(sp(9))
     axis ij;
 
 
-%SUBPLOT 10
-subplot(sp(10))
+%SUBPLOT 11 - Aug Density
+subplot(sp(11))
     hold on; box on;
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
@@ -1063,11 +1067,11 @@ subplot(sp(10))
     ylim(yl);
     xlim(xl);
     set(gca,'ytick',yt);
-    set(gca,'yticklabel',yt);
+    %set(gca,'yticklabel',yt);
     set(gca,'xtick',xt);
     set(gca,'xticklabel',xt);
     xlabel('Transect distance [km]');
-    ylabel('Depth [m]');
+    %ylabel('Depth [m]');
     %title('August');
 
     %add in plot of bathymetry
@@ -1077,8 +1081,8 @@ subplot(sp(10))
     axis ij;
 
 
-% SUBPLOT 11
-subplot(sp(11))
+% SUBPLOT 12 - Oct Density
+subplot(sp(12))
     hold on; box on;
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
@@ -1089,9 +1093,9 @@ subplot(sp(11))
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
     clim(caPDen)
-    %c = colorbar('location','eastoutside');
-    %c.Label.String = 'CH_4 (nmol/kg)';
-    %c.FontSize = fs;
+    c = colorbar('location','eastoutside');
+    c.Label.String = 'Potential density Anomaly (kg m^{-3})';
+    c.FontSize = fs;
     set(gca,'layer','top');
     ylim(yl);
     xlim(xl);
@@ -1107,8 +1111,8 @@ subplot(sp(11))
     fill(kcO,dmO,[0.5 0.5 0.5],'edgecolor','none');
     axis ij;
 
-% SUBPLOT 12
-subplot(sp(12))
+% SUBPLOT 10 - May Density
+subplot(sp(10))
     hold on; box on;
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
@@ -1121,17 +1125,18 @@ subplot(sp(12))
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
     clim(caPDen)
-    c = colorbar('location','eastoutside');
-    c.Label.String = '\sigma_{\theta} (kg/m^3)';
-    c.FontSize = fs;
+    %c = colorbar('location','eastoutside');
+    %c.Label.String = '\sigma_{\theta} (kg/m^3)';
+    %c.FontSize = fs;
     set(gca,'layer','top');
     ylim(yl);
     xlim(xl);
     set(gca,'ytick',yt);
-    %set(gca,'yticklabel',yt);
+    set(gca,'yticklabel',yt);
     set(gca,'xtick',xt);
     set(gca,'xticklabel',xt);
     xlabel('Transect distance [km]');
+    ylabel('Depth [m]')
 
     %add in plot of bathymetry
     dmM = [yl(2) DmaxM(1) DmaxM' DmaxM(end) yl(2)];
@@ -1170,7 +1175,7 @@ min(min(PDeniM)) max(max(PDeniM))]
 nr = 4; % number of rows
 nc = 3; % number of columns
 lw = 2; % default line width
-fs = 10; % default font size
+fs = 12; % default font size
 ms = 3; % default marker size
 yt = [0 10 20 30]; %y-axis ticks;
 xt = [0 5 10 15];
@@ -1179,7 +1184,7 @@ xl = [-0.5 19]; %x-axis limit in km
 
 fc = [0.75 0.75 0.75]; %fill color
 
-fsl = 12; % font size for axis label
+fsl = 14; % font size for axis label
 
 caCH4 = [20 435]; % CH4 axis limits
 clevelCH4 = [caCH4(1):1:caCH4(2)]; %CH4 colorbar levels
@@ -1193,23 +1198,24 @@ clevelO2 = [caO2(1):1:caO2(2)];
 caPDen = [16 18.8]; % PDen axis limits
 clevelPDen = [caPDen(1):0.02:caPDen(2)]; % PDen colorbar levels
 
-fig=figure(23);
+fig=figure(24);
 clf;
 sp=tight_subplot(nr,nc,[.025 .025],[.08 .04],[.08 .04]);
 set(gcf, 'PaperUnits', 'inches');
 set(gcf, 'PaperPositionMode', 'manual');
 set(gcf, 'PaperPosition', [0 0 12 8]);
 set(gcf,'renderer','painters');
-    set(gcf,'GraphicsSmoothing','on')
+    set(gcf,'GraphicsSmoothing','on');
+    set(0,'DefaultTextFontName','Arial')
 
-% rows: Aug / Oct / May
+% rows: May / Aug / Oct
 % columns: CH4 / N2O / O2 / Density
-% SUBPLOT 1
-subplot(sp(1))
+% SUBPLOT 2 - MAY DCH4
+subplot(sp(2))
     hold on; box on;
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
-
+    colormap('turbo')
     C = contourf(x_gridA,dl_grid,DCH4_nmolkgiA,clevelCH4,'edgecolor','none');
     plot(LISA.km_cumulative(asA),LISA.Depth(asA),'+k', 'linewidth', 2, 'markersize',ms)
 
@@ -1221,36 +1227,36 @@ subplot(sp(1))
     ylim(yl);
     xlim(xl);
     set(gca,'ytick',yt);
-    set(gca,'yticklabel',yt);
+    %set(gca,'yticklabel',yt);
     set(gca,'xtick',xt);
     %set(gca,'xticklabel',xt);
     %xlabel('Transect distance [km]');
-    ylabel('Depth [m]');
+    %ylabel('Depth [m]');
     title('August');
 
     %add in plot of bathymetry
     dmA = [yl(2) DmaxA(1) DmaxA' DmaxA(end) yl(2)];
     kcA = [x_gridA(1,1) x_gridA(1,:) x_gridA(1,end)];
     fill(kcA,dmA,fc,'edgecolor','none');
-    text(17,27,'a','color',[0 0 0],'fontsize',fsl);
+    text(17,27,'b','color',[0 0 0],'fontsize',fsl);
     axis ij;
 
 
-% SUBPLOT 2
-subplot(sp(2))
+% SUBPLOT 3 - OCT DCH4
+subplot(sp(3))
     hold on; box on;
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
-
+    colormap('turbo')
     C = contourf(x_gridO,dl_grid,DCH4_nmolkgiO,clevelCH4,'edgecolor','none');
     plot(LISO.km_cumulative(asO),LISO.Depth(asO),'+k', 'linewidth', 2, 'markersize',ms)
 
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
     caxis(caCH4)
-    %c = colorbar('location','eastoutside');
-    %c.Label.String = 'CH_4 (nmol/kg)';
-    %c.FontSize = fs;
+    c = colorbar('location','eastoutside');
+    c.Label.String = '\DeltaCH_4 [nmol kg^{-1}]';
+    c.FontSize = fs;
     set(gca,'layer','top');
     ylim(yl);
     xlim(xl);
@@ -1263,17 +1269,17 @@ subplot(sp(2))
     %add in plot of bathymetry
     dmO = [yl(2) DmaxO(1) DmaxO' DmaxO(end) yl(2)];
     kcO = [x_gridO(1,1) x_gridO(1,:) x_gridO(1,end)];
-    fill(kcA,dmA,fc,'edgecolor','none');
-    text(17,27,'b','color',[0 0 0],'fontsize',fsl);
+    fill(kcO,dmO,fc,'edgecolor','none');
+    text(17,27,'c','color',[0 0 0],'fontsize',fsl);
     axis ij;
 
 
-% SUBPLOT 3
-subplot(sp(3))
+% SUBPLOT 1 - DCH4 MAY
+subplot(sp(1))
     hold on; box on;
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
-
+    colormap('turbo')
     clevel = [25:1:460];
     ca = [25 460]; %colorbar limits
     C = contourf(x_gridM,dl_grid,DCH4_nmolkgiM,clevelCH4,'edgecolor','none');
@@ -1282,31 +1288,31 @@ subplot(sp(3))
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
     caxis(caCH4)
-    c = colorbar('location','eastoutside');
-    c.Label.String = '\DeltaCH_4 (nmol/kg)';
-    c.FontSize = fs;
+    %c = colorbar('location','eastoutside');
+    %c.Label.String = '\DeltaCH_4 (nmol/kg)';
+    %c.FontSize = fs;
     set(gca,'layer','top');
     ylim(yl);
     xlim(xl);
     set(gca,'ytick',yt);
-    %set(gca,'yticklabel',yt);
+    set(gca,'yticklabel',yt);
     set(gca,'xtick',xt);
     %set(gca,'xticklabel',xt);
     title(['May'])
-
+    ylabel('Depth [m]');
     %add in plot of bathymetry
     dmM = [yl(2) DmaxM(1) DmaxM' DmaxM(end) yl(2)];
     kcM = [x_gridM(1,1) x_gridM(1,:) x_gridM(1,end)];
-    fill(kcA,dmA,fc,'edgecolor','none');
-    text(17,27,'c','color',[0 0 0],'fontsize',fsl);
+    fill(kcM,dmM,fc,'edgecolor','none');
+    text(17,27,'a','color',[0 0 0],'fontsize',fsl);
     axis ij;
 
-%SUBPLOT 4
-subplot(sp(4))
+%SUBPLOT 5 - DN2O Aug
+subplot(sp(5))
     hold on; box on;
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
-
+    colormap('turbo')
     C = contourf(x_gridA,dl_grid,DN2O_nmolkgiA,clevelN2O,'edgecolor','none');
     plot(LISA.km_cumulative(asA),LISA.Depth(asA),'+k', 'linewidth', 2, 'markersize',ms)
 
@@ -1318,65 +1324,35 @@ subplot(sp(4))
     ylim(yl);
     xlim(xl);
     set(gca,'ytick',yt);
-    set(gca,'yticklabel',yt);
+    %set(gca,'yticklabel',yt);
     set(gca,'xtick',xt);
     %set(gca,'xticklabel',xt);
     %xlabel('Transect distance [km]');
-    ylabel('Depth [m]');
+    %ylabel('Depth [m]');
     %title('August');
 
     %add in plot of bathymetry
     dmA = [yl(2) DmaxA(1) DmaxA' DmaxA(end) yl(2)];
     kcA = [x_gridA(1,1) x_gridA(1,:) x_gridA(1,end)];
     fill(kcA,dmA,fc,'edgecolor','none');
-    text(17,27,'d','color',[0 0 0],'fontsize',fsl);
+    text(17,27,'e','color',[0 0 0],'fontsize',fsl);
     axis ij;
 
 
-% SUBPLOT 5
-subplot(sp(5))
+% SUBPLOT 6 - Oct DN2O
+subplot(sp(6))
     hold on; box on;
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
-
+    colormap('turbo')
     C = contourf(x_gridO,dl_grid,DN2O_nmolkgiO,clevelN2O,'edgecolor','none');
     plot(LISO.km_cumulative(asO),LISO.Depth(asO),'+k', 'linewidth', 2, 'markersize',ms)
 
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
     caxis(caN2O)
-    %c = colorbar('location','eastoutside');
-    %c.Label.String = 'CH_4 (nmol/kg)';
-    %c.FontSize = fs;
-    set(gca,'layer','top');
-    ylim(yl);
-    xlim(xl);
-    set(gca,'ytick',yt);
-    %set(gca,'yticklabel',yt);
-    set(gca,'xtick',xt);
-    %set(gca,'xticklabel',xt);
-
-    %add in plot of bathymetry
-    dmM = [yl(2) DmaxO(1) DmaxO' DmaxO(end) yl(2)];
-    kcO = [x_gridO(1,1) x_gridO(1,:) x_gridO(1,end)];
-     fill(kcA,dmA,fc,'edgecolor','none');
-    text(17,27,'e','color',[0 0 0],'fontsize',fsl);
-    axis ij;
-
-% SUBPLOT 6
-subplot(sp(6))
-    hold on; box on;
-    set(gca,'tickdir','out');
-    set(gca,'fontsize',fs);
-
-    C = contourf(x_gridM,dl_grid,DN2O_nmolkgiM,clevelN2O,'edgecolor','none');
-    plot(LISM.km_cumulative(asM),LISM.Depth(asM),'+k', 'linewidth', 2, 'markersize',ms)
-
-    %xlabel('Transect distance [km]');
-    %ylabel('Depth [m]');
-    caxis(caN2O)
     c = colorbar('location','eastoutside');
-    c.Label.String = '\DeltaN_2O (nmol/kg)';
+    c.Label.String = '\DeltaN_2O [nmol kg^{-1}]';
     c.FontSize = fs;
     set(gca,'layer','top');
     ylim(yl);
@@ -1384,21 +1360,53 @@ subplot(sp(6))
     set(gca,'ytick',yt);
     %set(gca,'yticklabel',yt);
     set(gca,'xtick',xt);
+    %ylabel('Depth [m]');
+    %set(gca,'xticklabel',xt);
+
+    %add in plot of bathymetry
+    dmM = [yl(2) DmaxO(1) DmaxO' DmaxO(end) yl(2)];
+    kcO = [x_gridO(1,1) x_gridO(1,:) x_gridO(1,end)];
+     fill(kcO,dmO,fc,'edgecolor','none');
+    text(17,27,'f','color',[0 0 0],'fontsize',fsl);
+    axis ij;
+
+% SUBPLOT 4
+subplot(sp(4))
+    hold on; box on;
+    set(gca,'tickdir','out');
+    set(gca,'fontsize',fs);
+    colormap('turbo')
+    C = contourf(x_gridM,dl_grid,DN2O_nmolkgiM,clevelN2O,'edgecolor','none');
+    plot(LISM.km_cumulative(asM),LISM.Depth(asM),'+k', 'linewidth', 2, 'markersize',ms)
+
+    %xlabel('Transect distance [km]');
+    %ylabel('Depth [m]');
+    caxis(caN2O)
+    %c = colorbar('location','eastoutside');
+    %c.Label.String = '\DeltaN_2O (nmol/kg)';
+    %c.FontSize = fs;
+    set(gca,'layer','top');
+    ylim(yl);
+    xlim(xl);
+    set(gca,'ytick',yt);
+    set(gca,'yticklabel',yt);
+    set(gca,'xtick',xt);
+    ylabel('Depth [m]');
     %set(gca,'xticklabel',xt);
 
     %add in plot of bathymetry
     dmM = [yl(2) DmaxM(1) DmaxM' DmaxM(end) yl(2)];
     kcM = [x_gridM(1,1) x_gridM(1,:) x_gridM(1,end)];
-    fill(kcA,dmA,fc,'edgecolor','none');
-    text(17,27,'f','color',[0 0 0],'fontsize',fsl);
+    fill(kcM,dmM,fc,'edgecolor','none');
+    text(17,27,'d','color',[0 0 0],'fontsize',fsl);
     axis ij;
 
-%SUBPLOT 7
-subplot(sp(7))
+%SUBPLOT 8 - DO2 Aug
+subplot(sp(8))
     hold on; box on;
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
-
+    colormap('turbo')
     C = contourf(x_gridA,dl_grid,DO2_umolkgiA,clevelO2,'edgecolor','none');
     contour(x_gridA,dl_grid,DO2_umolkgiA,0,'edgecolor','k');
     plot(LISA.km_cumulative(asA),LISA.Depth(asA),'+k', 'linewidth', 2, 'markersize',ms)
@@ -1411,27 +1419,27 @@ subplot(sp(7))
     ylim(yl);
     xlim(xl);
     set(gca,'ytick',yt);
-    set(gca,'yticklabel',yt);
+    %set(gca,'yticklabel',yt);
     set(gca,'xtick',xt);
     %set(gca,'xticklabel',xt);
     %xlabel('Transect distance [km]');
-    ylabel('Depth [m]');
+    %ylabel('Depth [m]');
     %title('August');
 
     %add in plot of bathymetry
     dmA = [yl(2) DmaxA(1) DmaxA' DmaxA(end) yl(2)];
     kcA = [x_gridA(1,1) x_gridA(1,:) x_gridA(1,end)];
     fill(kcA,dmA,fc,'edgecolor','none');
-    text(17,27,'g','color',[0 0 0],'fontsize',fsl);
+    text(17,27,'h','color',[0 0 0],'fontsize',fsl);
     axis ij;
 
 
-% SUBPLOT 8
-subplot(sp(8))
+% SUBPLOT 9
+subplot(sp(9))
     hold on; box on;
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
-
+    colormap('turbo')
     C = contourf(x_gridO,dl_grid,DO2_umolkgiO,clevelO2,'edgecolor','none');
     contour(x_gridO,dl_grid,DO2_umolkgiO,0,'edgecolor','k');
     plot(LISO.km_cumulative(asO),LISO.Depth(asO),'+k', 'linewidth', 2, 'markersize',ms)
@@ -1439,9 +1447,9 @@ subplot(sp(8))
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
     caxis(caO2)
-    %c = colorbar('location','eastoutside');
-    %c.Label.String = 'CH_4 (nmol/kg)';
-    %c.FontSize = fs;
+    c = colorbar('location','eastoutside');
+    c.Label.String = '\DeltaO_2 [\mumol kg^{-1}]';
+    c.FontSize = fs;
     set(gca,'layer','top');
     ylim(yl);
     xlim(xl);
@@ -1453,16 +1461,16 @@ subplot(sp(8))
     %add in plot of bathymetry
     dmO = [yl(2) DmaxO(1) DmaxO' DmaxO(end) yl(2)];
     kcO = [x_gridO(1,1) x_gridO(1,:) x_gridO(1,end)];
-    fill(kcA,dmA,fc,'edgecolor','none');
-    text(17,27,'h','color',[0 0 0],'fontsize',fsl);
+    fill(kcO,dmO,fc,'edgecolor','none');
+    text(17,27,'i','color',[0 0 0],'fontsize',fsl);
     axis ij;
 
-% SUBPLOT 9
-subplot(sp(9))
+% SUBPLOT 7
+subplot(sp(7))
     hold on; box on;
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
-
+    colormap('turbo')
     C = contourf(x_gridM,dl_grid,DO2_umolkgiM,clevelO2,'edgecolor','none');
         contour(x_gridM,dl_grid,DO2_umolkgiM,[0 0],'-k');
     plot(LISM.km_cumulative(asM),LISM.Depth(asM),'+k', 'linewidth', 2, 'markersize',ms)
@@ -1470,31 +1478,32 @@ subplot(sp(9))
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
     caxis(caO2)
-    c = colorbar('location','eastoutside');
-    c.Label.String = '\DeltaO_2 (\mumol/kg)';
-    c.FontSize = fs;
+    %c = colorbar('location','eastoutside');
+    %c.Label.String = '\DeltaO_2 (\mumol/kg)';
+    %c.FontSize = fs;
     set(gca,'layer','top');
     ylim(yl);
     xlim(xl);
     set(gca,'ytick',yt);
-    %set(gca,'yticklabel',yt);
+    set(gca,'yticklabel',yt);
+    ylabel('Depth [m]');
     set(gca,'xtick',xt);
     %set(gca,'xticklabel',xt);
 
     %add in plot of bathymetry
     dmM = [yl(2) DmaxM(1) DmaxM' DmaxM(end) yl(2)];
     kcM = [x_gridM(1,1) x_gridM(1,:) x_gridM(1,end)];
-    fill(kcA,dmA,fc,'edgecolor','none');
-    text(17,27,'i','color',[0 0 0],'fontsize',fsl);
+    fill(kcM,dmM,fc,'edgecolor','none');
+    text(17,27,'g','color',[0 0 0],'fontsize',fsl);
     axis ij;
 
 
-%SUBPLOT 10
-subplot(sp(10))
+%SUBPLOT 11 - PDEN AUG
+subplot(sp(11))
     hold on; box on;
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
-
+    colormap('turbo')
     C = contourf(x_gridA,dl_grid,PDeniA,clevelPDen,'edgecolor','none');
     plot(LISA.km_cumulative(asA),LISA.Depth(asA),'+k', 'linewidth', 2, 'markersize',ms)
 
@@ -1506,36 +1515,36 @@ subplot(sp(10))
     ylim(yl);
     xlim(xl);
     set(gca,'ytick',yt);
-    set(gca,'yticklabel',yt);
+    %set(gca,'yticklabel',yt);
     set(gca,'xtick',xt);
     set(gca,'xticklabel',xt);
     xlabel('Transect distance [km]');
-    ylabel('Depth [m]');
+    %ylabel('Depth [m]');
     %title('August');
 
     %add in plot of bathymetry
     dmA = [yl(2) DmaxA(1) DmaxA' DmaxA(end) yl(2)];
     kcA = [x_gridA(1,1) x_gridA(1,:) x_gridA(1,end)];
     fill(kcA,dmA,fc,'edgecolor','none');
-    text(17,27,'j','color',[0 0 0],'fontsize',fsl);
+    text(17,27,'k','color',[0 0 0],'fontsize',fsl);
     axis ij;
 
 
-% SUBPLOT 11
-subplot(sp(11))
+% SUBPLOT 12 - PDEN OCT
+subplot(sp(12))
     hold on; box on;
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
-
+    colormap('turbo')
     C = contourf(x_gridO,dl_grid,PDeniO,clevelPDen,'edgecolor','none');
     plot(LISO.km_cumulative(asO),LISO.Depth(asO),'+k', 'linewidth', 2, 'markersize',ms)
 
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
     clim(caPDen)
-    %c = colorbar('location','eastoutside');
-    %c.Label.String = 'CH_4 (nmol/kg)';
-    %c.FontSize = fs;
+    c = colorbar('location','eastoutside');
+    c.Label.String = '\sigma_{\theta} [kg m^{-3}]';
+    c.FontSize = fs;
     set(gca,'layer','top');
     ylim(yl);
     xlim(xl);
@@ -1548,32 +1557,32 @@ subplot(sp(11))
     %add in plot of bathymetry
     dmM = [yl(2) DmaxO(1) DmaxO' DmaxO(end) yl(2)];
     kcO = [x_gridO(1,1) x_gridO(1,:) x_gridO(1,end)];
-    fill(kcA,dmA,fc,'edgecolor','none');
-    text(17,27,'k','color',[0 0 0],'fontsize',fsl);
+    fill(kcO,dmO,fc,'edgecolor','none');
+    text(17,27,'l','color',[0 0 0],'fontsize',fsl);
     axis ij;
 
-% SUBPLOT 12
-subplot(sp(12))
+% SUBPLOT 10 - PDEN MAY
+subplot(sp(10))
     hold on; box on;
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
-
+    colormap('turbo')
     C = contourf(x_gridM,dl_grid,PDeniM,clevelPDen,'edgecolor','none');
   %  C = surf(x_grid,dl_grid,PDeniM,clevelPDen,'facecolor','interp','edgecolor','interp');
   %  surf instead, with 'FaceColor','interp', 'EdgeColor','interp' and %view(0,90)’.  
     plot(LISM.km_cumulative(asM),LISM.Depth(asM),'+k', 'linewidth', 2, 'markersize',ms)
 
     %xlabel('Transect distance [km]');
-    %ylabel('Depth [m]');
+    ylabel('Depth [m]');
     clim(caPDen)
-    c = colorbar('location','eastoutside');
-    c.Label.String = '\sigma_{\theta} (kg/m^3)';
-    c.FontSize = fs;
+    %c = colorbar('location','eastoutside');
+    %c.Label.String = '\sigma_{\theta} (kg/m^3)';
+    %c.FontSize = fs;
     set(gca,'layer','top');
     ylim(yl);
     xlim(xl);
     set(gca,'ytick',yt);
-    %set(gca,'yticklabel',yt);
+    set(gca,'yticklabel',yt);
     set(gca,'xtick',xt);
     set(gca,'xticklabel',xt);
     xlabel('Transect distance [km]');
@@ -1581,15 +1590,17 @@ subplot(sp(12))
     %add in plot of bathymetry
     dmM = [yl(2) DmaxM(1) DmaxM' DmaxM(end) yl(2)];
     kcM = [x_gridM(1,1) x_gridM(1,:) x_gridM(1,end)];
-    fill(kcA,dmA,fc,'edgecolor','none');
-    text(17,27,'l','color',[0 0 0],'fontsize',fsl);
+    fill(kcM,dmM,fc,'edgecolor','none');
+    text(17,27,'j','color',[0 0 0],'fontsize',fsl);
     axis ij;
     
     wysiwyg;
 
-print(gcf, '-dpng', '-r300', 'LIS_Transect_DCH4_DN2O_DO2_PDen.png');
-print(gcf,'-depsc','-vector','LIS_Transect_DCH4_DN2O_DO2_PDen.eps');
-epsclean('LIS_Transect_DCH4_DN2O_DO2_PDen.eps','LIS_Transect_DCH4_DN2O_DO2_PDen.eps');
+%print(gcf, '-dpng', '-r300', '20250712_LIS_Transect_DCH4_DN2O_DO2_PDen_nocolorbar.png');
+%print(gcf,'-depsc','-vector','20250712_LIS_Transect_DCH4_DN2O_DO2_PDen.eps');
+%epsclean('20250712_LIS_Transect_DCH4_DN2O_DO2_PDen.eps','20250712_LIS_Transect_DCH4_DN2O_DO2_PDen.eps');
+
+exportgraphics(gcf,'20250712_LIS_Transect_DCH4_DN2O_DO2_PDen_withcolorbar_rgb.eps','BackgroundColor','none','ContentType','vector','Resolution', 300,'Colorspace','rgb');
 
 %%
 
