@@ -54,31 +54,31 @@ N2OatmdryA = N2Oatmdry;
 
 load LISAug23_CH4N2O_CTD.mat
 LISA = LISAug23_CH4N2O_CTD; % August
-LISA.datetime_local = LISA.datetime + UTC_to_local;
-LISA.dn_local = datenum(LISA.datetime_local);
+% LISA.datetime_local = LISA.datetime + UTC_to_local;
+% LISA.dn_local = datenum(LISA.datetime_local);
+% 
+% LISA.CH4_mean_nmolkg = LISA.mean_CH4_nM./(1000+LISA.PDen).*1000;
+% LISA.N2O_mean_nmolkg = LISA.mean_N2O_nM./(1000+LISA.PDen).*1000;
+% LISA.CH4_std_nmolkg = LISA.std_CH4_nM./(1000+LISA.PDen).*1000;
+% LISA.N2O_std_nmolkg = LISA.std_N2O_nM./(1000+LISA.PDen).*1000;
+% 
+% LISA.N2Oatm_H2Osat = N2OatmdryA .* (1 - vpress(LISA.S,LISA.T));
+% LISA.N2O_eq_nmolkg = N2Osol(LISA.S,LISA.T,LISA.N2Oatm_H2Osat).*1000;
+% 
+% LISA.CH4atm_H2Osat = CH4atmdryA .* (1 - vpress(LISA.S,LISA.T));
+% LISA.CH4_eq_nmolkg = CH4sol(LISA.S,LISA.T,LISA.CH4atm_H2Osat)'.*1000;
+% 
+% LISA.DCH4_nmolkg = LISA.CH4_mean_nmolkg - LISA.CH4_eq_nmolkg;
+% LISA.DN2O_nmolkg = LISA.N2O_mean_nmolkg - LISA.N2O_eq_nmolkg;
+% LISA.DO2_umolkg = LISA.O2_umolkg - O2sol(LISA.S,LISA.T);
+% 
+% LISA.DCH4 = (LISA.CH4_mean_nmolkg./LISA.CH4_eq_nmolkg - 1).*100;
+% LISA.DN2O = (LISA.N2O_mean_nmolkg./LISA.N2O_eq_nmolkg - 1).* 100;
+% LISA.DO2 = (LISA.O2_umolkg./O2sol(LISA.S,LISA.T) - 1).*100;
 
-LISA.CH4_mean_nmolkg = LISA.mean_CH4_nM./(1000+LISA.PDen).*1000;
-LISA.N2O_mean_nmolkg = LISA.mean_N2O_nM./(1000+LISA.PDen).*1000;
-LISA.CH4_std_nmolkg = LISA.std_CH4_nM./(1000+LISA.PDen).*1000;
-LISA.N2O_std_nmolkg = LISA.std_N2O_nM./(1000+LISA.PDen).*1000;
-
-LISA.N2Oatm_H2Osat = N2OatmdryA .* (1 - vpress(LISA.S,LISA.T));
-LISA.N2O_eq_nmolkg = N2Osol(LISA.S,LISA.T,LISA.N2Oatm_H2Osat).*1000;
-
-LISA.CH4atm_H2Osat = CH4atmdryA .* (1 - vpress(LISA.S,LISA.T));
-LISA.CH4_eq_nmolkg = CH4sol(LISA.S,LISA.T,LISA.CH4atm_H2Osat)'.*1000;
-
-LISA.DCH4_nmolkg = LISA.CH4_mean_nmolkg - LISA.CH4_eq_nmolkg;
-LISA.DN2O_nmolkg = LISA.N2O_mean_nmolkg - LISA.N2O_eq_nmolkg;
-LISA.DO2_umolkg = LISA.O2_umolkg - O2sol(LISA.S,LISA.T);
-
-LISA.DCH4 = (LISA.CH4_mean_nmolkg./LISA.CH4_eq_nmolkg - 1).*100;
-LISA.DN2O = (LISA.N2O_mean_nmolkg./LISA.N2O_eq_nmolkg - 1).* 100;
-LISA.DO2 = (LISA.O2_umolkg./O2sol(LISA.S,LISA.T) - 1).*100;
-
-LISA.SA = gsw_SA_from_SP(LISA.S,LISA.P,LISA.Lon,LISA.Lat);
-LISA.CT =  gsw_CT_from_t(LISA.SA,LISA.T,LISA.P);
-LISA.PDen_SA_CT = gsw_rho(LISA.SA,LISA.CT,0);
+%LISA.SA = gsw_SA_from_SP(LISA.S,LISA.P,LISA.Lon,LISA.Lat);
+%LISA.CT =  gsw_CT_from_t(LISA.SA,LISA.T,LISA.P);
+%LISA.PDen_SA_CT = gsw_rho(LISA.SA,LISA.CT,0);
 
 %%
 
@@ -89,32 +89,32 @@ N2OatmdryO = N2Oatmdry;
 load LISOct23_CH4N2O_CTD.mat
 LISO = LISOct23_CH4N2O_CTD; % Oct
 
-LISO = LISOct23_CH4N2O_CTD; % October
-LISO.datetime_local = LISO.datetime + UTC_to_local;
-LISO.dn_local = datenum(LISO.datetime_local);
-
-LISO.CH4_mean_nmolkg = LISO.mean_CH4_nM./(1000+LISO.PDen).*1000;
-LISO.N2O_mean_nmolkg = LISO.mean_N2O_nM./(1000+LISO.PDen).*1000;
-LISO.CH4_std_nmolkg = LISO.std_CH4_nM./(1000+LISO.PDen).*1000;
-LISO.N2O_std_nmolkg = LISO.std_N2O_nM./(1000+LISO.PDen).*1000;
-
-LISO.N2Oatm_H2Osat = N2OatmdryA .* (1 - vpress(LISO.S,LISO.T));
-LISO.N2O_eq_nmolkg = N2Osol(LISO.S,LISO.T,LISO.N2Oatm_H2Osat).*1000;
-
-LISO.CH4atm_H2Osat = CH4atmdryA .* (1 - vpress(LISO.S,LISO.T));
-LISO.CH4_eq_nmolkg = CH4sol(LISO.S,LISO.T,LISO.CH4atm_H2Osat)'.*1000;
-
-LISO.DCH4_nmolkg = LISO.CH4_mean_nmolkg - LISO.CH4_eq_nmolkg;
-LISO.DN2O_nmolkg = LISO.N2O_mean_nmolkg - LISO.N2O_eq_nmolkg;
-LISO.DO2_umolkg = LISO.O2_umolkg - O2sol(LISO.S,LISO.T);
-
-LISO.DCH4 = (LISO.CH4_mean_nmolkg./LISO.CH4_eq_nmolkg - 1).*100;
-LISO.DN2O = (LISO.N2O_mean_nmolkg./LISO.N2O_eq_nmolkg - 1).* 100;
-LISO.DO2 = (LISO.O2_umolkg./O2sol(LISO.S,LISO.T) - 1).*100;
-
-LISO.SA = gsw_SA_from_SP(LISO.S,LISO.P,LISO.Lon,LISO.Lat);
-LISO.CT =  gsw_CT_from_t(LISO.SA,LISO.T,LISO.P);
-LISO.PDen_SA_CT = gsw_rho(LISO.SA,LISO.CT,0);
+% LISO = LISOct23_CH4N2O_CTD; % October
+% LISO.datetime_local = LISO.datetime + UTC_to_local;
+% LISO.dn_local = datenum(LISO.datetime_local);
+% 
+% LISO.CH4_mean_nmolkg = LISO.mean_CH4_nM./(1000+LISO.PDen).*1000;
+% LISO.N2O_mean_nmolkg = LISO.mean_N2O_nM./(1000+LISO.PDen).*1000;
+% LISO.CH4_std_nmolkg = LISO.std_CH4_nM./(1000+LISO.PDen).*1000;
+% LISO.N2O_std_nmolkg = LISO.std_N2O_nM./(1000+LISO.PDen).*1000;
+% 
+% LISO.N2Oatm_H2Osat = N2OatmdryA .* (1 - vpress(LISO.S,LISO.T));
+% LISO.N2O_eq_nmolkg = N2Osol(LISO.S,LISO.T,LISO.N2Oatm_H2Osat).*1000;
+% 
+% LISO.CH4atm_H2Osat = CH4atmdryA .* (1 - vpress(LISO.S,LISO.T));
+% LISO.CH4_eq_nmolkg = CH4sol(LISO.S,LISO.T,LISO.CH4atm_H2Osat)'.*1000;
+% 
+% LISO.DCH4_nmolkg = LISO.CH4_mean_nmolkg - LISO.CH4_eq_nmolkg;
+% LISO.DN2O_nmolkg = LISO.N2O_mean_nmolkg - LISO.N2O_eq_nmolkg;
+% LISO.DO2_umolkg = LISO.O2_umolkg - O2sol(LISO.S,LISO.T);
+% 
+% LISO.DCH4 = (LISO.CH4_mean_nmolkg./LISO.CH4_eq_nmolkg - 1).*100;
+% LISO.DN2O = (LISO.N2O_mean_nmolkg./LISO.N2O_eq_nmolkg - 1).* 100;
+% LISO.DO2 = (LISO.O2_umolkg./O2sol(LISO.S,LISO.T) - 1).*100;
+% 
+% LISO.SA = gsw_SA_from_SP(LISO.S,LISO.P,LISO.Lon,LISO.Lat);
+% LISO.CT =  gsw_CT_from_t(LISO.SA,LISO.T,LISO.P);
+% LISO.PDen_SA_CT = gsw_rho(LISO.SA,LISO.CT,0);
 
 %%
 
@@ -128,31 +128,31 @@ LISME = LISM(easternstn,:);
 LISM([easternstn],:) = [];
 
 
-LISM.datetime_local = LISM.datetime + UTC_to_local;
-LISM.dn_local = datenum(LISM.datetime_local);
-
-LISM.CH4_mean_nmolkg = LISM.mean_CH4_nM./(1000+LISM.PDen).*1000;
-LISM.N2O_mean_nmolkg = LISM.mean_N2O_nM./(1000+LISM.PDen).*1000;
-LISM.CH4_std_nmolkg = LISM.std_CH4_nM./(1000+LISM.PDen).*1000;
-LISM.N2O_std_nmolkg = LISM.std_N2O_nM./(1000+LISM.PDen).*1000;
-
-LISM.N2Oatm_H2Osat = N2OatmdryA .* (1 - vpress(LISM.S,LISM.T));
-LISM.N2O_eq_nmolkg = N2Osol(LISM.S,LISM.T,LISM.N2Oatm_H2Osat).*1000;
-
-LISM.CH4atm_H2Osat = CH4atmdryA .* (1 - vpress(LISM.S,LISM.T));
-LISM.CH4_eq_nmolkg = CH4sol(LISM.S,LISM.T,LISM.CH4atm_H2Osat)'.*1000;
-
-LISM.DCH4_nmolkg = LISM.CH4_mean_nmolkg - LISM.CH4_eq_nmolkg;
-LISM.DN2O_nmolkg = LISM.N2O_mean_nmolkg - LISM.N2O_eq_nmolkg;
-LISM.DO2_umolkg = LISM.O2_umolkg - O2sol(LISM.S,LISM.T);
-
-LISM.DCH4 = (LISM.CH4_mean_nmolkg./LISM.CH4_eq_nmolkg - 1).*100;
-LISM.DN2O = (LISM.N2O_mean_nmolkg./LISM.N2O_eq_nmolkg - 1).* 100;
-LISM.DO2 = (LISM.O2_umolkg./O2sol(LISM.S,LISM.T) - 1).*100;
-
-LISM.SA = gsw_SA_from_SP(LISM.S,LISM.P,LISM.Lon,LISM.Lat);
-LISM.CT =  gsw_CT_from_t(LISM.SA,LISM.T,LISM.P);
-LISM.PDen_SA_CT = gsw_rho(LISM.SA,LISM.CT,0);
+% LISM.datetime_local = LISM.datetime + UTC_to_local;
+% LISM.dn_local = datenum(LISM.datetime_local);
+% 
+% LISM.CH4_mean_nmolkg = LISM.mean_CH4_nM./(1000+LISM.PDen).*1000;
+% LISM.N2O_mean_nmolkg = LISM.mean_N2O_nM./(1000+LISM.PDen).*1000;
+% LISM.CH4_std_nmolkg = LISM.std_CH4_nM./(1000+LISM.PDen).*1000;
+% LISM.N2O_std_nmolkg = LISM.std_N2O_nM./(1000+LISM.PDen).*1000;
+% 
+% LISM.N2Oatm_H2Osat = N2OatmdryA .* (1 - vpress(LISM.S,LISM.T));
+% LISM.N2O_eq_nmolkg = N2Osol(LISM.S,LISM.T,LISM.N2Oatm_H2Osat).*1000;
+% 
+% LISM.CH4atm_H2Osat = CH4atmdryA .* (1 - vpress(LISM.S,LISM.T));
+% LISM.CH4_eq_nmolkg = CH4sol(LISM.S,LISM.T,LISM.CH4atm_H2Osat)'.*1000;
+% 
+% LISM.DCH4_nmolkg = LISM.CH4_mean_nmolkg - LISM.CH4_eq_nmolkg;
+% LISM.DN2O_nmolkg = LISM.N2O_mean_nmolkg - LISM.N2O_eq_nmolkg;
+% LISM.DO2_umolkg = LISM.O2_umolkg - O2sol(LISM.S,LISM.T);
+% 
+% LISM.DCH4 = (LISM.CH4_mean_nmolkg./LISM.CH4_eq_nmolkg - 1).*100;
+% LISM.DN2O = (LISM.N2O_mean_nmolkg./LISM.N2O_eq_nmolkg - 1).* 100;
+% LISM.DO2 = (LISM.O2_umolkg./O2sol(LISM.S,LISM.T) - 1).*100;
+% 
+% LISM.SA = gsw_SA_from_SP(LISM.S,LISM.P,LISM.Lon,LISM.Lat);
+% LISM.CT =  gsw_CT_from_t(LISM.SA,LISM.T,LISM.P);
+% LISM.PDen_SA_CT = gsw_rho(LISM.SA,LISM.CT,0);
 
 %%
 
@@ -385,13 +385,13 @@ ms=60;
 nr = 1; % number of rows
 nc = 3;  % number of columns
 lw=1;
-fsl = 12;
+fsl = 14;
 fig=figure(11)
 clf;
 sp=tight_subplot(nr,nc,[.05 .03],[.15 .1],[.08 .04]);
 set(gcf, 'PaperUnits', 'inches');
 set(gcf, 'PaperPositionMode', 'manual');
-set(gcf, 'PaperPosition', [0 0 8 5.5]);
+set(gcf, 'PaperPosition', [0 0 8 4]);
 
 
 subplot(sp(1))
@@ -431,7 +431,7 @@ ylim(yl);
     set(gca,'xtick',xt);
     set(gca,'yticklabel',yt,'fontsize',fsl);
     set(gca,'xticklabel',xt);
-    xlabel('Salinity [PSS-78]');
+    xlabel('Salinity [PSS]');
     ylabel('Temperature [^oC]');
 
 subplot(sp(2))
@@ -467,7 +467,7 @@ ylim(yl);
     set(gca,'ytick',yt);
     set(gca,'xtick',xt);
     set(gca,'xticklabel',xt);
-    xlabel('Salinity [PSS-78]');
+    xlabel('Salinity [PSS]');
 
 subplot(sp(3))
 hold on; box on;
@@ -502,15 +502,17 @@ ylim(yl);
     set(gca,'ytick',yt);
     set(gca,'xtick',xt);
     set(gca,'xticklabel',xt);    
-    xlabel('Salinity [PSS-78]');
+    xlabel('Salinity [PSS]');
 
 
 wysiwyg;
 
-print -dpng -r300 20250709_WLIS_TSplot_noclabel.png;
-print(gcf,'-depsc','-vector','20250709_WLIS_TSplot_noclabel.eps');
-print(gcf,'-dpdf','-vector','20250709_WLIS_TSplot_noclabel.pdf');
-epsclean('20250709_WLIS_TSplot_noclabel.eps','20250709_WLIS_TSplot_noclabel_clean.eps');
+exportgraphics(gcf,'20250718_WLIS_TSplot_noclabel.eps','BackgroundColor','none','ContentType','vector')
+
+%print -dpng -r300 20250709_WLIS_TSplot_noclabel.png;
+%print(gcf,'-depsc','-vector','20250709_WLIS_TSplot_noclabel.eps');
+print(gcf,'-dpdf','-vector','20250718_WLIS_TSplot_noclabel.pdf');
+epsclean('20250718_WLIS_TSplot_noclabel.eps','20250718_WLIS_TSplot_noclabel_clean.eps');
 
 %%
 figure(2)

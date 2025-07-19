@@ -744,7 +744,7 @@ min(min(O2iA)) max(max(O2iA))]
 nr = 4; % number of rows
 nc = 3; % number of columns
 lw = 2; % default line width
-fs = 10; % default font size
+fs = 14; % default font size
 ms = 3; % default marker size
 yt = [0 10 20 30]; %y-axis ticks;
 xt = [0 5 10 15];
@@ -771,6 +771,7 @@ set(gcf, 'PaperPositionMode', 'manual');
 set(gcf, 'PaperPosition', [0 0 12 8]);
 set(gcf,'renderer','painters');
     set(gcf,'GraphicsSmoothing','on')
+colormap turbo;
 
 % rows: May / Aug / Oct
 % columns: CH4 / N2O / O2 / Density
@@ -783,7 +784,7 @@ subplot(sp(1))
 
     clevel = [25:1:460];
     ca = [25 460]; %colorbar limits
-    C = contourf(x_gridM,dl_grid,CH4iM,clevelCH4,'edgecolor','none');
+    C = contourf(x_gridM,dl_grid,CH4iM,clevelCH4,'edgecolor','flat');
     plot(LISM.km_cumulative(asM),LISM.Depth(asM),'+k', 'linewidth', 2, 'markersize',ms)
 
     %xlabel('Transect distance [km]');
@@ -805,7 +806,7 @@ subplot(sp(1))
     %add in plot of bathymetry
     dmM = [yl(2) DmaxM(1) DmaxM' DmaxM(end) yl(2)];
     kcM = [x_gridM(1,1) x_gridM(1,:) x_gridM(1,end)];
-    fill(kcM,dmM,[0.5 0.5 0.5],'edgecolor','none');
+    fill(kcM,dmM,[0.5 0.5 0.5],'edgecolor','flat');
     axis ij;
 
 % SUBPLOT 2
@@ -814,7 +815,7 @@ subplot(sp(2))
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
 
-    C = contourf(x_gridA,dl_grid,CH4iA,clevelCH4,'edgecolor','none');
+    C = contourf(x_gridA,dl_grid,CH4iA,clevelCH4,'edgecolor','flat');
     plot(LISA.km_cumulative(asA),LISA.Depth(asA),'+k', 'linewidth', 2, 'markersize',ms)
 
     caxis(caCH4)
@@ -835,7 +836,7 @@ subplot(sp(2))
     %add in plot of bathymetry
     dmA = [yl(2) DmaxA(1) DmaxA' DmaxA(end) yl(2)];
     kcA = [x_gridA(1,1) x_gridA(1,:) x_gridA(1,end)];
-    fill(kcA,dmA,[0.5 0.5 0.5],'edgecolor','none');
+    fill(kcA,dmA,[0.5 0.5 0.5],'edgecolor','flat');
     axis ij;
 
 % SUBPLOT 3
@@ -844,7 +845,7 @@ subplot(sp(3))
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
 
-    C = contourf(x_gridO,dl_grid,CH4iO,clevelCH4,'edgecolor','none');
+    C = contourf(x_gridO,dl_grid,CH4iO,clevelCH4,'edgecolor','flat');
     plot(LISO.km_cumulative(asO),LISO.Depth(asO),'+k', 'linewidth', 2, 'markersize',ms)
 
     %xlabel('Transect distance [km]');
@@ -865,7 +866,7 @@ subplot(sp(3))
     %add in plot of bathymetry
     dmO = [yl(2) DmaxO(1) DmaxO' DmaxO(end) yl(2)];
     kcO = [x_gridO(1,1) x_gridO(1,:) x_gridO(1,end)];
-    fill(kcO,dmO,[0.5 0.5 0.5],'edgecolor','none');
+    fill(kcO,dmO,[0.5 0.5 0.5],'edgecolor','flat');
     axis ij;
 
 
@@ -876,7 +877,7 @@ subplot(sp(5))
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
 
-    C = contourf(x_gridA,dl_grid,N2OiA,clevelN2O,'edgecolor','none');
+    C = contourf(x_gridA,dl_grid,N2OiA,clevelN2O,'edgecolor','flat');
     plot(LISA.km_cumulative(asA),LISA.Depth(asA),'+k', 'linewidth', 2, 'markersize',ms)
 
     caxis(caN2O)
@@ -887,7 +888,7 @@ subplot(sp(5))
     ylim(yl);
     xlim(xl);
     set(gca,'ytick',yt);
-    set(gca,'yticklabel',yt);
+    %set(gca,'yticklabel',yt);
     set(gca,'xtick',xt);
     %set(gca,'xticklabel',xt);
     %xlabel('Transect distance [km]');
@@ -897,7 +898,7 @@ subplot(sp(5))
     %add in plot of bathymetry
     dmA = [yl(2) DmaxA(1) DmaxA' DmaxA(end) yl(2)];
     kcA = [x_gridA(1,1) x_gridA(1,:) x_gridA(1,end)];
-    fill(kcA,dmA,[0.5 0.5 0.5],'edgecolor','none');
+    fill(kcA,dmA,[0.5 0.5 0.5],'edgecolor','flat');
     axis ij;
 
 
@@ -907,14 +908,14 @@ subplot(sp(6))
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
 
-    C = contourf(x_gridO,dl_grid,N2OiO,clevelN2O,'edgecolor','none');
+    C = contourf(x_gridO,dl_grid,N2OiO,clevelN2O,'edgecolor','flat');
     plot(LISO.km_cumulative(asO),LISO.Depth(asO),'+k', 'linewidth', 2, 'markersize',ms)
 
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
     caxis(caN2O)
     c = colorbar('location','eastoutside');
-    c.Label.String = 'CH_4 (nmol/kg)';
+    c.Label.String = 'N_2O (nmol/kg)';
     c.FontSize = fs;
     set(gca,'layer','top');
     ylim(yl);
@@ -927,7 +928,7 @@ subplot(sp(6))
     %add in plot of bathymetry
     dmM = [yl(2) DmaxO(1) DmaxO' DmaxO(end) yl(2)];
     kcO = [x_gridO(1,1) x_gridO(1,:) x_gridO(1,end)];
-    fill(kcO,dmO,[0.5 0.5 0.5],'edgecolor','none');
+    fill(kcO,dmO,[0.5 0.5 0.5],'edgecolor','flat');
     axis ij;
 
 % SUBPLOT 4 - May DN2O
@@ -936,9 +937,9 @@ subplot(sp(4))
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
 
-    C = contourf(x_gridM,dl_grid,N2OiM,clevelN2O,'edgecolor','none');
+    C = contourf(x_gridM,dl_grid,N2OiM,clevelN2O,'edgecolor','flat');
     plot(LISM.km_cumulative(asM),LISM.Depth(asM),'+k', 'linewidth', 2, 'markersize',ms)
-
+    
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
     caxis(caN2O)
@@ -957,7 +958,7 @@ subplot(sp(4))
     %add in plot of bathymetry
     dmM = [yl(2) DmaxM(1) DmaxM' DmaxM(end) yl(2)];
     kcM = [x_gridM(1,1) x_gridM(1,:) x_gridM(1,end)];
-    fill(kcM,dmM,[0.5 0.5 0.5],'edgecolor','none');
+    fill(kcM,dmM,[0.5 0.5 0.5],'edgecolor','flat');
     axis ij;
 
 %SUBPLOT 8 - Aug O2
@@ -966,7 +967,7 @@ subplot(sp(8))
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
 
-    C = contourf(x_gridA,dl_grid,O2iA,clevelO2,'edgecolor','none');
+    C = contourf(x_gridA,dl_grid,O2iA,clevelO2,'edgecolor','flat');
     plot(LISA.km_cumulative(asA),LISA.Depth(asA),'+k', 'linewidth', 2, 'markersize',ms)
 
     caxis(caO2)
@@ -987,7 +988,7 @@ subplot(sp(8))
     %add in plot of bathymetry
     dmA = [yl(2) DmaxA(1) DmaxA' DmaxA(end) yl(2)];
     kcA = [x_gridA(1,1) x_gridA(1,:) x_gridA(1,end)];
-    fill(kcA,dmA,[0.5 0.5 0.5],'edgecolor','none');
+    fill(kcA,dmA,[0.5 0.5 0.5],'edgecolor','flat');
     axis ij;
 
 
@@ -997,14 +998,14 @@ subplot(sp(9))
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
 
-    C = contourf(x_gridO,dl_grid,O2iO,clevelO2,'edgecolor','none');
+    C = contourf(x_gridO,dl_grid,O2iO,clevelO2,'edgecolor','flat');
     plot(LISO.km_cumulative(asO),LISO.Depth(asO),'+k', 'linewidth', 2, 'markersize',ms)
 
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
     caxis(caO2)
     c = colorbar('location','eastoutside');
-    c.Label.String = 'CH_4 (nmol/kg)';
+    c.Label.String = 'O_2 (\mumol/kg)';
     c.FontSize = fs;
     set(gca,'layer','top');
     ylim(yl);
@@ -1017,7 +1018,7 @@ subplot(sp(9))
     %add in plot of bathymetry
     dmO = [yl(2) DmaxO(1) DmaxO' DmaxO(end) yl(2)];
     kcO = [x_gridO(1,1) x_gridO(1,:) x_gridO(1,end)];
-    fill(kcO,dmO,[0.5 0.5 0.5],'edgecolor','none');
+    fill(kcO,dmO,[0.5 0.5 0.5],'edgecolor','flat');
     axis ij;
 
 % SUBPLOT 7 - May O2
@@ -1026,7 +1027,7 @@ subplot(sp(7))
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
 
-    C = contourf(x_gridM,dl_grid,O2iM,clevelO2,'edgecolor','none');
+    C = contourf(x_gridM,dl_grid,O2iM,clevelO2,'edgecolor','flat');
     plot(LISM.km_cumulative(asM),LISM.Depth(asM),'+k', 'linewidth', 2, 'markersize',ms)
 
     %xlabel('Transect distance [km]');
@@ -1046,7 +1047,7 @@ subplot(sp(7))
     %add in plot of bathymetry
     dmM = [yl(2) DmaxM(1) DmaxM' DmaxM(end) yl(2)];
     kcM = [x_gridM(1,1) x_gridM(1,:) x_gridM(1,end)];
-    fill(kcM,dmM,[0.5 0.5 0.5],'edgecolor','none');
+    fill(kcM,dmM,[0.5 0.5 0.5],'edgecolor','flat');
     axis ij;
 
 
@@ -1056,7 +1057,7 @@ subplot(sp(11))
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
 
-    C = contourf(x_gridA,dl_grid,PDeniA,clevelPDen,'edgecolor','none');
+    C = contourf(x_gridA,dl_grid,PDeniA,clevelPDen,'edgecolor','flat');
     plot(LISA.km_cumulative(asA),LISA.Depth(asA),'+k', 'linewidth', 2, 'markersize',ms)
 
     caxis(caPDen)
@@ -1077,7 +1078,7 @@ subplot(sp(11))
     %add in plot of bathymetry
     dmA = [yl(2) DmaxA(1) DmaxA' DmaxA(end) yl(2)];
     kcA = [x_gridA(1,1) x_gridA(1,:) x_gridA(1,end)];
-    fill(kcA,dmA,[0.5 0.5 0.5],'edgecolor','none');
+    fill(kcA,dmA,[0.5 0.5 0.5],'edgecolor','flat');
     axis ij;
 
 
@@ -1087,14 +1088,14 @@ subplot(sp(12))
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
 
-    C = contourf(x_gridO,dl_grid,PDeniO,clevelPDen,'edgecolor','none');
+    C = contourf(x_gridO,dl_grid,PDeniO,clevelPDen,'edgecolor','flat');
     plot(LISO.km_cumulative(asO),LISO.Depth(asO),'+k', 'linewidth', 2, 'markersize',ms)
 
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
     clim(caPDen)
     c = colorbar('location','eastoutside');
-    c.Label.String = 'Potential density Anomaly (kg m^{-3})';
+    c.Label.String = '\sigma_{\theta} (kg m^{-3})';
     c.FontSize = fs;
     set(gca,'layer','top');
     ylim(yl);
@@ -1108,7 +1109,7 @@ subplot(sp(12))
     %add in plot of bathymetry
     dmM = [yl(2) DmaxO(1) DmaxO' DmaxO(end) yl(2)];
     kcO = [x_gridO(1,1) x_gridO(1,:) x_gridO(1,end)];
-    fill(kcO,dmO,[0.5 0.5 0.5],'edgecolor','none');
+    fill(kcO,dmO,[0.5 0.5 0.5],'edgecolor','flat');
     axis ij;
 
 % SUBPLOT 10 - May Density
@@ -1117,7 +1118,7 @@ subplot(sp(10))
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
 
-    C = contourf(x_gridM,dl_grid,PDeniM,clevelPDen,'edgecolor','none');
+    C = contourf(x_gridM,dl_grid,PDeniM,clevelPDen,'edgecolor','flat');
   %  C = surf(x_grid,dl_grid,PDeniM,clevelPDen,'facecolor','interp','edgecolor','interp');
   %  surf instead, with 'FaceColor','interp', 'EdgeColor','interp' and %view(0,90)’.  
     plot(LISM.km_cumulative(asM),LISM.Depth(asM),'+k', 'linewidth', 2, 'markersize',ms)
@@ -1141,7 +1142,7 @@ subplot(sp(10))
     %add in plot of bathymetry
     dmM = [yl(2) DmaxM(1) DmaxM' DmaxM(end) yl(2)];
     kcM = [x_gridM(1,1) x_gridM(1,:) x_gridM(1,end)];
-    fill(kcM,dmM,[0.5 0.5 0.5],'edgecolor','none');
+    fill(kcM,dmM,[0.5 0.5 0.5],'edgecolor','flat');
     axis ij;
     
     wysiwyg;
@@ -1149,6 +1150,13 @@ subplot(sp(10))
 %print(gcf, '-dpng', '-r300', 'LIS_Transect_CH4_N2O_O2_PDen.png');
 %print(gcf,'-depsc','-vector','LIS_Transect_CH4_N2O_O2_PDen.eps');
 %epsclean('LIS_Transect_CH4_N2O_O2_PDen.eps','LIS_Transect_CH4_N2O_O2_PDen.eps');
+%export_fig
+set(gcf,'renderer','opengl'); 
+saveas(gcf, 'test', 'pdf')  
+saveas(gcf,'test','epsc') 
+saveas(gcf,'test.png') 
+
+exportgraphics(gcf, '20250718_LIS_Transect_CH4_N2O_O2_PDen_exportgraphics.eps','ContentType','vector')
 
 %%
 
@@ -1175,7 +1183,7 @@ min(min(PDeniM)) max(max(PDeniM))]
 nr = 4; % number of rows
 nc = 3; % number of columns
 lw = 2; % default line width
-fs = 12; % default font size
+fs = 14; % default font size
 ms = 3; % default marker size
 yt = [0 10 20 30]; %y-axis ticks;
 xt = [0 5 10 15];
@@ -1184,13 +1192,13 @@ xl = [-0.5 19]; %x-axis limit in km
 
 fc = [0.75 0.75 0.75]; %fill color
 
-fsl = 14; % font size for axis label
+fsl = 16; % font size for axis label
 
 caCH4 = [20 435]; % CH4 axis limits
 clevelCH4 = [caCH4(1):1:caCH4(2)]; %CH4 colorbar levels
 
 caN2O = [0 7]; % N2O axis limits
-clevelN2O = [caN2O(1):0.1:caN2O(2)]; % N2O colorbar levels
+clevelN2O = [caN2O(1):0.02:caN2O(2)]; % N2O colorbar levels
 
 caO2 = [-200 70];
 clevelO2 = [caO2(1):1:caO2(2)];
@@ -1216,7 +1224,7 @@ subplot(sp(2))
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
     colormap('turbo')
-    C = contourf(x_gridA,dl_grid,DCH4_nmolkgiA,clevelCH4,'edgecolor','none');
+    C = contourf(x_gridA,dl_grid,DCH4_nmolkgiA,clevelCH4,'edgecolor','flat');
     plot(LISA.km_cumulative(asA),LISA.Depth(asA),'+k', 'linewidth', 2, 'markersize',ms)
 
     caxis(caCH4)
@@ -1237,7 +1245,7 @@ subplot(sp(2))
     %add in plot of bathymetry
     dmA = [yl(2) DmaxA(1) DmaxA' DmaxA(end) yl(2)];
     kcA = [x_gridA(1,1) x_gridA(1,:) x_gridA(1,end)];
-    fill(kcA,dmA,fc,'edgecolor','none');
+    fill(kcA,dmA,fc,'edgecolor',fc);
     text(17,27,'b','color',[0 0 0],'fontsize',fsl);
     axis ij;
 
@@ -1248,15 +1256,15 @@ subplot(sp(3))
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
     colormap('turbo')
-    C = contourf(x_gridO,dl_grid,DCH4_nmolkgiO,clevelCH4,'edgecolor','none');
+    C = contourf(x_gridO,dl_grid,DCH4_nmolkgiO,clevelCH4,'edgecolor','flat');
     plot(LISO.km_cumulative(asO),LISO.Depth(asO),'+k', 'linewidth', 2, 'markersize',ms)
 
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
     caxis(caCH4)
-    c = colorbar('location','eastoutside');
-    c.Label.String = '\DeltaCH_4 [nmol kg^{-1}]';
-    c.FontSize = fs;
+    %c = colorbar('location','eastoutside');
+    %c.Label.String = '\DeltaCH_4 [nmol kg^{-1}]';
+    %c.FontSize = fs;
     set(gca,'layer','top');
     ylim(yl);
     xlim(xl);
@@ -1269,7 +1277,7 @@ subplot(sp(3))
     %add in plot of bathymetry
     dmO = [yl(2) DmaxO(1) DmaxO' DmaxO(end) yl(2)];
     kcO = [x_gridO(1,1) x_gridO(1,:) x_gridO(1,end)];
-    fill(kcO,dmO,fc,'edgecolor','none');
+    fill(kcO,dmO,fc,'edgecolor',fc);
     text(17,27,'c','color',[0 0 0],'fontsize',fsl);
     axis ij;
 
@@ -1282,7 +1290,7 @@ subplot(sp(1))
     colormap('turbo')
     clevel = [25:1:460];
     ca = [25 460]; %colorbar limits
-    C = contourf(x_gridM,dl_grid,DCH4_nmolkgiM,clevelCH4,'edgecolor','none');
+    C = contourf(x_gridM,dl_grid,DCH4_nmolkgiM,clevelCH4,'edgecolor','flat');
     plot(LISM.km_cumulative(asM),LISM.Depth(asM),'+k', 'linewidth', 2, 'markersize',ms)
 
     %xlabel('Transect distance [km]');
@@ -1303,7 +1311,7 @@ subplot(sp(1))
     %add in plot of bathymetry
     dmM = [yl(2) DmaxM(1) DmaxM' DmaxM(end) yl(2)];
     kcM = [x_gridM(1,1) x_gridM(1,:) x_gridM(1,end)];
-    fill(kcM,dmM,fc,'edgecolor','none');
+    fill(kcM,dmM,fc,'edgecolor',fc);
     text(17,27,'a','color',[0 0 0],'fontsize',fsl);
     axis ij;
 
@@ -1313,7 +1321,7 @@ subplot(sp(5))
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
     colormap('turbo')
-    C = contourf(x_gridA,dl_grid,DN2O_nmolkgiA,clevelN2O,'edgecolor','none');
+    C = contourf(x_gridA,dl_grid,DN2O_nmolkgiA,clevelN2O,'edgecolor','flat');
     plot(LISA.km_cumulative(asA),LISA.Depth(asA),'+k', 'linewidth', 2, 'markersize',ms)
 
     caxis(caN2O)
@@ -1334,7 +1342,7 @@ subplot(sp(5))
     %add in plot of bathymetry
     dmA = [yl(2) DmaxA(1) DmaxA' DmaxA(end) yl(2)];
     kcA = [x_gridA(1,1) x_gridA(1,:) x_gridA(1,end)];
-    fill(kcA,dmA,fc,'edgecolor','none');
+    fill(kcA,dmA,fc,'edgecolor',fc);
     text(17,27,'e','color',[0 0 0],'fontsize',fsl);
     axis ij;
 
@@ -1345,15 +1353,15 @@ subplot(sp(6))
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
     colormap('turbo')
-    C = contourf(x_gridO,dl_grid,DN2O_nmolkgiO,clevelN2O,'edgecolor','none');
+    C = contourf(x_gridO,dl_grid,DN2O_nmolkgiO,clevelN2O,'edgecolor','flat');
     plot(LISO.km_cumulative(asO),LISO.Depth(asO),'+k', 'linewidth', 2, 'markersize',ms)
 
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
     caxis(caN2O)
-    c = colorbar('location','eastoutside');
-    c.Label.String = '\DeltaN_2O [nmol kg^{-1}]';
-    c.FontSize = fs;
+    %c = colorbar('location','eastoutside');
+    %c.Label.String = '\DeltaN_2O [nmol kg^{-1}]';
+    %c.FontSize = fs;
     set(gca,'layer','top');
     ylim(yl);
     xlim(xl);
@@ -1366,7 +1374,7 @@ subplot(sp(6))
     %add in plot of bathymetry
     dmM = [yl(2) DmaxO(1) DmaxO' DmaxO(end) yl(2)];
     kcO = [x_gridO(1,1) x_gridO(1,:) x_gridO(1,end)];
-     fill(kcO,dmO,fc,'edgecolor','none');
+     fill(kcO,dmO,fc,'edgecolor',fc);
     text(17,27,'f','color',[0 0 0],'fontsize',fsl);
     axis ij;
 
@@ -1376,7 +1384,7 @@ subplot(sp(4))
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
     colormap('turbo')
-    C = contourf(x_gridM,dl_grid,DN2O_nmolkgiM,clevelN2O,'edgecolor','none');
+    C = contourf(x_gridM,dl_grid,DN2O_nmolkgiM,clevelN2O,'edgecolor','flat');
     plot(LISM.km_cumulative(asM),LISM.Depth(asM),'+k', 'linewidth', 2, 'markersize',ms)
 
     %xlabel('Transect distance [km]');
@@ -1397,7 +1405,7 @@ subplot(sp(4))
     %add in plot of bathymetry
     dmM = [yl(2) DmaxM(1) DmaxM' DmaxM(end) yl(2)];
     kcM = [x_gridM(1,1) x_gridM(1,:) x_gridM(1,end)];
-    fill(kcM,dmM,fc,'edgecolor','none');
+    fill(kcM,dmM,fc,'edgecolor',fc);
     text(17,27,'d','color',[0 0 0],'fontsize',fsl);
     axis ij;
 
@@ -1407,7 +1415,7 @@ subplot(sp(8))
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
     colormap('turbo')
-    C = contourf(x_gridA,dl_grid,DO2_umolkgiA,clevelO2,'edgecolor','none');
+    C = contourf(x_gridA,dl_grid,DO2_umolkgiA,clevelO2,'edgecolor','flat');
     contour(x_gridA,dl_grid,DO2_umolkgiA,0,'edgecolor','k');
     plot(LISA.km_cumulative(asA),LISA.Depth(asA),'+k', 'linewidth', 2, 'markersize',ms)
 
@@ -1429,7 +1437,7 @@ subplot(sp(8))
     %add in plot of bathymetry
     dmA = [yl(2) DmaxA(1) DmaxA' DmaxA(end) yl(2)];
     kcA = [x_gridA(1,1) x_gridA(1,:) x_gridA(1,end)];
-    fill(kcA,dmA,fc,'edgecolor','none');
+    fill(kcA,dmA,fc,'edgecolor',fc);
     text(17,27,'h','color',[0 0 0],'fontsize',fsl);
     axis ij;
 
@@ -1440,16 +1448,16 @@ subplot(sp(9))
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
     colormap('turbo')
-    C = contourf(x_gridO,dl_grid,DO2_umolkgiO,clevelO2,'edgecolor','none');
+    C = contourf(x_gridO,dl_grid,DO2_umolkgiO,clevelO2,'edgecolor','flat');
     contour(x_gridO,dl_grid,DO2_umolkgiO,0,'edgecolor','k');
     plot(LISO.km_cumulative(asO),LISO.Depth(asO),'+k', 'linewidth', 2, 'markersize',ms)
 
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
     caxis(caO2)
-    c = colorbar('location','eastoutside');
-    c.Label.String = '\DeltaO_2 [\mumol kg^{-1}]';
-    c.FontSize = fs;
+    %c = colorbar('location','eastoutside');
+    %c.Label.String = '\DeltaO_2 [\mumol kg^{-1}]';
+    %c.FontSize = fs;
     set(gca,'layer','top');
     ylim(yl);
     xlim(xl);
@@ -1461,7 +1469,7 @@ subplot(sp(9))
     %add in plot of bathymetry
     dmO = [yl(2) DmaxO(1) DmaxO' DmaxO(end) yl(2)];
     kcO = [x_gridO(1,1) x_gridO(1,:) x_gridO(1,end)];
-    fill(kcO,dmO,fc,'edgecolor','none');
+    fill(kcO,dmO,fc,'edgecolor',fc);
     text(17,27,'i','color',[0 0 0],'fontsize',fsl);
     axis ij;
 
@@ -1471,7 +1479,7 @@ subplot(sp(7))
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
     colormap('turbo')
-    C = contourf(x_gridM,dl_grid,DO2_umolkgiM,clevelO2,'edgecolor','none');
+    C = contourf(x_gridM,dl_grid,DO2_umolkgiM,clevelO2,'edgecolor','flat');
         contour(x_gridM,dl_grid,DO2_umolkgiM,[0 0],'-k');
     plot(LISM.km_cumulative(asM),LISM.Depth(asM),'+k', 'linewidth', 2, 'markersize',ms)
 
@@ -1493,7 +1501,7 @@ subplot(sp(7))
     %add in plot of bathymetry
     dmM = [yl(2) DmaxM(1) DmaxM' DmaxM(end) yl(2)];
     kcM = [x_gridM(1,1) x_gridM(1,:) x_gridM(1,end)];
-    fill(kcM,dmM,fc,'edgecolor','none');
+    fill(kcM,dmM,fc,'edgecolor',fc);
     text(17,27,'g','color',[0 0 0],'fontsize',fsl);
     axis ij;
 
@@ -1504,7 +1512,7 @@ subplot(sp(11))
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
     colormap('turbo')
-    C = contourf(x_gridA,dl_grid,PDeniA,clevelPDen,'edgecolor','none');
+    C = contourf(x_gridA,dl_grid,PDeniA,clevelPDen,'edgecolor','flat');
     plot(LISA.km_cumulative(asA),LISA.Depth(asA),'+k', 'linewidth', 2, 'markersize',ms)
 
     caxis(caPDen)
@@ -1525,7 +1533,7 @@ subplot(sp(11))
     %add in plot of bathymetry
     dmA = [yl(2) DmaxA(1) DmaxA' DmaxA(end) yl(2)];
     kcA = [x_gridA(1,1) x_gridA(1,:) x_gridA(1,end)];
-    fill(kcA,dmA,fc,'edgecolor','none');
+    fill(kcA,dmA,fc,'edgecolor',fc);
     text(17,27,'k','color',[0 0 0],'fontsize',fsl);
     axis ij;
 
@@ -1536,15 +1544,15 @@ subplot(sp(12))
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
     colormap('turbo')
-    C = contourf(x_gridO,dl_grid,PDeniO,clevelPDen,'edgecolor','none');
+    C = contourf(x_gridO,dl_grid,PDeniO,clevelPDen,'edgecolor','flat');
     plot(LISO.km_cumulative(asO),LISO.Depth(asO),'+k', 'linewidth', 2, 'markersize',ms)
 
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
     clim(caPDen)
-    c = colorbar('location','eastoutside');
-    c.Label.String = '\sigma_{\theta} [kg m^{-3}]';
-    c.FontSize = fs;
+    %c = colorbar('location','eastoutside');
+    %c.Label.String = '\sigma_{\theta} [kg m^{-3}]';
+    %c.FontSize = fs;
     set(gca,'layer','top');
     ylim(yl);
     xlim(xl);
@@ -1557,7 +1565,7 @@ subplot(sp(12))
     %add in plot of bathymetry
     dmM = [yl(2) DmaxO(1) DmaxO' DmaxO(end) yl(2)];
     kcO = [x_gridO(1,1) x_gridO(1,:) x_gridO(1,end)];
-    fill(kcO,dmO,fc,'edgecolor','none');
+    fill(kcO,dmO,fc,'edgecolor',fc);
     text(17,27,'l','color',[0 0 0],'fontsize',fsl);
     axis ij;
 
@@ -1567,7 +1575,7 @@ subplot(sp(10))
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
     colormap('turbo')
-    C = contourf(x_gridM,dl_grid,PDeniM,clevelPDen,'edgecolor','none');
+    C = contourf(x_gridM,dl_grid,PDeniM,clevelPDen,'edgecolor','flat');
   %  C = surf(x_grid,dl_grid,PDeniM,clevelPDen,'facecolor','interp','edgecolor','interp');
   %  surf instead, with 'FaceColor','interp', 'EdgeColor','interp' and %view(0,90)’.  
     plot(LISM.km_cumulative(asM),LISM.Depth(asM),'+k', 'linewidth', 2, 'markersize',ms)
@@ -1590,7 +1598,7 @@ subplot(sp(10))
     %add in plot of bathymetry
     dmM = [yl(2) DmaxM(1) DmaxM' DmaxM(end) yl(2)];
     kcM = [x_gridM(1,1) x_gridM(1,:) x_gridM(1,end)];
-    fill(kcM,dmM,fc,'edgecolor','none');
+    fill(kcM,dmM,fc,'edgecolor',fc);
     text(17,27,'j','color',[0 0 0],'fontsize',fsl);
     axis ij;
     
@@ -1600,7 +1608,22 @@ subplot(sp(10))
 %print(gcf,'-depsc','-vector','20250712_LIS_Transect_DCH4_DN2O_DO2_PDen.eps');
 %epsclean('20250712_LIS_Transect_DCH4_DN2O_DO2_PDen.eps','20250712_LIS_Transect_DCH4_DN2O_DO2_PDen.eps');
 
-exportgraphics(gcf,'20250712_LIS_Transect_DCH4_DN2O_DO2_PDen_withcolorbar_rgb.eps','BackgroundColor','none','ContentType','vector','Resolution', 300,'Colorspace','rgb');
+%print(gcf,'-depsc','-painters','out.eps');
+%epsclean('out.eps');
+
+%set(gcf,'renderer','opengl'); 
+%saveas(gcf,'test','epsc','Resolution','600'); 
+
+exportgraphics(gcf,'20250718_LIS_Transect_DCH4_DN2O_DO2_PDen_nocolorbar.eps','BackgroundColor','none','ContentType','vector')
+
+%%
+%PDF
+exportgraphics(gcf,'myVectorFile.pdf','BackgroundColor','none','ContentType','vector')
+
+%exportgraphics(gcf,'myVectorFile.svg','BackgroundColor','none','ContentType','vector')
+
+
+%exportgraphics(gcf,'20250712_LIS_Transect_DCH4_DN2O_DO2_PDen_withcolorbar_rgb.eps','BackgroundColor','none','ContentType','vector','Resolution', 300,'Colorspace','rgb');
 
 %%
 

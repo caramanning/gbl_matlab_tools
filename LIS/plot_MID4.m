@@ -136,27 +136,28 @@ N2OatmdryA = N2Oatmdry;
 
 load LISAug23_CH4N2O_CTD.mat
 LISA = LISAug23_CH4N2O_CTD; % August
-LISA.datetime_local = LISA.datetime + UTC_to_local;
-LISA.dn_local = datenum(LISA.datetime_local);
-
-LISA.CH4_mean_nmolkg = LISA.mean_CH4_nM./(1000+LISA.PDen).*1000;
-LISA.N2O_mean_nmolkg = LISA.mean_N2O_nM./(1000+LISA.PDen).*1000;
-LISA.CH4_std_nmolkg = LISA.std_CH4_nM./(1000+LISA.PDen).*1000;
-LISA.N2O_std_nmolkg = LISA.std_N2O_nM./(1000+LISA.PDen).*1000;
-
-LISA.N2Oatm_H2Osat = N2OatmdryA .* (1 - vpress(LISA.S,LISA.T));
-LISA.N2O_eq_nmolkg = N2Osol(LISA.S,LISA.T,LISA.N2Oatm_H2Osat).*1000;
-
-LISA.CH4atm_H2Osat = CH4atmdryA .* (1 - vpress(LISA.S,LISA.T));
-LISA.CH4_eq_nmolkg = CH4sol(LISA.S,LISA.T,LISA.CH4atm_H2Osat)'.*1000;
-
-LISA.DCH4_nmolkg = LISA.CH4_mean_nmolkg - LISA.CH4_eq_nmolkg;
-LISA.DN2O_nmolkg = LISA.N2O_mean_nmolkg - LISA.N2O_eq_nmolkg;
-LISA.DO2_umolkg = LISA.O2_umolkg - O2sol(LISA.S,LISA.T);
-
-LISA.DCH4 = (LISA.CH4_mean_nmolkg./LISA.CH4_eq_nmolkg - 1).*100;
-LISA.DN2O = (LISA.N2O_mean_nmolkg./LISA.N2O_eq_nmolkg - 1).* 100;
-LISA.DO2 = (LISA.O2_umolkg./O2sol(LISA.S,LISA.T) - 1).*100;
+%%
+% LISA.datetime_local = LISA.datetime + UTC_to_local;
+% LISA.dn_local = datenum(LISA.datetime_local);
+% 
+% LISA.CH4_mean_nmolkg = LISA.mean_CH4_nM./(1000+LISA.PDen).*1000;
+% LISA.N2O_mean_nmolkg = LISA.mean_N2O_nM./(1000+LISA.PDen).*1000;
+% LISA.CH4_std_nmolkg = LISA.std_CH4_nM./(1000+LISA.PDen).*1000;
+% LISA.N2O_std_nmolkg = LISA.std_N2O_nM./(1000+LISA.PDen).*1000;
+% 
+% LISA.N2Oatm_H2Osat = N2OatmdryA .* (1 - vpress(LISA.S,LISA.T));
+% LISA.N2O_eq_nmolkg = N2Osol(LISA.S,LISA.T,LISA.N2Oatm_H2Osat).*1000;
+% 
+% LISA.CH4atm_H2Osat = CH4atmdryA .* (1 - vpress(LISA.S,LISA.T));
+% LISA.CH4_eq_nmolkg = CH4sol(LISA.S,LISA.T,LISA.CH4atm_H2Osat)'.*1000;
+% 
+% LISA.DCH4_nmolkg = LISA.CH4_mean_nmolkg - LISA.CH4_eq_nmolkg;
+% LISA.DN2O_nmolkg = LISA.N2O_mean_nmolkg - LISA.N2O_eq_nmolkg;
+% LISA.DO2_umolkg = LISA.O2_umolkg - O2sol(LISA.S,LISA.T);
+% 
+% LISA.DCH4 = (LISA.CH4_mean_nmolkg./LISA.CH4_eq_nmolkg - 1).*100;
+% LISA.DN2O = (LISA.N2O_mean_nmolkg./LISA.N2O_eq_nmolkg - 1).* 100;
+% LISA.DO2 = (LISA.O2_umolkg./O2sol(LISA.S,LISA.T) - 1).*100;
 
 
 load LISAug2023CastData.mat;
@@ -200,6 +201,7 @@ N2OatmdryO = N2Oatmdry;
 
 load LISOct23_CH4N2O_CTD.mat
 LISO = LISOct23_CH4N2O_CTD; % October
+%%
 LISO.datetime_local = LISO.datetime + UTC_to_local;
 LISO.dn_local = datenum(LISO.datetime_local);
 
@@ -262,7 +264,8 @@ CH4atmdryM = CH4atmdry;
 N2OatmdryM = N2Oatmdry;
 
 load LISMay24_CH4N2O_CTD.mat
-LISM = LISMay24_CH4N2O_CTD; % August
+LISM = LISMay24_CH4N2O_CTD; % May
+%%
 LISM.datetime_local = LISM.datetime + UTC_to_local;
 LISM.dn_local = datenum(LISM.datetime_local);
 
