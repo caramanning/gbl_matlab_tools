@@ -3,7 +3,7 @@
 % data from mooring 44040, WLIS, was not available for the desired time
 % period
 
-clear all;
+clear all; clc;
 
 load LISAug23_CH4N2O_CTD.mat;
 
@@ -167,6 +167,9 @@ gd.depth = LIS_s.Depth;
 gd.n2o_nmolkg = LIS_s.N2O_mean_nmolkg;
 gd.ch4_nmolkg = LIS_s.CH4_mean_nmolkg;
 
+gd.n2o_std_nmolkg = LIS_s.N2O_std_nmolkg;
+gd.ch4_std_nmolkg = LIS_s.CH4_std_nmolkg;
+
 
 
 % calculate n2o concentration with water vapor pressure at saturation
@@ -189,10 +192,13 @@ s_S = gd.S;
 s_P = gd.P;
 s_ch4 = gd.ch4_nmolkg;
 s_n2o = gd.n2o_nmolkg;
+s_ch4_std = gd.ch4_std_nmolkg;
+s_n2o_std = gd.n2o_std_nmolkg;
 s_ch4_eq = gd.ch4_eq_nmolkg;
 s_n2o_eq = gd.n2o_eq_nmolkg;
 s_station = gd.station;
 s_depth = gd.depth;
+
 
 %%
 
@@ -227,8 +233,9 @@ s_depth = gd.depth;
 % create structure to save the interpolated data
 und.time= s_time; 
 
-% calculate instantaneous wind speeds for time of each sample
-und.wind = interpn(b.datenum,b.u10,und.time); % need to turn the Y and Z into doubles
+% calculate instantaneous wind speeds and slp for time of each sample
+und.wind = interpn(b.datenum,b.u10,und.time); 
+und.slp = interpn(b.datenum,b.slp,und.time);
 
 %-------------- instantaneous and 15-day weighted fluxes -----------------
 %--- Create historical wind and slp matrices for the samples using the
@@ -256,18 +263,14 @@ t_back(:,end) = und.time;
 windmat(:,end) = und.wind; %add instantaneous wind
 und.windmat = windmat;
 
-%for kk=fliplr(lag_slp)
-%    t_back_slp(:,kk) = und.time - datenum(0,0,0,kk*int,0,0); %lag sample time backwards by kk*int hours (e.g. if kk = 120 and int = 6 hrs ==> lag backwards 720 hrs (30 days)
-%    slp_back = interpn(X_slp,Y_slp,Z_slp,V_slp,t_back_slp(:,kk),und.lat,und.lon); %interpolate to lat/lon/time grid - wind speed lagged backwards, interpolated onto cruise track grid
-%    slpmat(:,lag(end)-lag(kk)+1) = slp_back; %fill matrix
-%end
+for kk=fliplr(lag_slp)
+   t_back_slp(:,kk) = und.time - datenum(0,0,0,kk*int,0,0); %lag sample time backwards by kk*int hours (e.g. if kk = 120 and int = 6 hrs ==> lag backwards 720 hrs (30 days)
+   slp_back = interpn(b.datenum,b.slp,t_back(:,kk)); %interpolate to lat/lon/time grid - wind speed lagged backwards, interpolated onto cruise track grid   
+   slpmat(:,lag(end)-lag(kk)+1) = slp_back; %fill matrix
+end
 
-%slpmat(:,end) = und.slp; %add instantaneous slp
-%und.slpmat = slpmat;
-
-% temporarily putting in 1 values for pressure
-slpmat = ones(size(und.windmat));
-und.slpmat = ones(size(und.windmat));
+slpmat(:,end) = und.slp; %add instantaneous slp
+und.slpmat = slpmat;
 
 % clear variables no longer needed
 clear  X_wind Y_wind Z_wind V_wind ...
@@ -291,7 +294,7 @@ zMLmat = repmat(s_mld,1,length(lag)+1);
 spd = 60*60*24; % seconds per day
 k.CH4 = kgas(windmat,Scmat_CH4,'W14').* spd; % m/d
 k.N2O = kgas(windmat,Scmat_N2O,'W14') .* spd; % m/d
-
+%%
 %ice = und.icemat;
 
 slp_inst = slpmat(:,end); % instantaneous slp
@@ -304,13 +307,13 @@ gd.k_inst_N2O = k.N2O(:,1); % instantaneous N2O gas tranfer velocity in m/d
 gd.F_CH4_inst = gd.k_inst_CH4.*(s_ch4-s_ch4_eq.*slp_inst)./1000.*sw_dens(s_S,s_T,s_P); % umol/m2/d
 gd.F_N2O_inst = gd.k_inst_N2O.*(s_n2o-s_n2o_eq.*slp_inst)./1000.*sw_dens(s_S,s_T,s_P); % umol/m2/d
 
-% calculate 30-day weighted gas transfer velocity corrected for ice cover
+% calculate 15-day weighted gas transfer velocity corrected for ice cover
 gd.k_wt_15_CH4 = nan.*s_time; % initialize variable
 gd.k_wt_15_N2O = nan.*s_time; % initialize variable
-gd.wt_30 = nan.*s_time;
+%gd.wt_15 = nan.*s_time;
 
 for kk = 1:length(Scmat_CH4(:,1))
-    [gd.k_wt_15_CH4(kk) gd.wt_15(kk,:)] = kw_weighting(k.CH4(kk,:), int/24, wt_t, zMLmat(kk,:)); % m/d
+    gd.k_wt_15_CH4(kk) = kw_weighting(k.CH4(kk,:), int/24, wt_t, zMLmat(kk,:)); % m/d
     gd.k_wt_15_N2O(kk) = kw_weighting(k.N2O(kk,:), int/24, wt_t, zMLmat(kk,:)); % m/d
 end
 
@@ -326,6 +329,9 @@ slp_15 = mean(slpmat,2); % 15-day average slp
 gd.F_CH4_15 = gd.k_wt_15_CH4.*(s_ch4-s_ch4_eq.*slp_15)./1000.*sw_dens(s_S,s_T,s_P); % umol/m2/d
 gd.F_N2O_15 = gd.k_wt_15_N2O.*(s_n2o-s_n2o_eq.*slp_15)./1000.*sw_dens(s_S,s_T,s_P); % umol/m2/d
 
+gd.slp_inst = slp_inst;
+gd.slp_15 = slp_15;
+
 %gd.tres_15_N2O = gd.mld./gd.k_wt_15_N2O;
 %gd.tres_15_CH4 = gd.mld./gd.k_wt_15_CH4;
 
@@ -337,8 +343,10 @@ disp('processed 15-day weighted gas fluxes')
 % create structure to save the interpolated data
 und.time= s_time; 
 
-% calculate instantaneous wind speeds for time of each sample
-und.wind = interpn(b.datenum,b.u10,und.time); % need to turn the Y and Z into doubles
+% calculate instantaneous wind speed and slp for time of each sample
+und.wind = interpn(b.datenum,b.u10,und.time); 
+und.slp = interpn(b.datenum,b.slp,und.time);
+
 
 %-------------- instantaneous and 30-day weighted fluxes -----------------
 %--- Create historical wind and slp matrices for the samples using the
@@ -421,12 +429,18 @@ gd.F_N2O_inst = gd.k_inst_N2O.*(s_n2o-s_n2o_eq.*slp_inst)./1000.*sw_dens(s_S,s_T
 % calculate 30-day weighted gas transfer velocity corrected for ice cover
 gd.k_wt_30_CH4 = nan.*s_time; % initialize variable
 gd.k_wt_30_N2O = nan.*s_time; % initialize variable
-gd.wt_30 = nan.*s_time;
+%gd.wt_30 = nan.*s_time;
+
 
 for kk = 1:length(Scmat_CH4(:,1))
-    [gd.k_wt_30_CH4(kk) gd.wt_30(kk,:)] = kw_weighting(k.CH4(kk,:), int/24, wt_t, zMLmat(kk,:)); % m/d
+    gd.k_wt_30_CH4(kk) = kw_weighting(k.CH4(kk,:), int/24, wt_t, zMLmat(kk,:)); % m/d
     gd.k_wt_30_N2O(kk) = kw_weighting(k.N2O(kk,:), int/24, wt_t, zMLmat(kk,:)); % m/d
 end
+
+% for kk = 1:length(Scmat_CH4(:,1))
+%     [gd.k_wt_30_CH4(kk) gd.wt_30(kk,:)] = kw_weighting(k.CH4(kk,:), int/24, wt_t, zMLmat(kk,:)); % m/d
+%     gd.k_wt_30_N2O(kk) = kw_weighting(k.N2O(kk,:), int/24, wt_t, zMLmat(kk,:)); % m/d
+% end
 
 clear kk
 
@@ -454,8 +468,8 @@ disp('processed 30-day weighted gas fluxes')
 
 %%
 
-LIS_gas_flux_May = gd; %rename variable for saving
-save LIS_gas_flux_May.mat LIS_gas_flux_May;
+LIS_gas_flux_Oct = gd; %rename variable for saving
+save LIS_gas_flux_Oct.mat LIS_gas_flux_Oct;
 
 
 
