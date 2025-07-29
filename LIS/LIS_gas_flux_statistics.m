@@ -1,6 +1,8 @@
 % stnlist from west to east
 stnlist = {'EXR1', 'EXRX', 'MID3', 'MID4', 'MID5', 'WLIS', 'WLI6'};
 
+km_transect = [0    1.4482    5.4270    9.0377   13.0335   16.2552   18.4318];
+%%
 % load August data
 load LIS_gas_flux_Aug.mat;
 gfA = LIS_gas_flux_Aug;
@@ -32,10 +34,27 @@ for i = 1:length(stnlist);
     gfA_avg.lat(i) = mean(gfA.lat(indices));
     gfA_avg.lon(i) = mean(gfA.lon(indices));  
     gfA_avg.n2o_nmolkg(i) = mean(gfA.n2o_nmolkg(indices));  
-    gfA_avg.n2o_std_nmolkg(i) = std(gfA.n2o_nmolkg(indices));
-    gfA_avg.n2o_eq_nmolkg(i) = mean(gfA.n2o_eq_nmolkg(indices));       
+    % if there are multiple samples for the station, take standard
+    % deviation of repeat measurements
+    % else, take the standard deviation from duplicates
+    if numel(indices) > 1
+        gfA_avg.n2o_std_nmolkg(i) = std(gfA.n2o_nmolkg(indices)); 
+    else
+        gfA_avg.n2o_std_nmolkg(i) = mean(gfA.n2o_std_nmolkg(indices)); 
+    end;    
+
+    gfA_avg.n2o_eq_nmolkg(i) = mean(gfA.n2o_eq_nmolkg(indices)); 
+
     gfA_avg.ch4_nmolkg(i) = mean(gfA.ch4_nmolkg(indices));  
-    gfA_avg.ch4_std_nmolkg(i) = std(gfA.ch4_nmolkg(indices)); 
+    % if there are multiple samples for the station, take standard
+    % deviation of repeat measurements
+    % else, take the standard deviation from duplicates
+    if numel(indices) > 1
+        gfA_avg.ch4_std_nmolkg(i) = std(gfA.ch4_nmolkg(indices)); 
+    else
+        gfA_avg.ch4_std_nmolkg(i) = mean(gfA.ch4_std_nmolkg(indices)); 
+    end;
+
     gfA_avg.ch4_eq_nmolkg(i) = mean(gfA.ch4_eq_nmolkg(indices));       
     gfA_avg.F_N2O_15(i) = mean(gfA.F_N2O_15(indices));  
     gfA_avg.F_N2O_15_std(i) = std(gfA.F_N2O_15(indices)); 
@@ -45,6 +64,13 @@ end;
 
 gfA_avg.DCH4 = (gfA_avg.ch4_nmolkg - gfA_avg.ch4_eq_nmolkg)./gfA_avg.ch4_eq_nmolkg .* 100;
 gfA_avg.DN2O = (gfA_avg.n2o_nmolkg - gfA_avg.n2o_eq_nmolkg)./gfA_avg.n2o_eq_nmolkg .* 100;
+
+
+%%
+% now do monte carlo error analysis
+% get matrix of
+F_CH4_mc = k_CH4_md
+gd.F_CH4_30 = gd.k_wt_30_CH4.*(s_ch4-s_ch4_eq.*slp_30)./1000.*sw_dens(s_S,s_T,s_P); % umol/m2/d
 
 
 %%
@@ -80,10 +106,25 @@ for i = 1:length(stnlist);
     gfO_avg.lat(i) = mean(gfO.lat(indices));
     gfO_avg.lon(i) = mean(gfO.lon(indices));  
     gfO_avg.n2o_nmolkg(i) = mean(gfO.n2o_nmolkg(indices));  
-    gfO_avg.n2o_std_nmolkg(i) = std(gfO.n2o_nmolkg(indices));  
+    % if there are multiple samples for the station, take standard
+    % deviation of repeat measurements
+    % else, take the standard deviation from duplicates
+    if numel(indices) > 1
+        gfO_avg.n2o_std_nmolkg(i) = std(gfO.n2o_nmolkg(indices)); 
+    else
+        gfO_avg.n2o_std_nmolkg(i) = mean(gfO.n2o_std_nmolkg(indices)); 
+    end;     
     gfO_avg.n2o_eq_nmolkg(i) = mean(gfO.n2o_eq_nmolkg(indices));       
     gfO_avg.ch4_nmolkg(i) = mean(gfO.ch4_nmolkg(indices));  
-    gfO_avg.ch4_std_nmolkg(i) = std(gfO.ch4_nmolkg(indices)); 
+    % if there are multiple samples for the station, take standard
+    % deviation of repeat measurements
+    % else, take the standard deviation from duplicates
+    if numel(indices) > 1
+        gfO_avg.ch4_std_nmolkg(i) = std(gfO.ch4_nmolkg(indices)); 
+    else
+        gfO_avg.ch4_std_nmolkg(i) = mean(gfO.ch4_std_nmolkg(indices)); 
+    end;
+
     gfO_avg.ch4_eq_nmolkg(i) = mean(gfO.ch4_eq_nmolkg(indices));       
     gfO_avg.F_N2O_15(i) = mean(gfO.F_N2O_15(indices));  
     gfO_avg.F_N2O_15_std(i) = std(gfO.F_N2O_15(indices)); 
@@ -108,10 +149,25 @@ gfM_avg.station = sl'; % create table for average flux data
 gfM_avg.lat = nan(numel(stnlist),1);
 gfM_avg.lon = nan(numel(stnlist),1);
 gfM_avg.n2o_nmolkg = nan(numel(stnlist),1);
-gfM_avg.n2o_std_nmolkg = nan(numel(stnlist),1);
+    % if there are multiple samples for the station, take standard
+    % deviation of repeat measurements
+    % else, take the standard deviation from duplicates
+    if numel(indices) > 1
+        gfM_avg.n2o_std_nmolkg(i) = std(gfM.n2o_nmolkg(indices)); 
+    else
+        gfM_avg.n2o_std_nmolkg(i) = mean(gfM.n2o_std_nmolkg(indices)); 
+    end;    
 gfM_avg.n2o_eq_nmolkg = nan(numel(stnlist),1);
 gfM_avg.ch4_nmolkg = nan(numel(stnlist),1);
-gfM_avg.ch4_std_nmolkg = nan(numel(stnlist),1);
+    % if there are multiple samples for the station, take standard
+    % deviation of repeat measurements
+    % else, take the standard deviation from duplicates
+    if numel(indices) > 1
+        gfM_avg.ch4_std_nmolkg(i) = std(gfM.ch4_nmolkg(indices)); 
+    else
+        gfM_avg.ch4_std_nmolkg(i) = mean(gfM.ch4_std_nmolkg(indices)); 
+    end;
+
 gfM_avg.ch4_eq_nmolkg = nan(numel(stnlist),1);
 gfM_avg.F_CH4_15 = nan(numel(stnlist),1);
 gfM_avg.F_CH4_15_std = nan(numel(stnlist),1);
@@ -148,17 +204,25 @@ clf;
 subplot(2,2,1)
 hold on; box on;
 set(gca,'tickdir','out');
-%set(gca,'xlim',[-0.2 7.2]);
-set(gca,'xticklabel',stnlist);
+set(gca,'xlim',[-0.5 19]);
+%set(gca,'xticklabel',stnlist);
+set(gca,'xtick',km_transect)
 
 %plot(gfA_avg.ch4_nmolkg - gfA_avg.ch4_eq_nmolkg,'-o');
 %plot(gfO_avg.ch4_nmolkg - gfO_avg.ch4_eq_nmolkg,'-o');
-plot(gfA_avg.DCH4,'-o');
-plot(gfO_avg.DCH4,'-o');
-plot(gfM_avg.DCH4,'-o');
+plot(km_transect, gfA_avg.DCH4,'-o');
+plot(km_transect, gfO_avg.DCH4,'-o');
+plot(km_transect, gfM_avg.DCH4,'-o');
+
+ax1.XAxisLocation = 'bottom';
+ax1.YAxisLocation = 'left';
+ax1.Box = 'off'; % Optional: remove the box to avoid double ticks
+ax1.XTick = 0:5:15;         % Bottom ticks
+
 legend('Aug','Oct','May');
 %ylabel('\DeltaCH_4 (nmol kg^{-1})')
 ylabel('\DeltaCH_4 (%)');
+xlabel('Transect distance [km]');
 
 subplot(2,2,2)
 hold on; box on;
