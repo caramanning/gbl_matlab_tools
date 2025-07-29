@@ -380,7 +380,7 @@ mfa = 0.5; % marker face alpha (transparency)
 cch4 = [25 440];
 cn2o = [8.3 16.4];
 
-ms=60;
+ms=45;
 
 nr = 1; % number of rows
 nc = 3;  % number of columns
@@ -507,11 +507,11 @@ ylim(yl);
 
 wysiwyg;
 
-exportgraphics(gcf,'20250718_WLIS_TSplot_noclabel.eps','BackgroundColor','none','ContentType','vector')
-
+exportgraphics(gcf,'20250719_WLIS_TSplot_noclabel.eps','BackgroundColor','none','ContentType','vector')
+%
 %print -dpng -r300 20250709_WLIS_TSplot_noclabel.png;
 %print(gcf,'-depsc','-vector','20250709_WLIS_TSplot_noclabel.eps');
-print(gcf,'-dpdf','-vector','20250718_WLIS_TSplot_noclabel.pdf');
+print(gcf,'-dpdf','-vector','20250719_WLIS_TSplot_noclabel.pdf');
 epsclean('20250718_WLIS_TSplot_noclabel.eps','20250718_WLIS_TSplot_noclabel_clean.eps');
 
 %%
