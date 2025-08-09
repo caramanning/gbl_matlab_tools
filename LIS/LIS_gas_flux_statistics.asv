@@ -127,14 +127,12 @@ for i = 1:length(stnlist);
     gfO_avg.F_N2O_15_std(i) = std(gfO.F_N2O_15(indices)); 
     gfO_avg.F_CH4_15(i) = mean(gfO.F_CH4_15(indices));  
     gfO_avg.F_CH4_15_std(i) = std(gfO.F_CH4_15(indices)); 
-    gfO_avg.k_wt_15_N2O(i) = mean(gfO.k_wt_15_N2O(indices));  
-    gfO_avg.k_wt_15_CH4(i) = mean(gfO.k_wt_15_CH4(indices));     
 end;
 
 gfO_avg.DCH4 = (gfO_avg.ch4_nmolkg - gfO_avg.ch4_eq_nmolkg)./gfO_avg.ch4_eq_nmolkg .* 100;
 gfO_avg.DN2O = (gfO_avg.n2o_nmolkg - gfO_avg.n2o_eq_nmolkg)./gfO_avg.n2o_eq_nmolkg .* 100;
 
-save LIS_gas_flux_Oct_avg.mat gfO_avg gfO;
+
 
 % load May data
 load LIS_gas_flux_May.mat;
@@ -190,14 +188,12 @@ for i = 1:length(stnlist);
     gfM_avg.F_N2O_15_std(i) = std(gfM.F_N2O_15(indices)); 
     gfM_avg.F_CH4_15(i) = mean(gfM.F_CH4_15(indices));  
     gfM_avg.F_CH4_15_std(i) = std(gfM.F_CH4_15(indices)); 
-    gfM_avg.k_wt_15_N2O(i) = mean(gfM.k_wt_15_N2O(indices));  
-    gfM_avg.k_wt_15_CH4(i) = mean(gfM.k_wt_15_CH4(indices));     
+    
 end;
 
 gfM_avg.DCH4 = (gfM_avg.ch4_nmolkg - gfM_avg.ch4_eq_nmolkg)./gfM_avg.ch4_eq_nmolkg .* 100;
 gfM_avg.DN2O = (gfM_avg.n2o_nmolkg - gfM_avg.n2o_eq_nmolkg)./gfM_avg.n2o_eq_nmolkg .* 100;
 
-save LIS_gas_flux_May_avg.mat gfM_avg gfM;
 
 %%
 [median(gfA_avg.DCH4) min(gfA_avg.DCH4) max(gfA_avg.DCH4)]
