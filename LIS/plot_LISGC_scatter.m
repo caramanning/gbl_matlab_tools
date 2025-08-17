@@ -15,7 +15,7 @@ for i = 1:numel(LISA.StationDepth)
     LISA.StationDepth(i) = LISCDA.Dmax(A);
 end;
 
-% ncast = 16:22;
+ ncast = 16:22;
 % km_between = m_lldist(LISCDA.Lon(ncast),LISCDA.Lat(ncast)); % distance between consecutive stations
 % km_between = [0; km_between]; % add on zero for first station
 
@@ -106,7 +106,7 @@ LISCDO.Dmax = sw_dpth(LISOct2023CastData.Pmax_dbar,LISCDO.Lat);
 % Lat = LISO.Lat(ncast);
 % Lon = LISO.Lon(ncast);
 % 
-% ncast = 16:22; % casts for transect;
+ncast = 16:22; % casts for transect;
 % km_between = m_lldist(LISCDO.Lon(ncast),LISCDO.Lat(ncast)); % distance between consecutive stations
 % km_between = [0; km_between]; % add on zero for first station
 % 
@@ -189,7 +189,7 @@ km_between = [0; km_between]; % add on zero for first station
 
 km_cumulativeM = cumsum(km_between); % consecutive distance
 DmaxM = LISCDM.Dmax(ncast); % max depth for station in transect based on deep cast
-%%
+
 % remove stations CLIS and ARTG;
 stns_to_exclude = ["CLIS-cast01"
     "ARTG-cast01"];
@@ -240,8 +240,8 @@ asA = W;
 
     %%
 
-    % all data
 
+%%
 figure(42)
 clf;
 subplot(2,2,1)
@@ -270,12 +270,12 @@ ylabel('\DeltaN_2O [nmol kg^{-1}]');
 
 subplot(2,2,3)
 hold on;
-plot(LISA.DCH4_nmolkg(iA),LISA.DN2O_nmolkg(iA),'o');
-plot(LISO.DCH4_nmolkg(iO),LISO.DN2O_nmolkg(iO),'s');
-plot(LISM.DCH4_nmolkg(iM),LISM.DN2O_nmolkg(iM),'^');
-xlabel('\DeltaCH_4 [nmol kg^{-1}]');
+plot(LISA.PDen(iA),LISA.DCH4_nmolkg(iA),'o');
+plot(LISO.PDen(iO),LISO.DCH4_nmolkg(iO),'s');
+plot(LISM.PDen(iM),LISM.DCH4_nmolkg(iM),'^');
+xlabel('\sigma_{\theta} [kg m^{-3}]')
 legend('Aug','Oct','May','location','northeast');
-ylabel('\DeltaN_2O [nmol kg^{-1}]');
+ylabel('\DeltaCH_4 [nmol kg^{-1}]');
 
 subplot(2,2,4)
 hold on;
@@ -285,6 +285,107 @@ plot(LISM.PDen(iM),LISM.DN2O_nmolkg(iM),'^');
 legend('Aug','Oct','May','location','northeast');
 xlabel('\sigma_{\theta} [kg m^{-3}]');
 ylabel('\DeltaN_2O [nmol kg^{-1}]');
+
+
+%%
+
+% subsurface data only and mid4 only
+
+figure(43)
+clf;
+subplot(2,2,1)
+hold on;
+
+idx = contains(string(LISA.Station), "MID4");
+iA = find(idx & LISA.Depth>LISA.mld);
+
+idx = contains(string(LISO.Station), "MID4");
+iO = find(idx & LISO.Depth>LISO.mld);
+
+idx = contains(string(LISM.Station), "MID4");
+iM = find(idx & LISM.Depth>LISM.mld);
+
+plot(LISA.DO2_umolkg(iA),LISA.DCH4_nmolkg(iA),'o');
+plot(LISO.DO2_umolkg(iO),LISO.DCH4_nmolkg(iO),'s');
+plot(LISM.DO2_umolkg(iM),LISM.DCH4_nmolkg(iM),'^');
+legend('Aug','Oct','May','location','northeast');
+xlabel('\DeltaO_2 [\mumol kg^{-1}]');
+ylabel('\DeltaCH_4 [nmol kg^{-1}]');
+
+
+subplot(2,2,2)
+hold on;
+plot(LISA.DO2_umolkg(iA),LISA.DN2O_nmolkg(iA),'o');
+plot(LISO.DO2_umolkg(iO),LISO.DN2O_nmolkg(iO),'s');
+plot(LISM.DO2_umolkg(iM),LISM.DN2O_nmolkg(iM),'^');
+legend('Aug','Oct','May','location','northeast');
+xlabel('\DeltaO_2 [\mumol kg^{-1}]');
+ylabel('\DeltaN_2O [nmol kg^{-1}]');
+
+
+subplot(2,2,3)
+hold on;
+plot(LISA.PDen(iA),LISA.DCH4_nmolkg(iA),'o');
+plot(LISO.PDen(iO),LISO.DCH4_nmolkg(iO),'s');
+plot(LISM.PDen(iM),LISM.DCH4_nmolkg(iM),'^');
+xlabel('\sigma_{\theta} [kg m^{-3}]')
+legend('Aug','Oct','May','location','northeast');
+ylabel('\DeltaCH_4 [nmol kg^{-1}]');
+
+subplot(2,2,4)
+hold on;
+plot(LISA.PDen(iA),LISA.DN2O_nmolkg(iA),'o');
+plot(LISO.PDen(iO),LISO.DN2O_nmolkg(iO),'s');
+plot(LISM.PDen(iM),LISM.DN2O_nmolkg(iM),'^');
+legend('Aug','Oct','May','location','northeast');
+xlabel('\sigma_{\theta} [kg m^{-3}]');
+ylabel('\DeltaN_2O [nmol kg^{-1}]');
+%%
+% subsurface data only
+figure(44)
+clf;
+subplot(2,2,1)
+hold on;
+iA = find(LISA.Depth<=LISA.mld);
+iO = find(LISO.Depth<=LISO.mld);
+iM = find(LISM.Depth<=LISM.mld);
+
+plot(LISA.DO2_umolkg(iA),LISA.DCH4_nmolkg(iA),'o');
+plot(LISO.DO2_umolkg(iO),LISO.DCH4_nmolkg(iO),'s');
+plot(LISM.DO2_umolkg(iM),LISM.DCH4_nmolkg(iM),'^');
+legend('Aug','Oct','May','location','northeast');
+xlabel('\DeltaO_2 [\mumol kg^{-1}]');
+ylabel('\DeltaCH_4 [nmol kg^{-1}]');
+
+
+subplot(2,2,2)
+hold on;
+plot(LISA.DO2_umolkg(iA),LISA.DN2O_nmolkg(iA),'o');
+plot(LISO.DO2_umolkg(iO),LISO.DN2O_nmolkg(iO),'s');
+plot(LISM.DO2_umolkg(iM),LISM.DN2O_nmolkg(iM),'^');
+legend('Aug','Oct','May','location','northeast');
+xlabel('\DeltaO_2 [\mumol kg^{-1}]');
+ylabel('\DeltaN_2O [nmol kg^{-1}]');
+
+
+subplot(2,2,3)
+hold on;
+plot(LISA.PDen(iA),LISA.DCH4_nmolkg(iA),'o');
+plot(LISO.PDen(iO),LISO.DCH4_nmolkg(iO),'s');
+plot(LISM.PDen(iM),LISM.DCH4_nmolkg(iM),'^');
+xlabel('\sigma_{\theta} [kg m^{-3}]')
+legend('Aug','Oct','May','location','northeast');
+ylabel('\DeltaCH_4 [nmol kg^{-1}]');
+
+subplot(2,2,4)
+hold on;
+plot(LISA.PDen(iA),LISA.DN2O_nmolkg(iA),'o');
+plot(LISO.PDen(iO),LISO.DN2O_nmolkg(iO),'s');
+plot(LISM.PDen(iM),LISM.DN2O_nmolkg(iM),'^');
+legend('Aug','Oct','May','location','northeast');
+xlabel('\sigma_{\theta} [kg m^{-3}]');
+ylabel('\DeltaN_2O [nmol kg^{-1}]');
+
 %%
 % we need to make a grid that is evenly spaced so that all the casts are
 % interpolated onto the same spacing

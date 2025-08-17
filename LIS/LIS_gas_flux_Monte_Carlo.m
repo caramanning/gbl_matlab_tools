@@ -5,6 +5,8 @@ wind_rsd = 0.03;
 n2o_rsd = 0.04;
 ch4_rsd = 0.12;
 
+n2o_schmidt_rsd
+
 dens = 1017;
 
 sd_F_N2O = nan(length(gf.station),1);
@@ -17,7 +19,7 @@ n=1000;
 for i = 1:length(gf.station)
     mc_k_wt_15_N2O = gf.k_wt_15_N2O(i) + k_rsd.*gf.k_wt_15_N2O(i).*randn(n,1); % uncertainty in kn2o linear factor
     mc_k_wt_15_CH4 = gf.k_wt_15_CH4(i) + k_rsd .* gf.k_wt_15_CH4(i) .* randn(n, 1); % uncertainty in kch4 linear factor
-    mc_wind = (1 + wind_rsd .* randn(n, 1)); % additional factor to add based on wind speed squared
+    mc_wind = (1 + wind_rsd .* randn(n, 1)); % additional uncertainty factor to multiply on wind speed squared
     mc_n2o = gf.n2o_nmolkg(i) + n2o_rsd .* gf.n2o_nmolkg(i) .* randn(n, 1);
     mc_ch4 = gf.ch4_nmolkg(i) + ch4_rsd .* gf.ch4_nmolkg(i) .* randn(n, 1);
 
