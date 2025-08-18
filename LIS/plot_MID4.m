@@ -50,6 +50,9 @@ load LIS1035_pred_May24;
 PM = LIS1035_pred_May24;
 PM.Speedms = PM.Speedknots.*ms_per_knt;
 
+load LIS1035_pred_Aug23_46ft;
+PA46 = LIS1035_pred_Aug23_46ft;
+PA46.Speedms = PA46.Speedknots.*ms_per_knt;
 
 
 
@@ -1443,7 +1446,7 @@ clevelDCH4_nmolkg = [caDCH4_nmolkg(1):0.2:caDCH4_nmolkg(2)]; %CH4 colorbar level
 caDN2O_nmolkg = [0 5]; % N2O axis limits
 clevelDN2O_nmolkg = [caDN2O_nmolkg(1):0.02:caDN2O_nmolkg(2)]; % N2O colorbar levels
 
-caDO2_umolkg = [-230 120];
+caDO2_umolkg = [-230 110];
 clevelDO2_umolkg = [caDO2_umolkg(1):1:caDO2_umolkg(2)];
 
 caPDen = [15.7 18.7]; % PDen axis limits
@@ -1478,7 +1481,8 @@ subplot(sp(1))
         plot([uc(i) uc(i)],[-1 1],'--','color',bc);
     end;
     plot(datenum(PA.Datetime_local),PA.Speedms,'linewidth',lwC,'color','b');
-    
+    plot(datenum(PA46.Datetime_local),PA46.Speedms,'linewidth',lwC,'color','r');
+        
     title('August');
     set(gca,'xtick',xtA);
 %    plot(datenum(KA.Datetime_local),KA.Verifiedft);
@@ -1735,7 +1739,7 @@ subplot(sp(10))
 
     C = contourf(x_gridA,dl_grid,DO2_umolkgiA,clevelDO2_umolkg,'edgecolor','flat');
     plot(LISA.dn_local(asA),LISA.Depth(asA),'+k', 'linewidth', 2, 'markersize',ms)
-
+    contour(x_gridA,dl_grid,DO2_umolkgiA,[0 0],'-k');
     caxis(caDO2_umolkg)
     %c = colorbar('location','eastoutside');
     %c.Label.String = 'N_2O (nmol/kg)';
@@ -1767,7 +1771,7 @@ subplot(sp(11))
 
     C = contourf(x_gridO,dl_grid,DO2_umolkgiO,clevelDO2_umolkg,'edgecolor','flat');
     plot(LISO.dn_local(asO),LISO.Depth(asO),'+k', 'linewidth', 2, 'markersize',ms)
-
+    contour(x_gridO,dl_grid,DO2_umolkgiO,[0 0],'-k');
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
     caxis(caDO2_umolkg)
@@ -1796,7 +1800,9 @@ subplot(sp(12))
     set(gca,'fontsize',fs);
 
     C = contourf(x_gridM,dl_grid,DO2_umolkgiM,clevelDO2_umolkg,'edgecolor','flat');
-    plot(LISM.dn_local(asM),LISM.Depth(asM),'+k', 'linewidth', 2, 'markersize',ms)
+    plot(LISM.dn_local(asM),LISM.Depth(asM),'+k', 'linewidth', 2, 'markersize',ms);
+    contour(x_gridM,dl_grid,DO2_umolkgiM,[0 0],'-k');
+    %contour(x_gridO,dl_grid,DO2_umolkgiO,0,'edgecolor','k');
 
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
