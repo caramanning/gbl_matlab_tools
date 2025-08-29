@@ -54,6 +54,14 @@ load LIS1035_pred_Aug23_46ft;
 PA46 = LIS1035_pred_Aug23_46ft;
 PA46.Speedms = PA46.Speedknots.*ms_per_knt;
 
+load LIS1035_pred_Oct23_46ft;
+PO46 = LIS1035_pred_Oct23_46ft;
+PO46.Speedms = PO46.Speedknots.*ms_per_knt;
+
+load LIS1035_pred_May24_46ft;
+PM46 = LIS1035_pred_May24_46ft;
+PM46.Speedms = PM46.Speedknots.*ms_per_knt;
+
 
 
 %%
@@ -1452,8 +1460,8 @@ clevelDO2_umolkg = [caDO2_umolkg(1):1:caDO2_umolkg(2)];
 caPDen = [15.7 18.7]; % PDen axis limits
 clevelPDen = [caPDen(1):0.02:caPDen(2)]; % PDen colorbar levels
 ctA = datenum(2023,08,3,9,0,0);
-ctO = datenum(2023,10,20,9,0,0);
-ctM = datenum(2024,5,23,9,0,0);
+ctO = datenum(2023,10,20,8,30,0);
+ctM = datenum(2024,5,23,8,30,0);
 ctc = -0.33;
 ctd = 18.2;
 
@@ -1480,9 +1488,9 @@ subplot(sp(1))
     for i =1:length(uc)
         plot([uc(i) uc(i)],[-1 1],'--','color',bc);
     end;
-    plot(datenum(PA.Datetime_local),PA.Speedms,'linewidth',lwC,'color','b');
-    plot(datenum(PA46.Datetime_local),PA46.Speedms,'linewidth',lwC,'color','r');
-        
+    h1=plot(datenum(PA.Datetime_local),PA.Speedms,'linewidth',lwC,'color','b');
+    h2=plot(datenum(PA46.Datetime_local),PA46.Speedms,'linewidth',lwC,'color','r');
+    legend([h1,h2],'3 m','14 m','location','northeast')    
     title('August');
     set(gca,'xtick',xtA);
 %    plot(datenum(KA.Datetime_local),KA.Verifiedft);
@@ -1934,7 +1942,7 @@ subplot(sp(15))
     wysiwyg;
 
 %exportgraphics(gcf, '20250719_LIS_MID4_Currents_CH4_N2O_O2_PDen_exportgraphics.eps','ContentType','vector')
-exportgraphics(gcf, '20250811_LIS_MID4_Currents_CH4_N2O_O2_PDen_exportgraphics_colorbar.eps','ContentType','vector')
+%exportgraphics(gcf, '20250820_LIS_MID4_Currents_CH4_N2O_O2_PDen_exportgraphics_colorbar.eps','ContentType','vector')
 
 %print(gcf, '-dpng', '-r300', 'MID4_Current_DCH4_nmolkg_DN2O_nmolkg_DO2_umolkg_PDen.png');
 %5print(gcf,'-depsc','-vector','MID4_Current_DCH4_nmolkg_DN2O_nmolkg_DO2_umolkg_PDen.eps');
@@ -1947,7 +1955,7 @@ nr = 4; % number of rows
 nc = 3; % number of columns
 lw = 2; % default line width
 fs = 10; % default font size
-ms = 3; % default marker size
+ms = 3; % default marker siz
 yt = [0 10 20 30]; %y-axis ticks;
 bc = [0.8 0.8 0.8];
 xtA = [datenum(2023,08,02,08,0,0), datenum(2023,08,02,12,0,0) datenum(2023,08,02,16,0,0) datenum(2023,08,02,20,0,0), datenum(2023,08,03,0,0,0), datenum(2023,08,03,4,0,0), datenum(2023,08,03,8,0,0)];
