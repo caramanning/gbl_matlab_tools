@@ -5,12 +5,24 @@ fCH4med = [69 72 59];
 fN2O = [2.5 3.3 4.8];
 fN2Omed = [1.9 2.0 5.0];
 
+cCH4 = [114 86 51];
+cCH4med = [54 50 48];
+
+cN2O = [9.4 11.1 13.1];
+cN2Omed = [8.9 10.2 13.1];
+
 cdf = [cruisedates cruisedates(1)+365];
 fCH4f = [fCH4 fCH4(1)];
 fN2Of = [fN2O fN2O(1)];
 
 fCH4medf = [fCH4med fCH4med(1)];
 fN2Omedf = [fN2Omed fN2Omed(1)];
+
+cCH4f = [cCH4 cCH4(1)];
+cN2Of = [cN2O cN2O(1)];
+
+cCH4medf = [cCH4med cCH4med(1)];
+cN2Omedf = [cN2Omed cN2Omed(1)];
 
 %%
 
@@ -22,9 +34,21 @@ fN2Oi = interp1(cdf,fN2Of,cd);
 fCH4medi = interp1(cdf,fCH4medf,cd);
 fN2Omedi = interp1(cdf,fN2Omedf,cd);
 
-
 mean(fCH4i)
 mean(fN2Oi)
 
 mean(fCH4medi)
 mean(fN2Omedi)
+
+%%
+cCH4i = interp1(cdf,cCH4f,cd);
+cN2Oi = interp1(cdf,cN2Of,cd);
+
+cCH4medi = interp1(cdf,cCH4medf,cd);
+cN2Omedi = interp1(cdf,cN2Omedf,cd);
+
+mean(cCH4i)
+mean(cN2Oi)
+
+mean(cCH4medi)
+mean(cN2Omedi)

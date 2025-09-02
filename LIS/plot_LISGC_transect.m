@@ -763,6 +763,8 @@ clevelO2 = [caO2(1):1:caO2(2)];
 caPDen = [16 18.8]; % PDen axis limits
 clevelPDen = [caPDen(1):0.02:caPDen(2)]; % PDen colorbar levels
 
+cm = 'parula'; %colormap
+
 fig=figure(23);
 clf;
 sp=tight_subplot(nr,nc,[.025 .025],[.08 .04],[.08 .04]);
@@ -771,7 +773,7 @@ set(gcf, 'PaperPositionMode', 'manual');
 set(gcf, 'PaperPosition', [0 0 12 8]);
 set(gcf,'renderer','painters');
     set(gcf,'GraphicsSmoothing','on')
-colormap turbo;
+colormap cm;
 
 % rows: May / Aug / Oct
 % columns: CH4 / N2O / O2 / Density
@@ -1156,7 +1158,7 @@ saveas(gcf, 'test', 'pdf')
 saveas(gcf,'test','epsc') 
 saveas(gcf,'test.png') 
 
-exportgraphics(gcf, '20250718_LIS_Transect_CH4_N2O_O2_PDen_exportgraphics.eps','ContentType','vector')
+%exportgraphics(gcf, '20250718_LIS_Transect_CH4_N2O_O2_PDen_exportgraphics.eps','ContentType','vector')
 
 %%
 
@@ -1198,13 +1200,15 @@ caCH4 = [20 435]; % CH4 axis limits
 clevelCH4 = [caCH4(1):1:caCH4(2)]; %CH4 colorbar levels
 
 caN2O = [0 7]; % N2O axis limits
-clevelN2O = [caN2O(1):0.02:caN2O(2)]; % N2O colorbar levels
+clevelN2O = [caN2O(1):0.1:caN2O(2)]; % N2O colorbar levels
 
 caO2 = [-200 70];
 clevelO2 = [caO2(1):1:caO2(2)];
 
 caPDen = [16 18.8]; % PDen axis limits
 clevelPDen = [caPDen(1):0.02:caPDen(2)]; % PDen colorbar levels
+
+cmap = 'parula'; % colormap
 
 fig=figure(24);
 clf;
@@ -1214,7 +1218,8 @@ set(gcf, 'PaperPositionMode', 'manual');
 set(gcf, 'PaperPosition', [0 0 12 8]);
 set(gcf,'renderer','painters');
     set(gcf,'GraphicsSmoothing','on');
-    set(0,'DefaultTextFontName','Arial')
+    set(gcf,'DefaultTextFontName','Arial')
+    fontname(fig,"Arial")
 
 % rows: May / Aug / Oct
 % columns: CH4 / N2O / O2 / Density
@@ -1223,7 +1228,8 @@ subplot(sp(2))
     hold on; box on;
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
-    colormap('turbo')
+    set(gca,'DefaultTextFontName','Arial')
+    colormap(cmap)
     C = contourf(x_gridA,dl_grid,DCH4_nmolkgiA,clevelCH4,'edgecolor','flat');
     plot(LISA.km_cumulative(asA),LISA.Depth(asA),'+k', 'linewidth', 2, 'markersize',ms)
 
@@ -1255,7 +1261,7 @@ subplot(sp(3))
     hold on; box on;
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
-    colormap('turbo')
+    colormap(cmap)
     C = contourf(x_gridO,dl_grid,DCH4_nmolkgiO,clevelCH4,'edgecolor','flat');
     plot(LISO.km_cumulative(asO),LISO.Depth(asO),'+k', 'linewidth', 2, 'markersize',ms)
 
@@ -1287,7 +1293,7 @@ subplot(sp(1))
     hold on; box on;
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
-    colormap('turbo')
+    colormap(cmap)
     clevel = [25:1:460];
     ca = [25 460]; %colorbar limits
     C = contourf(x_gridM,dl_grid,DCH4_nmolkgiM,clevelCH4,'edgecolor','flat');
@@ -1320,7 +1326,7 @@ subplot(sp(5))
     hold on; box on;
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
-    colormap('turbo')
+    colormap(cmap)
     C = contourf(x_gridA,dl_grid,DN2O_nmolkgiA,clevelN2O,'edgecolor','flat');
     plot(LISA.km_cumulative(asA),LISA.Depth(asA),'+k', 'linewidth', 2, 'markersize',ms)
 
@@ -1352,7 +1358,7 @@ subplot(sp(6))
     hold on; box on;
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
-    colormap('turbo')
+    colormap(cmap)
     C = contourf(x_gridO,dl_grid,DN2O_nmolkgiO,clevelN2O,'edgecolor','flat');
     plot(LISO.km_cumulative(asO),LISO.Depth(asO),'+k', 'linewidth', 2, 'markersize',ms)
 
@@ -1383,7 +1389,7 @@ subplot(sp(4))
     hold on; box on;
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
-    colormap('turbo')
+    colormap(cmap)
     C = contourf(x_gridM,dl_grid,DN2O_nmolkgiM,clevelN2O,'edgecolor','flat');
     plot(LISM.km_cumulative(asM),LISM.Depth(asM),'+k', 'linewidth', 2, 'markersize',ms)
 
@@ -1414,7 +1420,7 @@ subplot(sp(8))
     hold on; box on;
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
-    colormap('turbo')
+    colormap(cmap)
     C = contourf(x_gridA,dl_grid,DO2_umolkgiA,clevelO2,'edgecolor','flat');
     contour(x_gridA,dl_grid,DO2_umolkgiA,0,'edgecolor','k');
     plot(LISA.km_cumulative(asA),LISA.Depth(asA),'+k', 'linewidth', 2, 'markersize',ms)
@@ -1447,7 +1453,7 @@ subplot(sp(9))
     hold on; box on;
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
-    colormap('turbo')
+    colormap(cmap)
     C = contourf(x_gridO,dl_grid,DO2_umolkgiO,clevelO2,'edgecolor','flat');
     contour(x_gridO,dl_grid,DO2_umolkgiO,0,'edgecolor','k');
     plot(LISO.km_cumulative(asO),LISO.Depth(asO),'+k', 'linewidth', 2, 'markersize',ms)
@@ -1478,7 +1484,7 @@ subplot(sp(7))
     hold on; box on;
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
-    colormap('turbo')
+    colormap(cmap)
     C = contourf(x_gridM,dl_grid,DO2_umolkgiM,clevelO2,'edgecolor','flat');
         contour(x_gridM,dl_grid,DO2_umolkgiM,[0 0],'-k');
     plot(LISM.km_cumulative(asM),LISM.Depth(asM),'+k', 'linewidth', 2, 'markersize',ms)
@@ -1511,7 +1517,7 @@ subplot(sp(11))
     hold on; box on;
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
-    colormap('turbo')
+    colormap(cmap)
     C = contourf(x_gridA,dl_grid,PDeniA,clevelPDen,'edgecolor','flat');
     plot(LISA.km_cumulative(asA),LISA.Depth(asA),'+k', 'linewidth', 2, 'markersize',ms)
 
@@ -1543,7 +1549,7 @@ subplot(sp(12))
     hold on; box on;
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
-    colormap('turbo')
+    colormap(cmap)
     C = contourf(x_gridO,dl_grid,PDeniO,clevelPDen,'edgecolor','flat');
     plot(LISO.km_cumulative(asO),LISO.Depth(asO),'+k', 'linewidth', 2, 'markersize',ms)
 
@@ -1574,7 +1580,7 @@ subplot(sp(10))
     hold on; box on;
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
-    colormap('turbo')
+    colormap(cmap)
     C = contourf(x_gridM,dl_grid,PDeniM,clevelPDen,'edgecolor','flat');
   %  C = surf(x_grid,dl_grid,PDeniM,clevelPDen,'facecolor','interp','edgecolor','interp');
   %  surf instead, with 'FaceColor','interp', 'EdgeColor','interp' and %view(0,90)’.  
@@ -1614,7 +1620,8 @@ subplot(sp(10))
 %set(gcf,'renderer','opengl'); 
 %saveas(gcf,'test','epsc','Resolution','600'); 
 
-exportgraphics(gcf,'20250718_LIS_Transect_DCH4_DN2O_DO2_PDen_nocolorbar.eps','BackgroundColor','none','ContentType','vector')
+exportgraphics(gcf,'20250831_LIS_Transect_DCH4_DN2O_DO2_PDen_nocolorbar.eps','BackgroundColor','none','ContentType','vector');
+%exportgraphics(gcf,'20250831_LIS_Transect_DCH4_DN2O_DO2_PDen_withcolorbar.eps','BackgroundColor','none','ContentType','vector')
 
 %%
 %PDF

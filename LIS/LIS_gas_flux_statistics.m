@@ -1,3 +1,67 @@
+load LISAug23_CH4N2O_CTD.mat
+LISA = LISAug23_CH4N2O_CTD; % October
+
+disp('CH4 RSD std Aug')
+dAC = find(LISA.CH4_std_nmolkg ~=0);
+[mean(LISA.CH4_std_nmolkg(dAC)./LISA.CH4_mean_nmolkg(dAC)).*100 mean(LISO.CH4_std_nmolkg(dAC))]
+[median(LISA.CH4_std_nmolkg(dAC)./LISA.CH4_mean_nmolkg(dAC)).*100 median(LISO.CH4_std_nmolkg(dAC))]
+
+disp('N2O RSD std Aug')
+dAN = find(LISA.N2O_std_nmolkg ~=0);
+[mean(LISA.N2O_std_nmolkg(dAN)./LISA.N2O_mean_nmolkg(dAN)).*100 mean(LISA.N2O_std_nmolkg(dAN))]
+[median(LISA.N2O_std_nmolkg(dAC)./LISA.CH4_mean_nmolkg(dAC)).*100 median(LISO.N2O_std_nmolkg(dAC))]
+
+%%
+
+load LISOct23_CH4N2O_CTD.mat
+LISO = LISOct23_CH4N2O_CTD; % October
+
+disp('CH4 RSD std Oct')
+dOC = find(LISO.CH4_std_nmolkg ~=0);
+[mean(LISO.CH4_std_nmolkg(dOC)./LISO.CH4_mean_nmolkg(dOC)).*100 mean(LISO.CH4_std_nmolkg(dOC))]
+
+disp('N2O RSD std Oct')
+dON = find(LISO.N2O_std_nmolkg ~=0);
+[mean(LISO.N2O_std_nmolkg(dON)./LISO.N2O_mean_nmolkg(dON)).*100 mean(LISO.N2O_std_nmolkg(dON))]
+
+%%
+
+load LISMay24_CH4N2O_CTD.mat
+LISM = LISOct23_CH4N2O_CTD; % October
+
+disp('CH4 RSD std Oct')
+dMC = find(LISM.CH4_std_nmolkg ~=0);
+[mean(LISM.CH4_std_nmolkg(dMC)./LISM.CH4_mean_nmolkg(dMC)).*100 mean(LISM.CH4_std_nmolkg(dMC))]
+
+disp('N2O RSD std Oct')
+dMN = find(LISM.N2O_std_nmolkg ~=0);
+[mean(LISM.N2O_std_nmolkg(dMN)./LISM.N2O_mean_nmolkg(dMN)).*100 mean(LISM.N2O_std_nmolkg(dMN))]
+
+
+%%
+CH4s = [LISA.CH4_std_nmolkg(dAC) 
+    LISO.CH4_std_nmolkg(dOC) 
+    LISM.CH4_std_nmolkg(dMC)];
+CH4m = [LISA.CH4_mean_nmolkg(dAC) 
+    LISO.CH4_mean_nmolkg(dOC) 
+    LISM.CH4_mean_nmolkg(dMC)];
+
+[mean(CH4s./CH4m).*100 mean(CH4s)]
+[median(CH4s./CH4m).*100 median(CH4s)]
+
+N2Os = [LISA.N2O_std_nmolkg(dAC) 
+    LISO.N2O_std_nmolkg(dOC) 
+    LISM.N2O_std_nmolkg(dMC)];
+N2Om = [LISA.N2O_mean_nmolkg(dAC) 
+    LISO.N2O_mean_nmolkg(dOC) 
+    LISM.N2O_mean_nmolkg(dMC)];
+
+[mean(N2Os./N2Om).*100 mean(N2Os)]
+[median(N2Os./N2Om).*100 median(N2Os)]
+
+
+%%
+
 % stnlist from west to east
 stnlist = {'EXR1', 'EXRX', 'MID3', 'MID4', 'MID5', 'WLIS', 'WLI6'};
 
@@ -77,9 +141,7 @@ gfA_avg.DN2O_std = gfA_avg.n2o_std_nmolkg./gfA_avg.n2o_eq_nmolkg .* 100;
 gfA_avg.DCH4_std(7) = mean(gfA_avg.DCH4_std(4:6);
 gfA_avg.DN2O_std(7) = mean(gfA_avg.DN2O_std(4:6);
 
-save LIS_gas_flux_Aug_avg.mat gfA_avg gfA;
-%%
-
+%save LIS_gas_flux_Aug_avg.mat gfA_avg gfA;
 %%
 
 % load Oct data
@@ -148,7 +210,7 @@ gfO_avg.DCH4_std = gfO_avg.ch4_std_nmolkg./gfO_avg.ch4_eq_nmolkg .* 100;
 gfO_avg.DN2O_std = gfO_avg.n2o_std_nmolkg./gfO_avg.n2o_eq_nmolkg .* 100;
 
 
-save LIS_gas_flux_Oct_avg.mat gfO_avg gfO;
+%save LIS_gas_flux_Oct_avg.mat gfO_avg gfO;
 %%
 % load May data
 load LIS_gas_flux_May.mat;
@@ -222,6 +284,11 @@ save LIS_gas_flux_May_avg.mat gfM_avg gfM;
 
 
 %%
+load LIS_gas_flux_Aug_avg.mat
+load LIS_gas_flux_Oct_avg.mat
+load LIS_gas_flux_May_avg.mat
+
+%%
 [median(gfA_avg.DCH4) min(gfA_avg.DCH4) max(gfA_avg.DCH4)]
 [median(gfO_avg.DCH4) min(gfO_avg.DCH4) max(gfO_avg.DCH4)]
 [median(gfM_avg.DCH4) min(gfM_avg.DCH4) max(gfM_avg.DCH4)]
@@ -249,6 +316,26 @@ mean(gfM_avg.F_N2O_15) std(gfM_avg.F_N2O_15)]
 [mean(gfA_avg.DN2O) std(gfA_avg.DN2O)
 mean(gfO_avg.DN2O) std(gfO_avg.DN2O)
 mean(gfM_avg.DN2O) std(gfM_avg.DN2O)]
+
+%%
+[mean(gfA_avg.n2o_nmolkg) std(gfA_avg.n2o_nmolkg)
+mean(gfO_avg.n2o_nmolkg) std(gfO_avg.n2o_nmolkg)
+mean(gfM_avg.n2o_nmolkg) std(gfM_avg.n2o_nmolkg)]
+
+[mean(gfA_avg.ch4_nmolkg) std(gfA_avg.ch4_nmolkg)
+mean(gfO_avg.ch4_nmolkg) std(gfO_avg.ch4_nmolkg)
+mean(gfM_avg.ch4_nmolkg) std(gfM_avg.ch4_nmolkg)]
+
+%%
+[median(gfA_avg.n2o_nmolkg) min(gfA_avg.n2o_nmolkg) max(gfA_avg.n2o_nmolkg)]
+[median(gfO_avg.n2o_nmolkg) min(gfO_avg.n2o_nmolkg) max(gfO_avg.n2o_nmolkg)]
+[median(gfM_avg.n2o_nmolkg) min(gfM_avg.n2o_nmolkg) max(gfM_avg.n2o_nmolkg)]
+
+%%
+[median(gfA_avg.ch4_nmolkg) min(gfA_avg.ch4_nmolkg) max(gfA_avg.ch4_nmolkg)]
+[median(gfO_avg.ch4_nmolkg) min(gfO_avg.ch4_nmolkg) max(gfO_avg.ch4_nmolkg)]
+[median(gfM_avg.ch4_nmolkg) min(gfM_avg.ch4_nmolkg) max(gfM_avg.ch4_nmolkg)]
+
 
 %%
 [mean(gfA_avg.F_CH4_15) std(gfA_avg.F_CH4_15)

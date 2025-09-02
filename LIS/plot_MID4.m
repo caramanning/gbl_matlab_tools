@@ -925,7 +925,9 @@ set(gcf, 'PaperUnits', 'inches');
 set(gcf, 'PaperPositionMode', 'manual');
 set(gcf, 'PaperPosition', [0 0 12 8]);
 set(gcf,'renderer','painters');
-set(gcf,'GraphicsSmoothing','on');
+    set(gcf,'GraphicsSmoothing','on');
+    set(gcf,'DefaultTextFontName','Arial')
+    fontname(fig,"Arial")
 
 % rows: Aug / Oct / May
 % columns: CH4 / N2O / O2 / Density
@@ -1300,7 +1302,7 @@ subplot(sp(12))
 %print(gcf,'-depsc','-vector','MID4_DCH4_nmolkg_DN2O_nmolkg_DO2_umolkg_PDen.eps');
 %epsclean('MID4_DCH4_nmolkg_DN2O_nmolkg_DO2_umolkg_PDen.eps','MID4_DCH4_nmolkg_DN2O_nmolkg_DO2_umolkg_PDen.eps');
 
-
+exportgraphics(gcf,'20250901_MID4_DCH4_nmolkg_DN2O_nmolkg_DO2_umolkg_PDen_nocolorbar.eps','BackgroundColor','none','ContentType','vector');
 %%
 
 %SUBPLOT 10
@@ -1470,9 +1472,12 @@ clf;
 sp=tight_subplot(nr,nc,[.025 .02],[.1 .04],[.08 .04]);
 set(gcf, 'PaperUnits', 'inches');
 set(gcf, 'PaperPositionMode', 'manual');
-set(gcf, 'PaperPosition', [0 0 12 8]);
+set(gcf, 'PaperPosition', [0 0 12 10]);
 set(gcf,'renderer','painters');
-set(gcf,'GraphicsSmoothing','on');
+    set(gcf,'GraphicsSmoothing','on');
+    set(gcf,'DefaultTextFontName','Arial')
+    fontname(fig,"Arial")
+
 
 % rows: May / Aug / Oct
 % columns: current / CH4 / N2O / O2 / Density
@@ -1490,7 +1495,6 @@ subplot(sp(1))
     end;
     h1=plot(datenum(PA.Datetime_local),PA.Speedms,'linewidth',lwC,'color','b');
     h2=plot(datenum(PA46.Datetime_local),PA46.Speedms,'linewidth',lwC,'color','r');
-    legend([h1,h2],'3 m','14 m','location','northeast')    
     title('August');
     set(gca,'xtick',xtA);
 %    plot(datenum(KA.Datetime_local),KA.Verifiedft);
@@ -1513,7 +1517,8 @@ subplot(sp(2))
     for i =1:length(uc)
         plot([uc(i) uc(i)],[-1 1],'--','color',bc);
     end;  
-    plot(datenum(PO.Datetime_local),PO.Speedms,'linewidth',lwC,'color','b');
+    h1=plot(datenum(PO.Datetime_local),PO.Speedms,'linewidth',lwC,'color','b');
+    h2=plot(datenum(PO46.Datetime_local),PO46.Speedms,'linewidth',lwC,'color','r');
     title('October');
     set(gca,'xtick',xtO);
 %    plot(datenum(KO.Datetime_local),KO.Verifiedft);
@@ -1532,7 +1537,9 @@ subplot(sp(3))
     for i =1:length(uc)
         plot([uc(i) uc(i)],[-1 1],'--','color',bc);
     end;   
-    plot(datenum(PM.Datetime_local),PM.Speedms,'linewidth',lwC,'color','b');    
+    h1=plot(datenum(PM.Datetime_local),PM.Speedms,'linewidth',lwC,'color','b');
+    h2=plot(datenum(PM46.Datetime_local),PM46.Speedms,'linewidth',lwC,'color','r'); 
+    %        legend([h1,h2],'3 m','14 m','location','eastoutside')    
     title('May');
     set(gca,'xtick',xtM);
 %    plot(datenum(KM.Datetime_local),KM.Verifiedft);
@@ -1621,10 +1628,10 @@ subplot(sp(6))
   %  c.Label.String = '\DeltaCH_4 (nmol/kg)';
   %  c.FontSize = fs;
     caxis(caDCH4_nmolkg)
-    c = colorbar('location','eastoutside');
-    c.Label.String = '\DeltaCH_4 [nmol kg^{-1}]';
-    c.FontSize = fs;
-    c.TickDirection = 'out';
+    %c = colorbar('location','eastoutside');
+    %c.Label.String = '\DeltaCH_4 [nmol kg^{-1}]';
+    %c.FontSize = fs;
+    %c.TickDirection = 'out';
 
     set(gca,'layer','top');
     ylim(yl);
@@ -1718,10 +1725,10 @@ subplot(sp(9))
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
    caxis(caDN2O_nmolkg)
-   c = colorbar('location','eastoutside');
-   c.Label.String = '\DeltaN_2O [nmol kg^{-1}]';
-   c.FontSize = fs;
-   c.TickDirection = 'out';
+   %c = colorbar('location','eastoutside');
+   %c.Label.String = '\DeltaN_2O [nmol kg^{-1}]';
+   %c.FontSize = fs;
+   %c.TickDirection = 'out';
     set(gca,'layer','top');
     ylim(yl);
     xlim(xlM);
@@ -1815,10 +1822,10 @@ subplot(sp(12))
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
     caxis(caDO2_umolkg)
-   c = colorbar('location','eastoutside');
-   c.Label.String = '\DeltaO_2 [\mumol kg^{-1}]';
-   c.FontSize = fs;
-   c.TickDirection = 'out';
+   %c = colorbar('location','eastoutside');
+   %c.Label.String = '\DeltaO_2 [\mumol kg^{-1}]';
+   %c.FontSize = fs;
+   %c.TickDirection = 'out';
     set(gca,'layer','top');
     ylim(yl);
     xlim(xlM);
@@ -1913,10 +1920,10 @@ subplot(sp(15))
     %ylabel('Depth [m]');
     clim(caPDen)
     caxis(caPDen)
-   c = colorbar('location','eastoutside');
-   c.Label.String = '\sigma_{\theta} [kg m^{-3}]';
-   c.FontSize = fs;
-   c.TickDirection = 'out';
+   %c = colorbar('location','eastoutside');
+   %c.Label.String = '\sigma_{\theta} [kg m^{-3}]';
+   %c.FontSize = fs;
+   %c.TickDirection = 'out';
     set(gca,'layer','top');
     ylim(yl);
     xlim(xlM);
@@ -1941,12 +1948,13 @@ subplot(sp(15))
    
     wysiwyg;
 
-%exportgraphics(gcf, '20250719_LIS_MID4_Currents_CH4_N2O_O2_PDen_exportgraphics.eps','ContentType','vector')
-%exportgraphics(gcf, '20250820_LIS_MID4_Currents_CH4_N2O_O2_PDen_exportgraphics_colorbar.eps','ContentType','vector')
+exportgraphics(gcf, '202507901_LIS_MID4_Currents_CH4_N2O_O2_PDen_exportgraphics_nocolorbar.eps','ContentType','vector')
+%exportgraphics(gcf, '20250901_LIS_MID4_Currents_CH4_N2O_O2_PDen_exportgraphics_colorbar.eps','ContentType','vector')
 
 %print(gcf, '-dpng', '-r300', 'MID4_Current_DCH4_nmolkg_DN2O_nmolkg_DO2_umolkg_PDen.png');
 %5print(gcf,'-depsc','-vector','MID4_Current_DCH4_nmolkg_DN2O_nmolkg_DO2_umolkg_PDen.eps');
 %epsclean('MID4_Current_DCH4_nmolkg_DN2O_nmolkg_DO2_umolkg_PDen.eps','MID4_Current_DCH4_nmolkg_DN2O_nmolkg_DO2_umolkg_PDen.eps');
+
 
 
 %% PLOT CONCENTRATIONS OF CH4, N2O, and O2
@@ -1991,7 +1999,10 @@ set(gcf, 'PaperUnits', 'inches');
 set(gcf, 'PaperPositionMode', 'manual');
 set(gcf, 'PaperPosition', [0 0 8 6]);
 set(gcf,'renderer','painters');
-set(gcf,'GraphicsSmoothing','on');
+    set(gcf,'GraphicsSmoothing','on');
+    set(gcf,'DefaultTextFontName','Arial')
+    fontname(fig,"Arial")
+
 
 % rows: Aug / Oct / May
 % columns: CH4 / N2O / O2 / Density
@@ -2362,9 +2373,9 @@ subplot(sp(12))
     
     wysiwyg;
 
-print(gcf, '-dpng', '-r300', 'MID4_CH4_N2O_O2_PDen.png');
-print(gcf,'-depsc','-vector','MID4_CH4_N2O_O2_PDen.eps');
-epsclean('MID4_CH4_N2O_O2_PDen.eps','MID4_CH4_N2O_O2_PDen.eps');
+%print(gcf, '-dpng', '-r300', 'MID4_CH4_N2O_O2_PDen.png');
+%print(gcf,'-depsc','-vector','MID4_CH4_N2O_O2_PDen.eps');
+%epsclean('MID4_CH4_N2O_O2_PDen.eps','MID4_CH4_N2O_O2_PDen.eps');
 %%
 
 % for OCTOBER set to EDT

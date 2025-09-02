@@ -37,7 +37,7 @@ LISM.DeltaO2 = (LISM.O2_umolkg - LISM.O2_eq_umolkg)./LISM.O2_eq_umolkg.*100;
 %%
 % x-axis limits
 xlc = [0 500]; %ch4
-xln = [7 16]; %n2o
+xln = [9 15.5]; %n2o
 xlo = [0 350]; %o2
 xlt = [11 22.5]; %temp
 xld = [15.5 18.5];
@@ -47,14 +47,14 @@ nr=4; nc=3;
 
 %x-axis ticks
 xtc = [0 250 500]; %
-xtn = [8 12 16];
+xtn = [10 12 14];
 xto = [0 100 200 300];
 xtd = [16 17 18];
 
-yl = [0 23];
+yl = [0 24];
 yt = [0 10 20];
 
-figure(5)
+figure(6)
 clf;
 
 sp=tight_subplot(nr,nc,[.08 .03],[.08 .04],[.08 .04]);
@@ -77,7 +77,7 @@ stn = 'EXRX-cast01';
 A = find(LISA.Station==stn);
 [~,B] = sort(LISA.Depth(A));
 CH4eq = CH4sol(LISA.S(A(B)),LISA.T(A(B)),1920e-9).*1000;
-plot(CH4eq,LISA.Depth(A(B)),'--k','linewidth',1.5);
+%plot(CH4eq,LISA.Depth(A(B)),'--k','linewidth',1.5);
 
 errorbar(LISA.mean_CH4_nM(A(B)),LISA.Depth(A(B)),LISA.std_CH4_nM(A(B)),'horizontal','o-b','linewidth',1.5, 'markerfacecolor','b');
 
@@ -111,7 +111,7 @@ stn = 'EXRX-cast01';
 A = find(LISO.Station==stn);
 [~,B] = sort(LISO.Depth(A));
 CH4eq = CH4sol(LISO.S(A(B)),LISO.T(A(B)),1920e-9).*1000;
-plot(CH4eq,LISO.Depth(A(B)),'--k','linewidth',1.5);
+%plot(CH4eq,LISO.Depth(A(B)),'--k','linewidth',1.5);
 
 errorbar(LISO.mean_CH4_nM(A(B)),LISO.Depth(A(B)),LISO.std_CH4_nM(A(B)),'horizontal','o-b','linewidth',1.5, 'markerfacecolor','b');
 
@@ -144,7 +144,7 @@ stn = 'EXRX-cast01';
 A = find(LISM.Station==stn);
 [~,B] = sort(LISM.Depth(A));
 CH4eq = CH4sol(LISM.S(A(B)),LISM.T(A(B)),1920e-9).*1000;
-plot(CH4eq,LISM.Depth(A(B)),'--k','linewidth',1.5);
+%plot(CH4eq,LISM.Depth(A(B)),'--k','linewidth',1.5);
 
 errorbar(LISM.mean_CH4_nM(A(B)),LISM.Depth(A(B)),LISM.std_CH4_nM(A(B)),'horizontal','o-b','linewidth',1.5, 'markerfacecolor','b');
 
@@ -174,7 +174,7 @@ stn = 'EXRX-cast01';
 A = find(LISA.Station==stn);
 [~,B] = sort(LISA.Depth(A));
 CH4eq = CH4sol(LISA.S(A(B)),LISA.T(A(B)),1920e-9).*1000;
-plot(CH4eq,LISA.Depth(A(B)),'--k','linewidth',1.5);
+%plot(CH4eq,LISA.Depth(A(B)),'--k','linewidth',1.5);
 
 errorbar(LISA.mean_CH4_nM(A(B)),LISA.Depth(A(B)),LISA.std_CH4_nM(A(B)),'horizontal','o-b','linewidth',1.5, 'markerfacecolor','b');
 
@@ -205,7 +205,7 @@ A = find(LISA.Station==stn);
 
 N2Oeq = N2Osol(LISA.S(A(B)),LISA.T(A(B)),330e-9).*1000;
 
-plot(N2Oeq,LISA.Depth(A(B)),'--k','linewidth',1.5);
+%plot(N2Oeq,LISA.Depth(A(B)),'--k','linewidth',1.5);
 errorbar(LISA.mean_N2O_nM(A(B)),LISA.Depth(A(B)),LISA.std_N2O_nM(A(B)),'horizontal','o-b','linewidth',1.5, 'markerfacecolor','b');
 
 stn = 'EXRX-cast02';
@@ -240,7 +240,7 @@ A = find(LISO.Station==stn);
 
 N2Oeq = N2Osol(LISO.S(A(B)),LISO.T(A(B)),330e-9).*1000;
 
-plot(N2Oeq,LISO.Depth(A(B)),'--k','linewidth',1.5);
+%plot(N2Oeq,LISO.Depth(A(B)),'--k','linewidth',1.5);
 errorbar(LISO.mean_N2O_nM(A(B)),LISO.Depth(A(B)),LISO.std_N2O_nM(A(B)),'horizontal','o-b','linewidth',1.5, 'markerfacecolor','b');
 
 stn = 'EXRX-cast02';
@@ -275,7 +275,7 @@ A = find(LISM.Station==stn);
 
 N2Oeq = N2Osol(LISM.S(A(B)),LISM.T(A(B)),330e-9).*1000;
 
-plot(N2Oeq,LISM.Depth(A(B)),'--k','linewidth',1.5);
+%plot(N2Oeq,LISM.Depth(A(B)),'--k','linewidth',1.5);
 errorbar(LISM.mean_N2O_nM(A(B)),LISM.Depth(A(B)),LISM.std_N2O_nM(A(B)),'horizontal','o-b','linewidth',1.5, 'markerfacecolor','b');
 
 stn = 'EXRX-cast02';
@@ -307,7 +307,7 @@ set(gca,'linewidth',1)
 stn = 'EXRX-cast01';
 A = find(LISA.Station==stn);
 [~,B] = sort(LISA.Depth(A));
-plot(O2sol(LISA.S(A(B)),LISA.T(A)),LISA.Depth(A(B)),'--k','linewidth',1.5);
+%plot(O2sol(LISA.S(A(B)),LISA.T(A)),LISA.Depth(A(B)),'--k','linewidth',1.5);
 plot(LISA.O2_umolkg(A(B)),LISA.Depth(A(B)),'o-b','linewidth',1.5, 'markerfacecolor','b');
 
 stn = 'EXRX-cast02';
@@ -335,7 +335,7 @@ set(gca,'linewidth',1)
 stn = 'EXRX-cast01';
 A = find(LISO.Station==stn);
 [~,B] = sort(LISO.Depth(A));
-plot(O2sol(LISO.S(A(B)),LISO.T(A)),LISO.Depth(A(B)),'--k','linewidth',1.5);
+%plot(O2sol(LISO.S(A(B)),LISO.T(A)),LISO.Depth(A(B)),'--k','linewidth',1.5);
 plot(LISO.O2_umolkg(A(B)),LISO.Depth(A(B)),'o-b','linewidth',1.5, 'markerfacecolor','b');
 
 stn = 'EXRX-cast02';
@@ -363,7 +363,7 @@ set(gca,'linewidth',1)
 stn = 'EXRX-cast01';
 A = find(LISM.Station==stn);
 [~,B] = sort(LISM.Depth(A));
-plot(O2sol(LISM.S(A(B)),LISM.T(A)),LISM.Depth(A(B)),'--k','linewidth',1.5);
+%plot(O2sol(LISM.S(A(B)),LISM.T(A)),LISM.Depth(A(B)),'--k','linewidth',1.5);
 plot(LISM.O2_umolkg(A(B)),LISM.Depth(A(B)),'o-b','linewidth',1.5, 'markerfacecolor','b');
 
 stn = 'EXRX-cast02';
@@ -495,7 +495,7 @@ stn = 'EXRX-cast02';
 A = find(LISO.Station==stn);
 [~,B] = sort(LISO.Depth(A));
 CH4eq = CH4sol(LISO.S(A(B)),LISO.T(A(B)),1920e-9).*1000;
-plot(CH4eq,LISO.Depth(A(B)),'--k','linewidth',1.5);
+%plot(CH4eq,LISO.Depth(A(B)),'--k','linewidth',1.5);
 
 errorbar(LISO.mean_CH4_nM(A(B)),LISO.Depth(A(B)),LISO.std_CH4_nM(A(B)),'horizontal','s-r','linewidth',1.5, 'markerfacecolor','r');
 %legend('EXRX-cast01','EXRX-cast02','location','northeast')
