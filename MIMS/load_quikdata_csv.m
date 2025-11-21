@@ -10,9 +10,22 @@
 % this is dependent on the columns matching the order below. if the
 % formatting changes then this code will be wrong
 
-fn = '20251111 1231 SEM 1600 35 eV 200 emission 7500 ion 180 anode 100 focus.csv';
-file_path = 'data/Membrane Test Data/';
-mat_fn = '20251111_1231_mims.mat';
+%fn = '20251111 1231 SEM 1600 35 eV 200 emission 7500 ion 180 anode 100 focus.csv';
+%file_path = 'data/Membrane Test Data/';
+%mat_fn = '20251111_1231_mims.mat';
+
+% fn = '20251113 1800 SEM varying 35 eV 400 emission 8000 ion 180 anode 100 focus.csv';
+% file_path = 'data/Capillary Test Data/';
+% mat_fn = '20251113_1800_mims.mat';
+
+% fn = '20251114 1151 SEM varying 35 eV 400 emission 8000 ion 180 anode 100 focus.csv';
+% file_path = 'data/Capillary Test Data/';
+% mat_fn = '20251114_1151_mims.mat';
+
+fn = '20251114 1310 SEM varying 35 eV 400 emission 8000 ion 180 anode 100 focus.csv';
+file_path = 'data/Capillary Test Data/';
+mat_fn = '20251114_1310_mims.mat';
+
 
 opts = delimitedTextImportOptions("NumVariables", 14);
 

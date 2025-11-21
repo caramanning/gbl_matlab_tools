@@ -1,7 +1,10 @@
 %% load mims data
 ws = 5; % window size: number of points to include when calculating movmean, movstd etc.
-file_path = 'data/Membrane Test Data/';
-mat_fn = '20251111_1231_mims.mat';
+%file_path = 'data/Membrane Test Data/';
+%mat_fn = '20251111_1231_mims.mat';
+
+file_path = 'data/Capillary Test Data/';
+mat_fn = '20251113_1800_mims.mat';
 
 load([file_path mat_fn])
 %%
@@ -87,8 +90,8 @@ mims.cv_r8438 = movstd(mims.r8438, ws)  ./ mims.mm_r8438;
 mims.cv_r2284 = movstd(mims.r2284, ws)  ./ mims.mm_r2284;
 
 mims.cv_r2236 = movstd(mims.r2236, ws) ./ mims.mm_r2236;
-mims.cv_r3836 = movmean(mims.r3836, ws) ./ mims.mm_r3836;
-mims.cv_r8436 = movmean(mims.r8436, ws) ./ mims.mm_r8436;
+mims.cv_r3836 = movstd(mims.r3836, ws) ./ mims.mm_r3836;
+mims.cv_r8436 = movstd(mims.r8436, ws) ./ mims.mm_r8436;
 
 % coefficient of variance w/ bkg subtraction
 mims.cv_m22b = movstd(mims.m22b, ws) ./ mims.mm_m22b;
@@ -102,14 +105,15 @@ mims.cv_r8438b = movstd(mims.r8438b, ws)  ./ mims.mm_r8438b;
 mims.cv_r2284b = movstd(mims.r2284b, ws)  ./ mims.mm_r2284b;
 
 mims.cv_r2236b = movstd(mims.r2236b, ws) ./ mims.mm_r2236b;
-mims.cv_r3836b = movmean(mims.r3836b, ws) ./ mims.mm_r3836b;
-mims.cv_r8436b = movmean(mims.r8436b, ws) ./ mims.mm_r8436b;
+mims.cv_r3836b = movstd(mims.r3836b, ws) ./ mims.mm_r3836b;
+mims.cv_r8436b = movstd(mims.r8436b, ws) ./ mims.mm_r8436b;
 
 %% % code to subset data based on time and calculate over smaller intervals
 
-% select values between two time points (t1 and t2)
-t1 = datetime(2025,11,11,15,30,0); 
-t2 = datetime(2025,11,11,16,0,0);
+% example for 20251113 1800
+% select values between two time points (t1 and t2) - SEM 1600
+t1 = datetime(2025,11,13,18,0,0); 
+t2 = datetime(2025,11,13,18,12,0);
 
 % two ways to select values, use what is intuitive to you
 % select using logical indexing
@@ -117,31 +121,40 @@ a = mims.dt >= t1 & mims.dt < t2;
 
 % select using find function 
 b = find(mims.dt >= t1 & mims.dt < t2);
-%%
+
 % output results to show they are the same
 m22o = [mean(mims.mm_m22(a)) mean(mims.mm_m22(b))];
-r2238o = [mean(mims.mm_r2238(a)) mean(mims.mm_r2238(b))];
+r2238o = [mean(mims.mm_r2236(a)) mean(mims.mm_r2236(b))];
 
-tn_stats = [mean(mims.mm_r2236(a)) mean(mims.cv_r2236(a))
-    mean(mims.mm_r3638(a)) mean(mims.cv_r3638(a))
-    mean(mims.mm_r8438(a)) mean(mims.cv_r8438(a))
-    mean(mims.mm_r2284(a)) mean(mims.cv_r2284(a))]
+% stats for non-background corrected ratios
+tn_stats1 = [mean(mims.mm_r2236(a)) mean(mims.cv_r2236(a))
+    mean(mims.mm_r3836(a)) mean(mims.cv_r3836(a))
+    mean(mims.mm_r8436(a)) mean(mims.cv_r8436(a))
+    mean(mims.mm_r2284(a)) mean(mims.cv_r2284(a))];
 
-tnb_stats = [mean(mims.mm_r2236b(a)) mean(mims.cv_r2236b(a))
-    mean(mims.mm_r3638b(a)) mean(mims.cv_r3638b(a))
-    mean(mims.mm_r8438b(a)) mean(mims.cv_r8438b(a))
-    mean(mims.mm_r2284b(a)) mean(mims.cv_r2284b(a))]
-
-% select values between another two time points (t1 and t2)
-t1 =datetime(2025,11,11,14,55,0); 
-t2 = datetime(2025,11,11,15,15,0);
+% select values between another two time points (t1 and t2) - SEM 1700
+t1 =datetime(2025,11,13,18,23,0); 
+t2 = datetime(2025,11,13,18,33,0);
 
 a = mims.dt >= t1 & mims.dt < t2;
-tb_stats = [mean(mims.mm_r2236(a)) mean(mims.cv_r2236(a))
+tn_stats2 = [mean(mims.mm_r2236(a)) mean(mims.cv_r2236(a))
     mean(mims.mm_r3638(a)) mean(mims.cv_r3638(a))
     mean(mims.mm_r8438(a)) mean(mims.cv_r8438(a))
-    mean(mims.mm_r2284(a)) mean(mims.cv_r2284(a))]
+    mean(mims.mm_r2284(a)) mean(mims.cv_r2284(a))];
 
+
+% select values between another two time points (t1 and t2) - SEM 1800
+t1 =datetime(2025,11,13,18,47,0); 
+t2 = datetime(2025,11,13,18,57,0);
+
+a = mims.dt >= t1 & mims.dt < t2;
+tn_stats3 = [mean(mims.mm_r2236(a)) mean(mims.cv_r2236(a))
+    mean(mims.mm_r3638(a)) mean(mims.cv_r3638(a))
+    mean(mims.mm_r8438(a)) mean(mims.cv_r8438(a))
+    mean(mims.mm_r2284(a)) mean(mims.cv_r2284(a))];
+
+% ratio of stats for 
+rstats = [tn_stats1(:,2) tn_stats2(:,2) tn_stats3(:,2)]
 
 %%
 % plot of ion currents and pressure, rows are:
