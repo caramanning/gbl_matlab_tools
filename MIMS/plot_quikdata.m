@@ -132,6 +132,11 @@ tn_stats1 = [mean(mims.mm_r2236(a)) mean(mims.cv_r2236(a))
     mean(mims.mm_r8436(a)) mean(mims.cv_r8436(a))
     mean(mims.mm_r2284(a)) mean(mims.cv_r2284(a))];
 
+tm_stats1 = [mean(mims.cv_m22(a))
+    mean(mims.cv_m36(a))
+    mean(mims.cv_m38(a))
+    mean(mims.cv_m84(a))];
+
 % select values between another two time points (t1 and t2) - SEM 1700
 t1 =datetime(2025,11,13,18,23,0); 
 t2 = datetime(2025,11,13,18,33,0);
@@ -141,6 +146,11 @@ tn_stats2 = [mean(mims.mm_r2236(a)) mean(mims.cv_r2236(a))
     mean(mims.mm_r3638(a)) mean(mims.cv_r3638(a))
     mean(mims.mm_r8438(a)) mean(mims.cv_r8438(a))
     mean(mims.mm_r2284(a)) mean(mims.cv_r2284(a))];
+
+tm_stats2 = [mean(mims.cv_m22(a))
+    mean(mims.cv_m36(a))
+    mean(mims.cv_m38(a))
+    mean(mims.cv_m84(a))];
 
 
 % select values between another two time points (t1 and t2) - SEM 1800
@@ -153,8 +163,15 @@ tn_stats3 = [mean(mims.mm_r2236(a)) mean(mims.cv_r2236(a))
     mean(mims.mm_r8438(a)) mean(mims.cv_r8438(a))
     mean(mims.mm_r2284(a)) mean(mims.cv_r2284(a))];
 
+tm_stats3 = [mean(mims.cv_m22(a))
+    mean(mims.cv_m36(a))
+    mean(mims.cv_m38(a))
+    mean(mims.cv_m84(a))];
+
 % ratio of stats for 
 rstats = [tn_stats1(:,2) tn_stats2(:,2) tn_stats3(:,2)]
+
+mstats = [tm_stats1 tm_stats2 tm_stats3]
 
 %%
 % plot of ion currents and pressure, rows are:
