@@ -1,10 +1,10 @@
 %% load mims data
-ws = 5; % window size: number of points to include when calculating movmean, movstd etc.
+ws = 2; % window size: number of points to include when calculating movmean, movstd etc.
 %file_path = 'data/Membrane Test Data/';
 %mat_fn = '20251111_1231_mims.mat';
 
 file_path = 'data/Capillary Test Data/';
-mat_fn = '20251113_1800_mims.mat';
+mat_fn = '20251114_1310_mims.mat';
 
 load([file_path mat_fn])
 %%
@@ -110,10 +110,13 @@ mims.cv_r8436b = movstd(mims.r8436b, ws) ./ mims.mm_r8436b;
 
 %% % code to subset data based on time and calculate over smaller intervals
 
+% pressure range to plot max
+tp_range = [0 1e-6];
+
 % example for 20251113 1800
 % select values between two time points (t1 and t2) - SEM 1600
-t1 = datetime(2025,11,13,18,0,0); 
-t2 = datetime(2025,11,13,18,12,0);
+t1 = datetime(2025,11,14,13,12,0); 
+t2 = datetime(2025,11,14,13,27,0);
 
 % two ways to select values, use what is intuitive to you
 % select using logical indexing
@@ -124,12 +127,17 @@ b = find(mims.dt >= t1 & mims.dt < t2);
 
 % output results to show they are the same
 m22o = [mean(mims.mm_m22(a)) mean(mims.mm_m22(b))];
-r2238o = [mean(mims.mm_r2236(a)) mean(mims.mm_r2236(b))];
+r2236o = [mean(mims.mm_r2236(a)) mean(mims.mm_r2236(b))];
 
 % stats for non-background corrected ratios
 tn_stats1 = [mean(mims.mm_r2236(a)) mean(mims.cv_r2236(a))
     mean(mims.mm_r3836(a)) mean(mims.cv_r3836(a))
     mean(mims.mm_r8436(a)) mean(mims.cv_r8436(a))
+    mean(mims.mm_r2284(a)) mean(mims.cv_r2284(a))];
+
+tn38_stats1 = [mean(mims.mm_r2238(a)) mean(mims.cv_r2238(a))
+    mean(mims.mm_r3638(a)) mean(mims.cv_r3638(a))
+    mean(mims.mm_r8438(a)) mean(mims.cv_r8438(a))
     mean(mims.mm_r2284(a)) mean(mims.cv_r2284(a))];
 
 tm_stats1 = [mean(mims.cv_m22(a))
@@ -138,11 +146,16 @@ tm_stats1 = [mean(mims.cv_m22(a))
     mean(mims.cv_m84(a))];
 
 % select values between another two time points (t1 and t2) - SEM 1700
-t1 =datetime(2025,11,13,18,23,0); 
-t2 = datetime(2025,11,13,18,33,0);
+t1 =datetime(2025,11,14,13,35,0); 
+t2 = datetime(2025,11,14,13,50,0);
 
 a = mims.dt >= t1 & mims.dt < t2;
 tn_stats2 = [mean(mims.mm_r2236(a)) mean(mims.cv_r2236(a))
+    mean(mims.mm_r3836(a)) mean(mims.cv_r3836(a))
+    mean(mims.mm_r8436(a)) mean(mims.cv_r8436(a))
+    mean(mims.mm_r2284(a)) mean(mims.cv_r2284(a))];
+
+tn38_stats2 = [mean(mims.mm_r2238(a)) mean(mims.cv_r2238(a))
     mean(mims.mm_r3638(a)) mean(mims.cv_r3638(a))
     mean(mims.mm_r8438(a)) mean(mims.cv_r8438(a))
     mean(mims.mm_r2284(a)) mean(mims.cv_r2284(a))];
@@ -154,24 +167,39 @@ tm_stats2 = [mean(mims.cv_m22(a))
 
 
 % select values between another two time points (t1 and t2) - SEM 1800
-t1 =datetime(2025,11,13,18,47,0); 
-t2 = datetime(2025,11,13,18,57,0);
+t1 =datetime(2025,11,14,12,50,0); 
+t2 = datetime(2025,11,14,13,05,0);
 
 a = mims.dt >= t1 & mims.dt < t2;
+% ratios to mass 36
 tn_stats3 = [mean(mims.mm_r2236(a)) mean(mims.cv_r2236(a))
+    mean(mims.mm_r3836(a)) mean(mims.cv_r3836(a))
+    mean(mims.mm_r8436(a)) mean(mims.cv_r8436(a))
+    mean(mims.mm_r2284(a)) mean(mims.cv_r2284(a))];
+
+
+% ratios to mass 38
+tn38_stats3 = [mean(mims.mm_r2238(a)) mean(mims.cv_r2238(a))
     mean(mims.mm_r3638(a)) mean(mims.cv_r3638(a))
     mean(mims.mm_r8438(a)) mean(mims.cv_r8438(a))
     mean(mims.mm_r2284(a)) mean(mims.cv_r2284(a))];
 
+% masses
 tm_stats3 = [mean(mims.cv_m22(a))
     mean(mims.cv_m36(a))
     mean(mims.cv_m38(a))
     mean(mims.cv_m84(a))];
 
-% ratio of stats for 
-rstats = [tn_stats1(:,2) tn_stats2(:,2) tn_stats3(:,2)]
-
+% display stats
 mstats = [tm_stats1 tm_stats2 tm_stats3]
+
+r36stats = [tn_stats1(:,2) tn_stats2(:,2) tn_stats3(:,2)]
+
+r38stats = [tn38_stats1(:,2) tn38_stats2(:,2) tn38_stats3(:,2)]
+
+%%
+
+
 
 %%
 % plot of ion currents and pressure, rows are:
@@ -180,13 +208,17 @@ mstats = [tm_stats1 tm_stats2 tm_stats3]
 % 36
 % 38 
 % TP
+
+fs = 14; % fontsize
+
 figure(1)
 clf; 
 
-tiledlayout(5,1, 'TileSpacing', 'tight', 'Padding', 'tight');
+tl = tiledlayout(5,1, 'TileSpacing', 'tight', 'Padding', 'tight');
 
-nexttile;
+ax1=nexttile;
 hold on; box on;
+set(gca, 'FontSize', fs);
 plot(mims.dt,mims.m22,'r');
 %plot(mims.dt,mims.m23,'r');
 plot(mims.dt,mims.m22-mims.m23,'k');
@@ -199,6 +231,7 @@ xticklabels([]);
 
 nexttile;
 hold on; box on;
+set(gca, 'FontSize', fs);
 plot(mims.dt,mims.m84,'r');
 %plot(mims.dt,mims.m88,'b');
 plot(mims.dt,mims.m84b,'k');
@@ -210,6 +243,7 @@ xticklabels([]);
 
 nexttile;
 hold on; box on;
+set(gca, 'FontSize', fs);
 plot(mims.dt,mims.m36,'r');
 %plot(mims.dt,mims.m33p5,'b');
 plot(mims.dt,mims.m36b,'k');
@@ -222,6 +256,7 @@ xticklabels([]);
 
 nexttile;
 hold on; box on;
+set(gca, 'FontSize', fs);
 plot(mims.dt,mims.m38,'r');
 %plot(mims.dt,mims.m33p5,'b');
 plot(mims.dt,mims.m38b,'k');
@@ -233,11 +268,15 @@ xticklabels([]);
 
 nexttile;
 hold on; box on;
+set(gca, 'FontSize', fs);
 plot(mims.dt,mims.tp,'r')
 legend('TP','location','southeast');
 ylabel('pressure (mbar)');
 axis tight;
 %xticklabels([]);
+ylim(tp_range)
+
+print -dpng -r300 quikdata_masses.png;
 
 %%
 % plot of ratios and pressure, rows are:
@@ -246,12 +285,15 @@ axis tight;
 % 36
 % 38 
 % TP
+
+fs = 14; % fontsize
 figure(2)
 clf; 
 tiledlayout(5,1, 'TileSpacing', 'tight', 'Padding', 'tight');
 
 nexttile;
 hold on; box on;
+set(gca, 'FontSize', fs);
 plot(mims.dt,mims.r2238,'r');
 plot(mims.dt, mims.mm_r2238,'k');
 legend('22/38','22/38 mm', 'location','southeast');
@@ -262,6 +304,7 @@ xticklabels([]);
 
 nexttile;
 hold on; box on;
+set(gca, 'FontSize', fs);
 plot(mims.dt,mims.r8438,'r');
 plot(mims.dt, mims.mm_r8438,'k');
 legend('84/38','84/38 mm','location','southeast');
@@ -271,6 +314,7 @@ xticklabels([]);
 
 nexttile;
 hold on; box on;
+set(gca, 'FontSize', fs);
 plot(mims.dt,mims.r3638,'r');
 plot(mims.dt, mims.mm_r3638,'k');
 legend('36/38','36/38 mm','location','southeast');
@@ -281,6 +325,7 @@ xticklabels([]);
 
 nexttile;
 hold on; box on;
+set(gca, 'FontSize', fs);
 plot(mims.dt,mims.r2284,'r');
 plot(mims.dt, mims.mm_r2284,'k');
 legend('22/84','22/84 mm', 'location','southeast');
@@ -290,9 +335,12 @@ xticklabels([]);
 
 nexttile;
 hold on; box on;
+set(gca, 'FontSize', fs);
 plot(mims.dt,mims.tp,'r');
 legend('TP', 'location','southeast');
 ylabel('pressure (mbar)');
 axis tight;
 %xticklabels([]);
+ylim(tp_range)
 
+print -dpng -r300 quikdata_ratios.png;

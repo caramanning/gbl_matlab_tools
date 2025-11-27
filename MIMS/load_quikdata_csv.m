@@ -22,6 +22,7 @@
 % file_path = 'data/Capillary Test Data/';
 % mat_fn = '20251114_1151_mims.mat';
 
+%fn = '20251113 1618 SEM air capillary 35 eV.csv';
 fn = '20251114 1310 SEM varying 35 eV 400 emission 8000 ion 180 anode 100 focus.csv';
 file_path = 'data/Capillary Test Data/';
 mat_fn = '20251114_1310_mims.mat';
