@@ -1,10 +1,10 @@
 %% load mims data
-ws = 2; % window size: number of points to include when calculating movmean, movstd etc.
+ws = 5; % window size: number of points to include when calculating movmean, movstd etc.
 %file_path = 'data/Membrane Test Data/';
 %mat_fn = '20251111_1231_mims.mat';
 
 file_path = 'data/Capillary Test Data/';
-mat_fn = '20251114_1310_mims.mat';
+mat_fn = '20251113_1618_mims.mat';
 
 load([file_path mat_fn])
 %%
@@ -115,8 +115,8 @@ tp_range = [0 1e-6];
 
 % example for 20251113 1800
 % select values between two time points (t1 and t2) - SEM 1600
-t1 = datetime(2025,11,14,13,12,0); 
-t2 = datetime(2025,11,14,13,27,0);
+t1 = datetime(2025,11,13,16,30,0); 
+t2 = datetime(2025,11,13,16,40,0);
 
 % two ways to select values, use what is intuitive to you
 % select using logical indexing
@@ -146,8 +146,8 @@ tm_stats1 = [mean(mims.cv_m22(a))
     mean(mims.cv_m84(a))];
 
 % select values between another two time points (t1 and t2) - SEM 1700
-t1 =datetime(2025,11,14,13,35,0); 
-t2 = datetime(2025,11,14,13,50,0);
+t1 =datetime(2025,11,13,17,0,0); 
+t2 = datetime(2025,11,13,17,10,0);
 
 a = mims.dt >= t1 & mims.dt < t2;
 tn_stats2 = [mean(mims.mm_r2236(a)) mean(mims.cv_r2236(a))
@@ -167,8 +167,8 @@ tm_stats2 = [mean(mims.cv_m22(a))
 
 
 % select values between another two time points (t1 and t2) - SEM 1800
-t1 =datetime(2025,11,14,12,50,0); 
-t2 = datetime(2025,11,14,13,05,0);
+t1 =datetime(2025,11,13,17,30,0); 
+t2 = datetime(2025,11,13,17,40,0);
 
 a = mims.dt >= t1 & mims.dt < t2;
 % ratios to mass 36
