@@ -1,0 +1,419 @@
+%%
+% make sure gas toolbox is included
+addpath('D:\OneDrive - University of Connecticut\research\2023 LIS CH4 N2O\gshhg-shp-2.3.7\GSHHS_shp\h\');
+addpath('D:\OneDrive - University of Connecticut\research\2023 LIS CH4 N2O\gshhg-shp-2.3.7\WDBII_shp\h\');
+addpath('D:\OneDrive - University of Connecticut\research\2023 LIS CH4 N2O\bathy\');
+
+addpath('D:\OneDrive - University of Connecticut\research\2023 LIS CH4 N2O\GEBCO_LIS\');
+
+
+%%
+gebcoFile     = 'gebco_2025_n42.0_s40.0_w-74.5_e-71.5.nc';   % your GEBCO NetCDF
+%coastShpFile  = 'GSHHS_h_L1.shp';  % high‑res coastline
+%riversShpFile = 'WDBII_river_h_L05.shp'; % high‑res rivers
+
+%%
+% Region of interest (Long Island Sound)
+latLim = [40.4 41.4];
+lonLim = [-74.1 -71.8];
+
+%% --- LOAD GEBCO BATHYMETRY NETCDF ---
+lat = ncread(gebcoFile, 'lat');  % latitudes
+lon = ncread(gebcoFile, 'lon');  % longitudes
+elev = ncread(gebcoFile, 'elevation'); % bathymetry (meters)
+
+% Find indices for cropped region
+ix = lon >= lonLim(1) & lon <= lonLim(2);
+iy = lat >= latLim(1) & lat <= latLim(2);
+
+lonC = lon(ix);  % cropped longitude
+latC = lat(iy);  % cropped latitude
+
+% Crop elevation (2‑D)
+elevC = elev(ix, iy)';  % note transpose for pcolor orientation
+%elevC(elevC==0) = -1;
+
+%% --- LOAD SHAPEFILES ---
+coast = shaperead(coastShpFile, 'UseGeoCoords', true);
+rivers = shaperead(riversShpFile, 'UseGeoCoords', true);
+
+%% --- PLOT BATHYMETRY ---
+fs=16;
+figure('Color','w','Renderer','Painters');
+set(gca,'fontsize',fs);
+pcolor(lonC, latC, elevC);
+shading interp
+demcmap([-75 300],200)
+colorbar
+%caxis([-200 50]) % adjust as desired
+hold on
+
+xlabel('Longitude (\circ)')
+ylabel('Latitude (\circ)')
+%title('Long Island Sound Bathymetry (GEBCO) + Coastline + Rivers')
+
+% Set and freeze axes
+xlim(lonLim)
+ylim(latLim)
+axis equal
+ax = gca;
+ax.XLimMode = 'manual';
+ax.YLimMode = 'manual';
+
+
+%coast = shaperead('GSHHS_h_L1.shp', 'UseGeoCoords', true);
+%geoshow(coast, 'EdgeColor', 'k','FaceColor',[0.8 0.8 0.8]);
+
+s_ll = [-73.73683,40.8710
+    -73.72917,40.8830
+    -73.69200,40.90533
+    -73.65533,40.92333
+    -73.614333,40.94000
+    -73.582167,40.957167
+    -73.55767,40.96167];
+
+LIS1035 = [-73.6559, 40.9246];
+
+ms = 8;
+c2 = [0.4940    0.1840    0.5560];
+c2 = [0.4940    0.1840    0.5560].*1.7;
+c2 = [203, 195, 227]./255;
+
+plot(LIS1035(1),LIS1035(2),'marker','o','markersize',ms+5,'color','k','markerfacecol',c2);
+
+
+c1 = [0.8500    0.3250    0.0980];
+plot(s_ll(:,1),s_ll(:,2),'color',c1,'linewidth',2);
+
+for i = 1:7
+    plot(s_ll(i,1), s_ll(i,2),'marker','d','markersize',ms,'color','k','markerfacecol',c1); % EXR1
+end;
+
+% CLIS AND ARTG
+plot(-73.28683,41.01117,'marker','o','markersize',ms+2,'color','k','markerfacecol','w'); % ARTG
+
+plot(-72.65550,41.13833,'marker','o','markersize',ms+2,'color','k','markerfacecol','w'); % CLIS
+
+lonlim = [-73.8 -73.5];
+latlim = [40.75 41.1];
+
+lonbox = [lonlim(1),lonlim(1),lonlim(2), lonlim(2), lonlim(1)];
+latbox = [latlim(1), latlim(2), latlim(2),latlim(1), latlim(1)];
+
+plot(lonbox,latbox,'color','k','linewidth',2);
+
+
+set(gca,'tickdir','out');
+set(gca,'fontsize',fs);
+
+ax = gca;
+%exportgraphics(ax, 'MyVectorMap.eps', 'ContentType', 'image');
+%exportgraphics(gcf,'20251211_LIS_Map_flat.pdf','BackgroundColor','none','ContentType','vector')
+%print('20251211_LIS_Map_flat_v2.eps','-depsc2','-r300')
+print('20251211_LIS_Map_flat_full.png','-dpng','-r600')
+
+
+
+
+
+%%
+
+%% repeat for the zoomed in version 
+lonLim = [-73.8 -73.5];
+latLim = [40.75 41.1];
+
+% --- PLOT BATHYMETRY ---
+fs=16;
+figure('Color','w');
+set(gca,'fontsize',fs);
+pcolor(lonC, latC, elevC);
+shading interp
+demcmap([-75 300],200)
+%colorbar
+%caxis([-200 50]) % adjust as desired
+hold on
+
+xlabel('Longitude (\circ)')
+ylabel('Latitude (\circ)')
+%title('Long Island Sound Bathymetry (GEBCO) + Coastline + Rivers')
+
+% Set and freeze axes
+xlim(lonLim)
+ylim(latLim)
+axis equal
+ax = gca;
+ax.XLimMode = 'manual';
+ax.YLimMode = 'manual';
+
+
+%coast = shaperead('GSHHS_h_L1.shp', 'UseGeoCoords', true);
+%geoshow(coast, 'EdgeColor', 'k','FaceColor',[0.8 0.8 0.8]);
+
+s_ll = [-73.73683,40.8710
+    -73.72917,40.8830
+    -73.69200,40.90533
+    -73.65533,40.92333
+    -73.614333,40.94000
+    -73.582167,40.957167
+    -73.55767,40.96167];
+
+LIS1035 = [-73.6559, 40.9246];
+
+ms = 11;
+c2 = [0.4940    0.1840    0.5560];
+c2 = [0.4940    0.1840    0.5560].*1.7;
+c2 = [203, 195, 227]./255;
+
+plot(LIS1035(1),LIS1035(2),'marker','o','markersize',ms+5,'color','k','markerfacecol',c2);
+
+
+c1 = [0.8500    0.3250    0.0980];
+plot(s_ll(:,1),s_ll(:,2),'color',c1,'linewidth',2);
+
+for i = 1:7
+    plot(s_ll(i,1), s_ll(i,2),'marker','d','markersize',ms,'color','k','markerfacecol',c1); % EXR1
+end;
+
+plot(lonbox,latbox,'color','k','linewidth',2);
+
+
+set(gca,'tickdir','out');
+set(gca,'fontsize',fs);
+
+%exportgraphics(gcf,'20251211_LIS_Map_flat_zoom.pdf','BackgroundColor','none','ContentType','vector')
+%print('20251211_LIS_Map_flat_v2.eps','-r300')
+
+print('20251211_LIS_Map_flat_subset.png','-dpng','-r600')
+
+
+
+%% 5, 3, 2
+riversShpFile = 'WDBII_river_h_L01.shp'; % high‑res rivers
+rivers = shaperead(riversShpFile, 'UseGeoCoords', true);
+for k = 1:length(rivers)
+    plot(rivers(k).Lon, rivers(k).Lat, 'b', 'LineWidth', 0.7)
+end
+
+%%
+%rivers = shaperead('WDBII_river_h_L03.shp', 'UseGeoCoords', true);
+geoshow(rivers, 'Color', [0 0.3 1])
+
+% Set axis limits
+xlim(lonLim)
+ylim(latLim)
+axis equal  % optional, keeps aspect ratio
+
+
+%% --- OVERLAY COASTLINE ---
+for k = 1:length(coast)
+    plot(coast(k).Lon, coast(k).Lat, 'k', 'LineWidth', 1);
+end
+
+%% --- OVERLAY RIVERS ---
+for k = 1:length(rivers)
+    plot(rivers(k).Lon, rivers(k).Lat, 'b', 'LineWidth', 0.7);
+end
+
+%axis equal tight
+
+% Set axis limits
+xlim(lonLim)
+ylim(latLim)
+axis equal  % optional, keeps aspect ratio
+
+
+
+
+%% ===============================================================
+%  LONG ISLAND SOUND – HIGH RES COASTLINE + RIVERS + NOAA DEM
+%  Mapping Toolbox + GSHHG + NOAA DEM (UTM18)
+% ===============================================================
+
+%% --- Load NOAA DEM (NAD83 / UTM zone 18N, EPSG:26918) ---
+demfile = 'long_island_sound_m040_30m.nc';
+
+x = ncread(demfile,'x');       % Easting (m)
+y = ncread(demfile,'y');       % Northing (m)
+Z = ncread(demfile,'Band1');   % Elevation/depth
+
+% Build mesh
+[X, Y] = meshgrid(x, y);
+
+% Projection information
+crs = projcrs(26918);   % NAD83 / UTM zone 18N
+[lat, lon] = projinv(crs, X, Y);   % Convert to lat/lon
+
+
+%% --- Load high-resolution coastline (GSHHG) ---
+coast = shaperead('GSHHS_h_L1.shp','UseGeoCoords',true);
+
+%% --- Load high-resolution rivers (WDBII) ---
+
+rivers = shaperead('WDBII_river_h_L01.shp','UseGeoCoords',true);
+
+
+%% --- Create figure and map axes ---
+figure('Color','w');
+axesm('mercator', ...
+    'MapLatLimit',[40 42], ...
+    'MapLonLimit',[-74 -71], ...
+    'Frame','on','Grid','on');
+mlabel on; plabel on; gridm on;
+
+hold on 
+plotm(lat, lon)
+
+
+%% --- Plot bathymetry ---
+geoshow(lat, lon, Z, 'DisplayType','texturemap');
+demcmap(Z);                 % Terrain colormap
+hcb = colorbar;
+ylabel(hcb,'Elevation (m)');
+
+
+%% --- Overlay coastline ---
+geoshow(coast, ...
+    'EdgeColor','k', 'FaceColor', [0 1 0.2], 'LineWidth',1.0)
+
+%%
+mapshow(rivers, 'Color',[0 0.3 1], 'LineWidth',0.7)
+
+%% --- Overlay rivers ---
+
+% Store current limits
+latlim = getm(gca,'MapLatLimit');
+lonlim = getm(gca,'MapLonLimit');
+
+% Plot rivers
+geoshow(rivers, 'Color',[0 0.3 1], 'LineWidth',0.7, 'DisplayType','line');
+
+% Restore map limits
+setm(gca,'MapLatLimit',latlim, 'MapLonLimit',lonlim)
+
+geoshow(rivers, ...
+    'Color',[0 0.3 1], 'LineWidth',0.7)
+
+
+%% --- Final formatting ---
+title('Long Island Sound – High-Resolution Bathymetry, Coastline, and Rivers');
+set(gca,'FontSize',12)
+
+%%
+% Load data
+x = ncread('long_island_sound_m040_30m.nc','x');       % Easting (m)
+y = ncread('long_island_sound_m040_30m.nc','y');       % Northing (m)
+Z = ncread('long_island_sound_m040_30m.nc','Band1');   % Elevation/depth
+
+% Build X/Y mesh
+[X, Y] = meshgrid(x, y);
+
+% Define the projection (EPSG:26918)
+crs = projcrs(26918);   % NAD83 / UTM zone 18N
+
+% Convert to latitude/longitude
+[lat, lon] = projinv(crs, X, Y);
+
+% Plot
+figure(1)
+clf; hold on;
+axesm mercator
+geoshow(lat, lon, Z, 'DisplayType','texturemap')
+demcmap(Z)
+colorbar
+title('NOAA DEM (NAD83 / UTM zone 18N)')
+
+%%
+x = ncread('long_island_sound_m040_30m.nc','x');
+y = ncread('long_island_sound_m040_30m.nc','y');
+z = ncread('long_island_sound_m040_30m.nc','Band1');
+
+
+
+info = ncinfo('long_island_sound_m040_30m.nc');
+projVar = info.Variables(strcmp({info.Variables.Name}, 'transverse_mercator'));
+projVar.Attributes
+%%
+for k = 1:length(projVar.Attributes)
+    fprintf('%s = %s\n', projVar.Attributes(k).Name, string(projVar.Attributes(k).Value));
+end
+
+%%
+% Load bathymetry grid
+lat = ncread('long_island_sound_m040_30m.nc','y');
+lon = ncread('long_island_sound_m040_30m.nc','x');
+tm = ncread('long_island_sound_m040_30m.nc','transverse_mercator');
+Band1 = ncread('long_island_sound_m040_30m.nc','Band1');
+%%
+Z   = ncread('long_island_sound_m040_30m.nc','elevation');
+%%
+figure
+axesm('mercator', ...
+      'MapLatLimit',[40 42], ...
+      'MapLonLimit',[-74 -71])
+gridm on; framem on; mlabel on; plabel on
+
+% Bathymetry as texture map
+geoshow(lat, lon, Z, 'DisplayType','texturemap');
+demcmap(Z)         % nice bathymetry colormap
+colorbar
+
+% High-res coastline overlaid
+hold on
+geoshow(coast, 'Color','k', 'LineWidth',1)
+
+%%%
+
+figure(1)
+clf; hold on;
+axesm('mercator', ...
+      'MapLatLimit',[40 42], ...
+      'MapLonLimit',[-74 -71])
+gridm on; framem on; mlabel on; plabel on
+
+% --- High-res coastline ---
+coast = shaperead('GSHHS_h_L1.shp', 'UseGeoCoords', true);
+geoshow(coast, 'EdgeColor', 'k','FaceColor',[0.8 0.8 0.8])
+%%
+% --- High-res rivers ---
+rivers = shaperead('WDBII_river_h_L02.shp', 'UseGeoCoords', true);
+geoshow(rivers, 'Color', [0 0.3 1])
+%%
+rivers = shaperead('WDBII_river_h_L03.shp', 'UseGeoCoords', true);
+geoshow(rivers, 'Color', [0 0.3 1])
+%%
+%rivers = shaperead('WDBII_border_h_L8.shp', 'UseGeoCoords', true);
+%geoshow(rivers, 'Color', [0 0.3 1])
+
+
+%%
+
+
+figure
+axesm('MapProjection','mercator', ...
+      'MapLatLimit',[40 42], ...
+      'MapLonLimit',[-74 -71])
+gridm on
+framem on
+mlabel on
+plabel on
+
+%load coastlines
+%geoshow(coastlat, coastlon, 'Color','k')
+
+land = shaperead('landareas.shp','UseGeoCoords',true);
+geoshow(land, 'FaceColor',[0.9 0.9 0.9],'EdgeColor','k')
+
+geoshow(bathyLat, bathyLon, bathyZ, ...
+        'DisplayType','texturemap');
+demcmap(bathyZ)
+
+%%
+figure
+axesm mercator
+setm(gca,'MapLatLimit',[40 42], 'MapLonLimit',[-74 -71])
+gridm on; framem on; mlabel on; plabel on
+
+land = shaperead('landareas.shp','UseGeoCoords',true);
+geoshow(land, 'FaceColor',[0.9 0.9 0.9],'EdgeColor','k')
+
+title('Long Island Sound')
