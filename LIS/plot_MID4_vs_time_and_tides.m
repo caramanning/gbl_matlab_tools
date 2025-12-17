@@ -280,7 +280,140 @@ dnlocalM = LISCDM.dn_local(MID4castM); % local datetime for MID4 casts
 LISMay24_CH4N2O_CTD = LISM;
 %save LISMay24_CH4N2O_CTD.mat LISMay24_CH4N2O_CTD;
 
+%%
+mask1 = ismember(LISA.CastNum, MID4castA);
+mask2 = LISA.Depth < 3.5;
+mask12 = mask1 & mask2;
 
+mask3 = LISA.Depth > 16;
+mask13 = mask1 & mask3;
+
+figure(1)
+clf; 
+subplot(3,1,1)
+hold on;
+ylabel(['O_2 (\mumol kg^{-1}]']);
+xlabel('time of day')
+plot(LISA.datetime_local(mask12),LISA.O2_umolkg(mask12),'o');
+plot(LISA.datetime_local(mask13),LISA.O2_umolkg(mask13),'s');
+legend('surf','bot','location','east')
+
+subplot(3,1,2)
+hold on;
+ylabel(['CH_4 (nmol kg^{-1}]']);
+xlabel('time of day')
+plot(LISA.datetime_local(mask12),LISA.CH4_mean_nmolkg(mask12),'o');
+plot(LISA.datetime_local(mask13),LISA.CH4_mean_nmolkg(mask13),'s');
+
+subplot(3,1,3)
+hold on;
+ylabel(['N_2O (nmol kg^{-1}]']);
+xlabel('time of day')
+plot(LISA.datetime_local(mask12),LISA.N2O_mean_nmolkg(mask12),'o');
+plot(LISA.datetime_local(mask13),LISA.N2O_mean_nmolkg(mask13),'s');
+
+
+%%
+fracDay = seconds(timeofday(LISA.datetime_local)) / 86400;   % or: hours(timeofday(t))/24
+tshift = fracDay - 13/24; % local solar noon 13:00
+
+figure(2)
+clf; 
+subplot(3,1,1)
+hold on;
+ylabel(['O_2 (\mumol kg^{-1}]']);
+xlabel('time of day relative to solar noon')
+plot(tshift(mask12),LISA.O2_umolkg(mask12),'o');
+plot(tshift(mask13),LISA.O2_umolkg(mask13),'s');
+legend('surf','bot','location','east')
+
+subplot(3,1,2)
+hold on;
+ylabel(['CH_4 (nmol kg^{-1}]']);
+xlabel('time of day relative to solar noon')
+plot(tshift(mask12),LISA.CH4_mean_nmolkg(mask12),'o');
+plot(tshift(mask13),LISA.CH4_mean_nmolkg(mask13),'s');
+
+subplot(3,1,3)
+hold on;
+ylabel(['N_2O (nmol kg^{-1}]']);
+xlabel('time of day relative to solar noon')
+plot(tshift(mask12),LISA.N2O_mean_nmolkg(mask12),'o');
+plot(tshift(mask13),LISA.N2O_mean_nmolkg(mask13),'s');
+
+
+%%
+% flood times at 46 ft
+fA46 = [datetime(2023,8,2,9,16,0)
+datetime(2023,8,2,21,37,0)
+datetime(2023,8,3,10,07,0)];
+
+fA = [datetime(2023,8,2,9,54,0)
+datetime(2023,8,2,22,16,0)
+datetime(2023,8,3,10,44,0)];
+
+
+
+
+% find the closest flood time for the 46ft
+% distances: each row corresponds to one element of A
+diff_time = abs(LISA.datetime_local - fA46.');    % size numel(A) x numel(B)
+
+% find nearest index in B for each A
+[~, idxfA46] = min(diff_time, [], 2);   % idxB(i) is index in B closest to A(i)
+
+diff_flood46 = LISA.datetime_local - fA46(idxfA46); % difference between current time and closest flood
+%fracDay_flood = seconds(timeofday(diff_flood)) / 86400;   % or: hours(timeofday(t))/24
+
+
+diff_time = abs(LISA.datetime_local - fA.');    % size numel(A) x numel(B)
+
+% find nearest index in B for each A
+[~, idxfA] = min(diff_time, [], 2);   % idxB(i) is index in B closest to A(i)
+
+diff_flood = LISA.datetime_local - fA(idxfA); % difference between current time and closest flood
+%fracDay_flood = seconds(timeofday(diff_flood)) / 86400;   % or: hours(timeofday(t))/24
+
+
+figure(3)
+clf; 
+subplot(3,1,1)
+hold on;
+ylabel(['O_2 (\mumol kg^{-1}]']);
+xlabel('time of day relative to peak flood')
+plot(diff_flood(mask12),LISA.O2_umolkg(mask12),'o');
+plot(diff_flood46(mask13),LISA.O2_umolkg(mask13),'s');
+legend('surf','bot','location','east')
+xlim([duration(-6,0,0) duration(6,0,0)]);
+
+subplot(3,1,2)
+hold on;
+ylabel(['CH_4 (nmol kg^{-1}]']);
+xlabel('time of day relative to peak flood')
+plot(diff_flood(mask12),LISA.CH4_mean_nmolkg(mask12),'o');
+plot(diff_flood46(mask13),LISA.CH4_mean_nmolkg(mask13),'s');
+xlim([duration(-6,0,0) duration(6,0,0)]);
+
+
+subplot(3,1,3)
+hold on;
+ylabel(['N_2O (nmol kg^{-1}]']);
+xlabel('time of day relative to peak flood')
+plot(diff_flood(mask12),LISA.N2O_mean_nmolkg(mask12),'o');
+plot(diff_flood46(mask13),LISA.N2O_mean_nmolkg(mask13),'s');
+xlim([duration(-6,0,0) duration(6,0,0)]);
+
+
+
+
+%%
+
+% datetime(2023,10,18,23,58,0)
+% datetime(2023,10,19,12,20,0)
+% datetime(2023,10,19,0,49,0)
+% datetime(2023,10,20,13,12,0)
+
+time_flood1 = find(PM.Datetime_local>=datetime(2023,8,3,8,0,0) & PM.Datetime_local>=datetime(2023,8,3,8,0,0))
 %%
 % AUGUST INTERPOLATION
 % we need to make a grid that is evenly spaced so that all the casts are
