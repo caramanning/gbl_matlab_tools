@@ -138,10 +138,14 @@ gfA_avg.DCH4_std = gfA_avg.ch4_std_nmolkg./gfA_avg.ch4_eq_nmolkg .* 100;
 gfA_avg.DN2O_std = gfA_avg.n2o_std_nmolkg./gfA_avg.n2o_eq_nmolkg .* 100;
 
 % because no duplicates available for the 7th one, fill in for plotting
-gfA_avg.DCH4_std(7) = mean(gfA_avg.DCH4_std(4:6);
-gfA_avg.DN2O_std(7) = mean(gfA_avg.DN2O_std(4:6);
+gfA_avg.DCH4_std(7) = mean(gfA_avg.DCH4_std(4:6));
+gfA_avg.DN2O_std(7) = mean(gfA_avg.DN2O_std(4:6));
 
-%save LIS_gas_flux_Aug_avg.mat gfA_avg gfA;
+gfA_avg.ch4_std_nmolkg(7) = mean(gfA_avg.ch4_std_nmolkg(4:6));
+gfA_avg.n2o_std_nmolkg(7) = mean(gfA_avg.n2o_std_nmolkg(4:6));
+
+
+save LIS_gas_flux_Aug_avg.mat gfA_avg gfA;
 %%
 
 % load Oct data
@@ -349,6 +353,257 @@ mean(gfM_avg.DCH4) std(gfM_avg.DCH4)]
 
 
 %%
+nr = 3; nc = 2; % number of rows and columns
+lw = 2; % default line width
+lw1 = 1;
+fs = 14; % default font size
+ms = 3; % default marker size
+yt = [0 10 20 30]; %y-axis ticks;
+xt = [0 5 10 15];
+yl = [0 32]; % y-axis limit in m
+xl = [-0.5 19]; %x-axis limit in km
+
+cM = [0,158,155]./255;
+cO = [86,180,233]./255;
+cA = [230,159,0]./255;
+
+f_ch4_err = 0.24;
+f_n2o_err = 0.26;
+
+ms=7;
+
+fig=figure(1);
+clf; 
+clf;
+sp=tight_subplot(nr,nc,[.05 .08],[.09 .05],[.09 .03]);
+set(gcf, 'PaperUnits', 'inches');
+set(gcf, 'PaperPositionMode', 'manual');
+set(gcf, 'PaperPosition', [0 0 12 7]);
+set(gcf,'renderer','painters');
+    set(gcf,'GraphicsSmoothing','on')
+colormap turbo;
+    set(0,'DefaultTextFontName','Arial')
+
+
+subplot(sp(1))
+ymax = 400;
+hold on; box on;
+set(gca,'tickdir','out');
+set(gca,'fontsize',fs);
+set(gca,'xlim',[-0.5 19]);
+%set(gca,'xticklabel',km_transect_appx);
+set(gca,'xtick',km_transect_appx);
+set(gca,'ylim',[0 ymax]);
+set(gca,'ytick',[0:100:ymax]);
+set(gca,'yticklabel',[0:100:ymax]);
+text(17.5,ymax*0.9,'a','fontsize',fs);
+dx=0.8;
+text(0-2*dx,ymax*1.1,'EXR1','fontsize',fs);
+text(1.4-dx*0.7,ymax*1.1,'EXRX','fontsize',fs);
+text(5.4-dx,ymax*1.1,'MID3','fontsize',fs);
+text(9-dx,ymax*1.1,'MID4','fontsize',fs);
+text(13-dx,ymax*1.1,'MID5','fontsize',fs);
+text(16.3-dx,ymax*1.1,'WLIS','fontsize',fs);
+text(18.4-dx*0.5,ymax*1.1,'WLI6','fontsize',fs);
+
+errorbar(km_transect_appx,gfA_avg.ch4_nmolkg,gfA_avg.ch4_std_nmolkg,'-o','markerfacecolor',cA,'color',cA,'linewidth',lw,'markersize',ms);
+errorbar(km_transect_appx,gfO_avg.ch4_nmolkg,gfO_avg.ch4_std_nmolkg,'-s','markerfacecolor',cO,'color',cO,'linewidth',lw,'markersize',ms);
+errorbar(km_transect_appx,gfM_avg.ch4_nmolkg,gfM_avg.ch4_std_nmolkg,'-^','markerfacecolor',cM,'color',cM,'linewidth',lw,'markersize',ms);
+
+ax1.XAxisLocation = 'bottom';
+ax1.YAxisLocation = 'left';
+ax1.Box = 'off'; % Optional: remove the box to avoid double ticks
+%ax1.XTick = km_transect;         % Bottom ticks
+
+legend('Aug','Oct','May','location','north');
+%ylabel('\DeltaCH_4 (nmol kg^{-1})')
+ylabel('CH_4 [nmol kg^{-1}]');
+%xlabel('Transect distance [km]');    
+    
+subplot(sp(3))
+ymax = 15000;
+hold on; box on;
+set(gca,'tickdir','out');
+set(gca,'fontsize',fs);
+set(gca,'xlim',[-0.5 19]);
+%set(gca,'xticklabel',km_transect_appx);
+set(gca,'xtick',km_transect_appx);
+set(gca,'ylim',[0 ymax]);
+set(gca,'ytick',[0:5000:ymax]);
+set(gca,'yticklabel',[0:5000:ymax]);
+text(17.5,15000*0.9,'c','fontsize',fs);
+dx=0.8;
+%text(0-2*dx,ymax*1.1,'EXR1','fontsize',fs);
+%text(1.4-dx*0.7,ymax*1.1,'EXRX','fontsize',fs);
+%text(5.4-dx,ymax*1.1,'MID3','fontsize',fs);
+%text(9-dx,ymax*1.1,'MID4','fontsize',fs);
+%text(13-dx,ymax*1.1,'MID5','fontsize',fs);
+%text(16.3-dx,ymax*1.1,'WLIS','fontsize',fs);
+%text(18.4-dx*0.5,ymax*1.1,'WLI6','fontsize',fs);
+
+errorbar(km_transect_appx,gfA_avg.DCH4,gfA_avg.DCH4_std,'-o','markerfacecolor',cA,'color',cA,'linewidth',lw,'markersize',ms);
+errorbar(km_transect_appx,gfO_avg.DCH4,gfO_avg.DCH4_std,'-s','markerfacecolor',cO,'color',cO,'linewidth',lw,'markersize',ms);
+errorbar(km_transect_appx,gfM_avg.DCH4,gfM_avg.DCH4_std,'-^','markerfacecolor',cM,'color',cM,'linewidth',lw,'markersize',ms);
+
+ax1.XAxisLocation = 'bottom';
+ax1.YAxisLocation = 'left';
+ax1.Box = 'off'; % Optional: remove the box to avoid double ticks
+%ax1.XTick = km_transect;         % Bottom ticks
+
+%legend('Aug','Oct','May','location','north');
+%ylabel('\DeltaCH_4 (nmol kg^{-1})')
+ylabel('\DeltaCH_4 [%]');
+%xlabel('Transect distance [km]');
+
+subplot(sp(5))
+hold on; box on;
+set(gca,'tickdir','out');
+set(gca,'fontsize',fs);
+set(gca,'xlim',[-0.5 19]);
+set(gca,'xticklabel',km_transect_appx);
+set(gca,'xtick',km_transect_appx);
+set(gca,'ylim',[0 600]);
+set(gca,'ytick',[0:200:600]);
+set(gca,'yticklabel',[0:200:600]);
+text(17.5,600*0.9,'e','fontsize',fs);
+ms=7;
+errorbar(km_transect_appx,gfA_avg.F_CH4_15,gfA_avg.F_CH4_15.*f_ch4_err,'-o','markerfacecolor',cA,'color',cA,'linewidth',lw,'markersize',ms);
+errorbar(km_transect_appx,gfO_avg.F_CH4_15,gfO_avg.F_CH4_15.*f_ch4_err,'-s','markerfacecolor',cO,'color',cO,'linewidth',lw,'markersize',ms);
+errorbar(km_transect_appx,gfM_avg.F_CH4_15,gfM_avg.F_CH4_15.*f_ch4_err,'-^','markerfacecolor',cM,'color',cM,'linewidth',lw,'markersize',ms);
+
+
+%plot(gfO_avg.F_CH4_15,'-s','filled');
+%plot(gfM_avg.F_CH4_15,'-^','filled');
+
+ax1.XAxisLocation = 'bottom';
+ax1.YAxisLocation = 'left';
+ax1.Box = 'off'; % Optional: remove the box to avoid double ticks
+%ax1.XTick = km_transect;         % Bottom ticks
+
+%legend('Aug','Oct','May');
+%ylabel('\DeltaCH_4 (nmol kg^{-1})')
+ylabel('CH_4 flux [\mumol m^{-2} d^{-1}]')
+xlabel('Transect distance [km]');
+
+subplot(sp(2))
+hold on; box on;
+ymax=18;
+set(gca,'tickdir','out');
+set(gca,'fontsize',fs);
+set(gca,'xlim',[-0.5 19]);
+%set(gca,'xticklabel',km_transect_appx);
+set(gca,'xtick',km_transect_appx);
+set(gca,'ylim',[0 ymax]);
+set(gca,'ytick',[0:4:ymax]);
+set(gca,'yticklabel',[0:4:ymax]);
+
+errorbar(km_transect_appx,gfA_avg.n2o_nmolkg,gfA_avg.n2o_std_nmolkg,'-o','markerfacecolor',cA,'color',cA,'linewidth',lw,'markersize',ms);
+errorbar(km_transect_appx,gfO_avg.n2o_nmolkg,gfO_avg.n2o_std_nmolkg,'-s','markerfacecolor',cO,'color',cO,'linewidth',lw,'markersize',ms);
+errorbar(km_transect_appx,gfM_avg.n2o_nmolkg,gfM_avg.n2o_std_nmolkg,'-^','markerfacecolor',cM,'color',cM,'linewidth',lw,'markersize',ms);
+text(17.5,ymax*0.9,'b','fontsize',fs);
+dx=0.8;
+text(0-2*dx,ymax*1.1,'EXR1','fontsize',fs);
+text(1.4-dx*0.7,ymax*1.1,'EXRX','fontsize',fs);
+text(5.4-dx,ymax*1.1,'MID3','fontsize',fs);
+text(9-dx,ymax*1.1,'MID4','fontsize',fs);
+text(13-dx,ymax*1.1,'MID5','fontsize',fs);
+text(16.3-dx,ymax*1.1,'WLIS','fontsize',fs);
+text(18.4-dx*0.5,ymax*1.1,'WLI6','fontsize',fs);
+
+
+%plot(km_transect, gfA_avg.DN2O,'-o');
+%plot(km_transect, gfO_avg.DN2O,'-s');
+%plot(km_transect, gfM_avg.DN2O,'-^');
+
+ax1.XAxisLocation = 'bottom';
+ax1.YAxisLocation = 'left';
+ax1.Box = 'off'; % Optional: remove the box to avoid double ticks
+%ax1.XTick = km_transect;         % Bottom ticks
+
+%legend('Aug','Oct','May');
+%ylabel('\DeltaCH_4 (nmol kg^{-1})')
+ylabel('N_2O [nmol kg^{-1}]');
+%xlabel('Transect distance [km]');
+
+subplot(sp(4))
+hold on; box on;
+ymax=80;
+set(gca,'tickdir','out');
+set(gca,'fontsize',fs);
+set(gca,'xlim',[-0.5 19]);
+%set(gca,'xticklabel',km_transect_appx);
+set(gca,'xtick',km_transect_appx);
+set(gca,'ylim',[0 ymax]);
+set(gca,'ytick',[0:20:ymax]);
+set(gca,'yticklabel',[0:20:ymax]);
+
+errorbar(km_transect_appx,gfA_avg.DN2O,gfA_avg.DN2O_std,'-o','markerfacecolor',cA,'color',cA,'linewidth',lw,'markersize',ms);
+errorbar(km_transect_appx,gfO_avg.DN2O,gfO_avg.DN2O_std,'-s','markerfacecolor',cO,'color',cO,'linewidth',lw,'markersize',ms);
+errorbar(km_transect_appx,gfM_avg.DN2O,gfM_avg.DN2O_std,'-^','markerfacecolor',cM,'color',cM,'linewidth',lw,'markersize',ms);
+text(17.5,80*0.9,'d','fontsize',fs);
+dx=0.8;
+%text(0-2*dx,ymax*1.1,'EXR1','fontsize',fs);
+%text(1.4-dx*0.7,ymax*1.1,'EXRX','fontsize',fs);
+%text(5.4-dx,ymax*1.1,'MID3','fontsize',fs);
+%text(9-dx,ymax*1.1,'MID4','fontsize',fs);
+%text(13-dx,ymax*1.1,'MID5','fontsize',fs);
+%text(16.3-dx,ymax*1.1,'WLIS','fontsize',fs);
+%text(18.4-dx*0.5,ymax*1.1,'WLI6','fontsize',fs);
+
+
+%plot(km_transect, gfA_avg.DN2O,'-o');
+%plot(km_transect, gfO_avg.DN2O,'-s');
+%plot(km_transect, gfM_avg.DN2O,'-^');
+
+ax1.XAxisLocation = 'bottom';
+ax1.YAxisLocation = 'left';
+ax1.Box = 'off'; % Optional: remove the box to avoid double ticks
+%ax1.XTick = km_transect;         % Bottom ticks
+
+%legend('Aug','Oct','May');
+%ylabel('\DeltaCH_4 (nmol kg^{-1})')
+ylabel('\DeltaN_2O [%]');
+%xlabel('Transect distance [km]');
+
+subplot(sp(6))
+hold on; box on;
+ymax=11;
+set(gca,'tickdir','out');
+set(gca,'fontsize',fs);
+set(gca,'xlim',[-0.5 19]);
+set(gca,'xticklabel',km_transect_appx);
+set(gca,'xtick',km_transect_appx);
+set(gca,'ylim',[0 ymax]);
+set(gca,'ytick',[0:2:ymax]);
+set(gca,'yticklabel',[0:2:ymax]);
+
+errorbar(km_transect_appx,gfA_avg.F_N2O_15,gfA_avg.F_N2O_15.*f_n2o_err,'-o','color',cA,'markerfacecolor',cA,'linewidth',lw,'markersize',ms);
+errorbar(km_transect_appx,gfO_avg.F_N2O_15,gfO_avg.F_N2O_15.*f_n2o_err,'-s','color',cO,'markerfacecolor',cO,'linewidth',lw,'markersize',ms);
+errorbar(km_transect_appx,gfM_avg.F_N2O_15,gfM_avg.F_N2O_15.*f_n2o_err,'-^','color',cM,'markerfacecolor',cM,'linewidth',lw,'markersize',ms);
+text(17.5,ymax*0.9,'f','fontsize',fs);
+
+
+%plot(gfO_avg.F_CH4_15,'-s','filled');
+%plot(gfM_avg.F_CH4_15,'-^','filled');
+
+ax1.XAxisLocation = 'bottom';
+ax1.YAxisLocation = 'left';
+ax1.Box = 'off'; % Optional: remove the box to avoid double ticks
+%ax1.XTick = km_transect;         % Bottom ticks
+
+%legend('Aug','Oct','May');
+%ylabel('\DeltaCH_4 (nmol kg^{-1})')
+ylabel('N_2O flux [\mumol m^{-2} d^{-1}]')
+xlabel('Transect distance [km]');
+
+wysiwyg;
+
+exportgraphics(gcf,'20251223_LIS_gas_flux_with_conc.eps','BackgroundColor','none','ContentType','vector')
+
+
+
+
+%%
 nr = 2; nc = 2; % number of rows and columns
 lw = 2; % default line width
 lw1 = 1;
@@ -518,7 +773,7 @@ xlabel('Transect distance [km]');
 
 wysiwyg;
 
-exportgraphics(gcf,'20250810_LIS_gas_flux.eps','BackgroundColor','none','ContentType','vector')
+exportgraphics(gcf,'20251223_LIS_gas_flux.eps','BackgroundColor','none','ContentType','vector')
 
 
 %%
