@@ -50,6 +50,18 @@ load LIS1035_pred_May24;
 PM = LIS1035_pred_May24;
 PM.Speedms = PM.Speedknots.*ms_per_knt;
 
+load LIS1035_pred_Aug23_30ft;
+PA30 = LIS1035_pred_Aug23_30ft;
+PA30.Speedms = PA30.Speedknots.*ms_per_knt;
+
+load LIS1035_pred_Oct23_30ft;
+PO30 = LIS1035_pred_Oct23_30ft;
+PO30.Speedms = PO30.Speedknots.*ms_per_knt;
+
+load LIS1035_pred_May24_30ft;
+PM30 = LIS1035_pred_May24_30ft;
+PM30.Speedms = PM30.Speedknots.*ms_per_knt;
+
 load LIS1035_pred_Aug23_46ft;
 PA46 = LIS1035_pred_Aug23_46ft;
 PA46.Speedms = PA46.Speedknots.*ms_per_knt;
@@ -61,6 +73,9 @@ PO46.Speedms = PO46.Speedknots.*ms_per_knt;
 load LIS1035_pred_May24_46ft;
 PM46 = LIS1035_pred_May24_46ft;
 PM46.Speedms = PM46.Speedknots.*ms_per_knt;
+
+
+
 
 
 
@@ -148,7 +163,6 @@ end;
 
 DmaxA = LISCDA.Dmax(MID4castA); % max depth for station in transect based on deep cast
 dnlocalA = LISCDA.dn_local(MID4castA); % local datetime for MID4 casts
-
 
 LISAug23_CH4N2O_CTD = LISA;
 %save LISAug23_CH4N2O_CTD.mat LISAug23_CH4N2O_CTD;
@@ -319,24 +333,24 @@ tshift = fracDay - 13/24; % local solar noon 13:00
 
 figure(2)
 clf; 
-subplot(3,1,1)
+subplot(3,1,3)
 hold on;
-ylabel(['O_2 (\mumol kg^{-1}]']);
+ylabel(['O_2 (\mumol kg^{-1})']);
 xlabel('time of day relative to solar noon')
 plot(tshift(mask12),LISA.O2_umolkg(mask12),'o');
 plot(tshift(mask13),LISA.O2_umolkg(mask13),'s');
 legend('surf','bot','location','east')
 
-subplot(3,1,2)
+subplot(3,1,1)
 hold on;
-ylabel(['CH_4 (nmol kg^{-1}]']);
+ylabel(['CH_4 (nmol kg^{-1})']);
 xlabel('time of day relative to solar noon')
 plot(tshift(mask12),LISA.CH4_mean_nmolkg(mask12),'o');
 plot(tshift(mask13),LISA.CH4_mean_nmolkg(mask13),'s');
 
-subplot(3,1,3)
+subplot(3,1,2)
 hold on;
-ylabel(['N_2O (nmol kg^{-1}]']);
+ylabel(['N_2O (nmol kg^{-1})']);
 xlabel('time of day relative to solar noon')
 plot(tshift(mask12),LISA.N2O_mean_nmolkg(mask12),'o');
 plot(tshift(mask13),LISA.N2O_mean_nmolkg(mask13),'s');
@@ -351,8 +365,6 @@ datetime(2023,8,3,10,07,0)];
 fA = [datetime(2023,8,2,9,54,0)
 datetime(2023,8,2,22,16,0)
 datetime(2023,8,3,10,44,0)];
-
-
 
 
 % find the closest flood time for the 46ft
@@ -377,7 +389,7 @@ diff_flood = LISA.datetime_local - fA(idxfA); % difference between current time 
 
 figure(3)
 clf; 
-subplot(3,1,1)
+subplot(3,1,3)
 hold on;
 ylabel(['O_2 (\mumol kg^{-1}]']);
 xlabel('time of day relative to peak flood')
@@ -386,7 +398,7 @@ plot(diff_flood46(mask13),LISA.O2_umolkg(mask13),'s');
 legend('surf','bot','location','east')
 xlim([duration(-6,0,0) duration(6,0,0)]);
 
-subplot(3,1,2)
+subplot(3,1,1)
 hold on;
 ylabel(['CH_4 (nmol kg^{-1}]']);
 xlabel('time of day relative to peak flood')
@@ -395,7 +407,7 @@ plot(diff_flood46(mask13),LISA.CH4_mean_nmolkg(mask13),'s');
 xlim([duration(-6,0,0) duration(6,0,0)]);
 
 
-subplot(3,1,3)
+subplot(3,1,2)
 hold on;
 ylabel(['N_2O (nmol kg^{-1}]']);
 xlabel('time of day relative to peak flood')
@@ -445,6 +457,7 @@ DCH4_nmolkgiA = nan(numel(dl),n_stn); % make a blank grid for storing CH4
 DN2O_nmolkgiA = nan(numel(dl),n_stn); % make a blank grid for storing N2O
 DO2_umolkgiA = nan(numel(dl),n_stn); % make a blank grid for storing O2
 tiA = repmat(datetime(0,0,0), 1, n_stn);
+mldA = repmat(nan,1,n_stn); % mixed layer depth
 dl_gridA = repmat(dl,1,n_stn);
 x_gridA = repmat(x,length(dl),1);
 
@@ -464,6 +477,7 @@ for i = 1:numel(stnlist)
     asA = [asA; q];
 
     tiA(i+1) = LISA.datetime(q(1));
+    mldA(i+1) = LISA.mld(q(1));
     CH4iA(:,i+1) = interp1(LISA.Depth(q),LISA.CH4_mean_nmolkg(q),dl);
     N2OiA(:,i+1) = interp1(LISA.Depth(q),LISA.N2O_mean_nmolkg(q),dl);
     SiA(:,i+1) = interp1(LISA.Depth(q),LISA.S(q),dl);
@@ -548,6 +562,9 @@ DO2_umolkgiA(dl_gridA<dmin) = NaN;
 
 
 % now add in data at start and end 
+mldA(1) = mldA(2);
+mldA(end) = mldA(end-1);
+
 tiA(1) = tiA(2);
 tiA(end) = tiA(end-1);
 
@@ -585,6 +602,8 @@ DO2_umolkgiA(:,1) = DO2_umolkgiA(:,2);
 DO2_umolkgiA(:,end) = DO2_umolkgiA(:,end-1);
 
 
+
+
 %%
 % OCTOBER INTERPOLATION
 % we need to make a grid that is evenly spaced so that all the casts are
@@ -615,12 +634,14 @@ DO2_umolkgiO = nan(numel(dl),n_stn); % make a blank grid for storing O2
 tiO = repmat(datetime(0,0,0), 1, n_stn);
 dl_gridO = repmat(dl,1,n_stn);
 x_gridO = repmat(x,length(dl),1);
+mldO = repmat(nan,1,n_stn); % mixed layer depth
 asO = []; % indices containing samples we want to use
 
 for i = 1:numel(stnlist)    
     q = find(LISO.Station==stnlist(i));
     asO = [asO; q];
     tiO(i+1) = LISO.datetime(q(1));
+    mldO(i+1) = LISO.mld(q(1));    
     CH4iO(:,i+1) = interp1(LISO.Depth(q),LISO.CH4_mean_nmolkg(q),dl);
     N2OiO(:,i+1) = interp1(LISO.Depth(q),LISO.N2O_mean_nmolkg(q),dl);
     SiO(:,i+1) = interp1(LISO.Depth(q),LISO.S(q),dl);
@@ -696,6 +717,9 @@ DO2_umolkgiO(dl_gridO<dmin) = NaN;
 tiO(1) = tiO(2);
 tiO(end) = tiO(end-1);
 
+mldO(1) = mldO(2);
+mldO(end) = mldO(end-1);
+
 CH4iO(:,1) = CH4iO(:,2);
 CH4iO(:,end) = CH4iO(:,end-1);
 
@@ -757,6 +781,7 @@ DCH4_nmolkgiM = nan(numel(dl),n_stn); % make a blank grid for storing CH4
 DN2O_nmolkgiM = nan(numel(dl),n_stn); % make a blank grid for storing N2O
 DO2_umolkgiM = nan(numel(dl),n_stn); % make a blank grid for storing O2
 tiM = repmat(datetime(0,0,0), 1, n_stn);
+mldM = repmat(nan,1,n_stn); % mixed layer depth
 dl_gridM = repmat(dl,1,n_stn);
 x_gridM = repmat(x,length(dl),1);
 asM = []; % indices containing samples we want to use
@@ -769,6 +794,7 @@ for i = 1:numel(stnlist)
     asM = [asM; q];
 
     tiM(i+1) = LISM.datetime(q(1));
+    mldM(i+1) = LISM.mld(q(1));
     CH4iM(:,i+1) = interp1(LISM.Depth(q),LISM.CH4_mean_nmolkg(q),dl);
     N2OiM(:,i+1) = interp1(LISM.Depth(q),LISM.N2O_mean_nmolkg(q),dl);
     SiM(:,i+1) = interp1(LISM.Depth(q),LISM.S(q),dl);
@@ -845,6 +871,9 @@ DO2_umolkgiM(dl_gridM<dmin) = NaN;
 tiM(1) = tiM(2);
 tiM(end) = tiM(end-1);
 
+mldM(1) = mldM(2);
+mldM(end) = mldM(end-1);
+
 CH4iM(:,1) = CH4iM(:,2);
 CH4iM(:,end) = CH4iM(:,end-1);
 
@@ -878,6 +907,699 @@ DN2O_nmolkgiM(:,end) = DN2O_nmolkgiM(:,end-1);
 DO2_umolkgiM(:,1) = DO2_umolkgiM(:,2);
 DO2_umolkgiM(:,end) = DO2_umolkgiM(:,end-1);
 
+
+
+%% extract data for 14 m and 3 m
+i3m=find(dl_grid(:,1) == 3);
+i14m = find(dl_grid(:,1) == 14);
+
+nc = 2:9; % not using the repeat stations for this
+
+figure(1)
+clf; 
+tiledlayout(3,3,'tilespacing','compact')
+
+nexttile;
+hold on; box on;
+title('Aug CH_4')
+plot(x_gridA(1,nc),CH4iA(i3m,nc),'or')
+plot(x_gridA(1,nc),CH4iA(i14m,nc),'sb')
+datetick;
+legend('3 m','14 m','location','northwest')
+
+nexttile;
+hold on; box on;
+title('Oct CH_4')
+plot(x_gridO(1,nc),CH4iO(i3m,nc),'or')
+plot(x_gridO(1,nc),CH4iO(i14m,nc),'sb')
+datetick;
+%legend('3 m','14 m')
+
+nexttile;
+hold on; box on;
+title('May CH_4')
+plot(x_gridM(1,nc),CH4iM(i3m,nc),'or')
+plot(x_gridM(1,nc),CH4iM(i14m,nc),'sb')
+datetick;
+%legend('3 m','14 m')
+
+nexttile;
+hold on; box on;
+title('Aug N_2O')
+plot(x_gridA(1,nc),N2OiA(i3m,nc),'or')
+plot(x_gridA(1,nc),N2OiA(i14m,nc),'sb')
+datetick;
+%legend('3 m','14 m','location','northwest')
+
+nexttile;
+hold on; box on;
+title('Oct N_2O')
+plot(x_gridO(1,nc),N2OiO(i3m,nc),'or')
+plot(x_gridO(1,nc),N2OiO(i14m,nc),'sb')
+datetick;
+%legend('3 m','14 m')
+
+nexttile;
+hold on; box on;
+title('May N_2O')
+plot(x_gridM(1,nc),N2OiM(i3m,nc),'or')
+plot(x_gridM(1,nc),N2OiM(i14m,nc),'sb')
+datetick;
+%legend('3 m','14 m')
+
+nexttile;
+hold on; box on;
+title('Aug O_2')
+plot(x_gridA(1,nc),O2iA(i3m,nc),'or')
+plot(x_gridA(1,nc),O2iA(i14m,nc),'sb')
+datetick;
+%legend('3 m','14 m','location','northwest')
+xlabel('local time');
+
+nexttile;
+hold on; box on;
+title('Oct O_2')
+plot(x_gridO(1,nc),O2iO(i3m,nc),'or')
+plot(x_gridO(1,nc),O2iO(i14m,nc),'sb')
+datetick;
+%legend('3 m','14 m')
+xlabel('local time');
+
+nexttile;
+hold on; box on;
+title('May O_2')
+plot(x_gridM(1,nc),O2iM(i3m,nc),'or')
+plot(x_gridM(1,nc),O2iM(i14m,nc),'sb')
+datetick;
+%legend('3 m','14 m')
+xlabel('local time');
+
+
+
+
+
+%%
+nc = 2:9; % not using the repeat stations for this
+
+% calculated using https://gml.noaa.gov/grad/solcalc/
+fracDayA = x_gridA(1,nc) - floor(x_gridA(1,nc)); % fraction of day in local time
+fracDayO = x_gridO(1,nc) - floor(x_gridO(1,nc)); % fraction of day in local time
+fracDayM = x_gridM(1,nc) - floor(x_gridM(1,nc)); % fraction of day in local time
+
+lsnA = (13 + 1/60)/24; % local solar noon 13:01 in August
+lsnO = (12 + 39/60)/24; % local solar noon 12:39 in Oct
+lsnM = (12 + 51/60)/24; % local solar noon 12:51 in May
+
+ssA = [(5+52/60) (20 + 08/60)]./24 - lsnA; % sunrise and sunset in Aug relative to lsnA
+ssO = [(7+11/60) (18 + 7/60)]./24 - lsnO; % sunrise and sunset in Oct
+ssM = [(5+30/60) (20 + 13/60)]./24 - lsnM; % sunrise and sunset in May
+
+tsA = fracDayA - lsnA;  % shifted time in Aug 
+tsO = fracDayO - lsnO;  % shifted time in Oct
+tsM = fracDayM - lsnM;  % shifted time in May
+
+% flood and ebb times at 46 ft / 14 m
+f14A = [datetime(2023,8,2,9,16,0)
+datetime(2023,8,2,21,37,0)
+datetime(2023,8,3,10,07,0)];
+
+e14A = [datetime(2023,8,2,3,7,0)
+datetime(2023,8,2,15,34,0)
+datetime(2023,8,3,4,1,0)
+datetime(2023,8,3,16,28,0)];
+
+f14O = [datetime(2023,10,18,23,58,0)
+    datetime(2023,10,19,12,20,0)
+    datetime(2023,10,20,0,49,0)
+    datetime(2023,10,20,13,12,0)];
+
+e14O = [datetime(2023,10,19,6,22,0)
+    datetime(2023,10,19,18,40,0)
+    datetime(2023,10,20,7,11,0)];
+
+f14M = [datetime(2024,5,22,8,08,0)
+    datetime(2024,5,22,20,29,0)
+    datetime(2024,5,23,8,52,0)];
+
+e14M = [datetime(2024,5,22,2,3,0)
+    datetime(2024,5,22,14,28,0)
+    datetime(2024,5,23,2,46,0)
+    datetime(2024,5,23,15,14,0)];
+
+% flood times at 30 ft
+f9A = [datetime(2023,8,2,9,35,0)
+datetime(2023,8,2,21,56,0)
+datetime(2023,8,3,10,26,0)];
+
+e9A = [datetime(2023,8,2,3,43,0)
+datetime(2023,8,2,16,10,0)
+datetime(2023,8,3,4,38,0)
+datetime(2023,8,3,17,2,0)];
+
+f9O = [datetime(2023,10,19,0,15,0)
+    datetime(2023,10,19,12,35,0)
+    datetime(2023,10,20,1,7,0)
+    datetime(2023,10,20,13,29,0)];
+
+e9O = [datetime(2023,10,19,6,41,0)
+    datetime(2023,10,19,18,59,0)
+    datetime(2023,10,20,7,32,0)
+    datetime(2023,10,20,19,51,0)];
+
+f9M = [datetime(2024,5,22,8,30,0)
+    datetime(2024,5,22,20,45,0)
+    datetime(2024,5,23,9,13,0)
+    datetime(2024,5,23,21,29,0)];
+
+e9M = [datetime(2024,5,22,2,33,0)
+    datetime(2024,5,22,14,54,0)
+    datetime(2024,5,23,3,18,0)
+    datetime(2024,5,23,15,43,0)];
+
+
+% flood times at 10 ft
+f3A = [datetime(2023,8,2,9,54,0)
+datetime(2023,8,2,22,16,0)
+datetime(2023,8,3,10,44,0)];
+
+e3A = [datetime(2023,8,2,3,51,0)
+datetime(2023,8,2,16,23,0)
+datetime(2023,8,3,4,41,0)
+datetime(2023,8,3,17,15,0)];
+
+f3O = [datetime(2023,10,19,0,40,0)
+    datetime(2023,10,19,12,55,0)
+    datetime(2023,10,20,1,30,0)
+    datetime(2023,10,20,13,46,0)];
+
+e3O = [datetime(2023,10,19,6,50,0)
+    datetime(2023,10,19,19,23,0)
+    datetime(2023,10,20,7,40,0)
+    datetime(2023,10,20,20,12,0)];
+
+f3M = [datetime(2024,5,22,8,49,0)
+    datetime(2024,5,22,21,5,0)
+    datetime(2024,5,23,9,33,0)
+    datetime(2024,5,23,21,49,0)];
+
+e3M = [datetime(2024,5,22,2,53,0)
+    datetime(2024,5,22,15,3,0)
+    datetime(2024,5,23,3,39,0)
+    datetime(2024,5,23,15,50,0)];
+
+
+% find the closest flood time for the 46ft
+% distances: each row corresponds to one element of A
+x_dtA = datetime(x_gridA(1,nc),'ConvertFrom','datenum');
+x_dtO = datetime(x_gridO(1,nc),'ConvertFrom','datenum');
+x_dtM = datetime(x_gridM(1,nc),'ConvertFrom','datenum');
+
+
+% get nearest flood time for Aug 14 m
+% find nearest index in B for each A
+diff_time14A = abs(x_dtA - f14A);    % size numel(A) x numel(B)
+[~, idxf] = min(diff_time14A, [], 1);   % idxB(i) is index in B closest to A(i)
+diff_flood14A = x_dtA - f14A(idxf)'; % difference between current time and closest flood
+
+% get nearest flood time for Aug 3 m
+% find nearest index in B for each A
+diff_time3A = abs(x_dtA - f3A);    % size numel(A) x numel(B)
+[~, idxf] = min(diff_time3A, [], 1);   % idxB(i) is index in B closest to A(i)
+diff_flood3A = x_dtA - f3A(idxf)'; % difference between current time and closest flood
+
+fD_flood3A = seconds(diff_flood3A) / 86400;   
+fD_flood14A = seconds(diff_flood14A) / 86400;
+
+% get nearest flood time for Oct 14 m
+% find nearest index in B for each A
+diff_time14O = abs(x_dtO - f14O);    % size numel(A) x numel(B)
+[~, idxf] = min(diff_time14O, [], 1);   % idxB(i) is index in B closest to A(i)
+diff_flood14O = x_dtO - f14O(idxf)'; % difference between current time and closest flood
+
+% get nearest flood time for Oct 3 m
+% find nearest index in B for each A
+diff_time3O = abs(x_dtO - f3O);    % size numel(A) x numel(B)
+[~, idxf] = min(diff_time3O, [], 1);   % idxB(i) is index in B closest to A(i)
+diff_flood3O = x_dtO - f3O(idxf)'; % difference between current time and closest flood
+
+fD_flood3O = seconds(diff_flood3O) / 86400;   
+fD_flood14O = seconds(diff_flood14O) / 86400;
+
+% get nearest f14Alood time for May 14 m
+% find nearest14M index in B for each A
+diff_time14M = abs(x_dtM - f14M);    % size numel(A) x numel(B)
+[~, idxf] = min(diff_time14M, [], 1);   % idxB(i) is index in B closest to A(i)
+diff_flood14M = x_dtM - f14M(idxf)'; % difference between current time and closest flood
+
+% get nearest flood time for May 3 m
+% find nearest index in B for each A
+diff_time3M = abs(x_dtM - f3M);    % size numel(A) x numel(B)
+[~, idxf] = min(diff_time3M, [], 1);   % idxB(i) is index in B closest to A(i)
+diff_flood3M = x_dtM - f3M(idxf)'; % difference between current time and closest flood
+
+fD_flood3M = seconds(diff_flood3M) / 86400;   
+fD_flood14M = seconds(diff_flood14M) / 86400;
+
+
+% get nearest ebb time for Aug 14 m
+% find nearest index in B for each A
+diff_time14A = abs(x_dtA - e14A);    % size numel(A) x numel(B)
+[~, idxf] = min(diff_time14A, [], 1);   % idxB(i) is index in B closest to A(i)
+diff_ebb14A = x_dtA - e14A(idxf)'; % difference between current time and closest ebb
+
+% get nearest ebb time for Aug 3 m
+% find nearest index in B for each A
+diff_time3A = abs(x_dtA - e3A);    % size numel(A) x numel(B)
+[~, idxf] = min(diff_time3A, [], 1);   % idxB(i) is index in B closest to A(i)
+diff_ebb3A = x_dtA - e3A(idxf)'; % difference between current time and closest ebb
+
+fD_ebb3A = seconds(diff_ebb3A) / 86400;   
+fD_ebb14A = seconds(diff_ebb14A) / 86400;
+
+% get nearest ebb time for Oct 14 m
+% find nearest index in B for each A
+diff_time14O = abs(x_dtO - e14O);    % size numel(A) x numel(B)
+[~, idxf] = min(diff_time14O, [], 1);   % idxB(i) is index in B closest to A(i)
+diff_ebb14O = x_dtO - e14O(idxf)'; % difference between current time and closest ebb
+
+% get nearest ebb time for Oct 3 m
+% find nearest index in B for each A
+diff_time3O = abs(x_dtO - e3O);    % size numel(A) x numel(B)
+[~, idxf] = min(diff_time3O, [], 1);   % idxB(i) is index in B closest to A(i)
+diff_ebb3O = x_dtO - e3O(idxf)'; % difference between current time and closest ebb
+
+fD_ebb3O = seconds(diff_ebb3O) / 86400;   
+fD_ebb14O = seconds(diff_ebb14O) / 86400;
+
+% get nearest ebb time for May 14 m
+% find nearest index in B for each A
+diff_time14M = abs(x_dtM - e14M);    % size numel(A) x numel(B)
+[~, idxf] = min(diff_time14M, [], 1);   % idxB(i) is index in B closest to A(i)
+diff_ebb14M = x_dtM - e14M(idxf)'; % difference between current time and closest ebb
+
+% get nearest ebb time for May 3 m
+% find nearest index in B for each A
+diff_time3M = abs(x_dtM - e3M);    % size numel(A) x numel(B)
+[~, idxf] = min(diff_time3M, [], 1);   % idxB(i) is index in B closest to A(i)
+diff_ebb3M = x_dtM - e3M(idxf)'; % difference between current time and closest ebb
+
+fD_ebb3M = seconds(diff_ebb3M) / 86400;   
+fD_ebb14M = seconds(diff_ebb14M) / 86400;
+
+i3m=find(dl_grid(:,1) == 3);
+i14m = find(dl_grid(:,1) == 14);
+
+% concentration ranges for each gas
+ylC = [20 80]; % ch4
+ylN = [8 14.2]; % n2o
+ylO = [0 400]; % o2
+ylPDen = [15.5 19];
+
+% plot based on local solar noon
+dfc = [1 1 0.5]; % daytime facecolor
+figure(2)
+clf; 
+tiledlayout(4,3,'tilespacing','compact')
+
+ax1 = nexttile;
+hold on; box on;
+set(gca,'tickdir','out');
+title('August')
+rectangle('Position',[ssA(1), ylC(1), (ssA(2)-ssA(1)), (ylC(2) - ylC(1))],'FaceColor',dfc,'EdgeColor','none');
+plot(tsA,CH4iA(i3m,nc),'or')
+plot(tsA,CH4iA(i14m,nc),'sb')
+legend('3 m','14 m','location','south')
+ylim(ylC);
+ylabel('CH_4 [nmol kg^{-1}]')
+
+ax2 = nexttile;
+hold on; box on;
+title('October')
+rectangle('Position',[ssO(1), ylC(1), (ssO(2)-ssO(1)), (ylC(2) - ylC(1))],'FaceColor',dfc,'EdgeColor','none');
+plot(tsO,CH4iO(i3m,nc),'or')
+plot(tsO,CH4iO(i14m,nc),'sb')
+%legend('3 m','14 m')
+ylim(ylC);
+ax2.YTickLabel = [];
+
+ax3 = nexttile;
+hold on; box on;
+title('May')
+rectangle('Position',[ssM(1), ylC(1), (ssM(2)-ssM(1)), (ylC(2) - ylC(1))],'FaceColor',dfc,'EdgeColor','none');
+plot(tsM,CH4iM(i3m,nc),'or')
+plot(tsM,CH4iM(i14m,nc),'sb')
+%legend('3 m','14 m')
+ylim(ylC);
+ax3.YTickLabel = [];
+
+ax4 = nexttile;
+hold on; box on;
+title('Aug N_2O')
+rectangle('Position',[ssA(1), ylN(1), (ssA(2)-ssA(1)), (ylN(2) - ylN(1))],'FaceColor',dfc,'EdgeColor','none');
+plot(tsA,N2OiA(i3m,nc),'or')
+plot(tsA,N2OiA(i14m,nc),'sb')
+ylim(ylN);
+ylabel('N_2O [nmol kg^{-1}]')
+
+
+ax5 = nexttile;
+hold on; box on;
+title('Oct N_2O')
+rectangle('Position',[ssO(1), ylN(1), (ssO(2)-ssO(1)), (ylN(2) - ylN(1))],'FaceColor',dfc,'EdgeColor','none');
+plot(tsO,N2OiO(i3m,nc),'or')
+plot(tsO,N2OiO(i14m,nc),'sb')
+ylim(ylN);
+ax5.YTickLabel = [];
+
+ax6 = nexttile;
+hold on; box on;
+title('May N_2O')
+rectangle('Position',[ssM(1), ylN(1), (ssM(2)-ssM(1)), (ylN(2) - ylN(1))],'FaceColor',dfc,'EdgeColor','none');
+plot(tsM,N2OiM(i3m,nc),'or')
+plot(tsM,N2OiM(i14m,nc),'sb')
+ylim(ylN);
+ax6.YTickLabel = [];
+
+ax7 = nexttile;
+hold on; box on;
+%title('Aug O_2')
+rectangle('Position',[ssA(1), ylO(1), (ssA(2)-ssA(1)), (ylO(2) - ylO(1))],'FaceColor',dfc,'EdgeColor','none');
+plot(tsA,O2iA(i3m,nc),'or')
+plot(tsA,O2iA(i14m,nc), 'sb')
+ylim(ylO);
+ax7.Layer = 'top';    
+ylabel('O_2 [\mumol kg^{-1}]');
+xlabel('time of day relative to solar noon')
+
+
+ax8 = nexttile;
+hold on; box on;
+%title('Oct O_2')
+rectangle('Position',[ssO(1), ylO(1), (ssO(2)-ssO(1)), (ylO(2) - ylO(1))],'FaceColor',dfc,'EdgeColor','none');
+plot(tsO,O2iO(i3m,nc),'or')
+plot(tsO,O2iO(i14m,nc),'sb')
+ylim(ylO);
+ax8.YTickLabel = [];
+ax8.Layer = 'top';   
+xlabel('time of day relative to solar noon');
+
+
+ax9 = nexttile;
+hold on; box on;
+%title('May O_2')
+rectangle('Position',[ssM(1), ylO(1), (ssM(2)-ssM(1)), (ylO(2) - ylO(1))],'FaceColor',dfc,'EdgeColor','none');
+plot(tsM,O2iM(i3m,nc),'or')
+plot(tsM,O2iM(i14m,nc),'sb')
+ylim(ylO);
+ax9.YTickLabel = [];
+ax9.Layer = 'top';    
+xlabel('time of day relative to solar noon')
+
+ax10 = nexttile;
+hold on; box on;
+%title('Aug O_2')
+rectangle('Position',[ssA(1), ylO(1), (ssA(2)-ssA(1)), (ylO(2) - ylO(1))],'FaceColor',dfc,'EdgeColor','none');
+plot(tsA,PDeniA(i3m,nc),'or')
+plot(tsA,PDeniA(i14m,nc), 'sb')
+ylim(ylPDen);
+ax7.Layer = 'top';    
+%ylabel('O_2 [\mumol kg^{-1}]');
+xlabel('time of day relative to solar noon')
+
+
+ax11 = nexttile;
+hold on; box on;
+%title('Oct O_2')
+rectangle('Position',[ssO(1), ylO(1), (ssO(2)-ssO(1)), (ylO(2) - ylO(1))],'FaceColor',dfc,'EdgeColor','none');
+plot(tsO,PDeniO(i3m,nc),'or')
+plot(tsO,PDeniO(i14m,nc),'sb')
+ylim(ylPDen);
+ax8.YTickLabel = [];
+ax8.Layer = 'top';   
+xlabel('time of day relative to solar noon');
+
+
+ax12 = nexttile;
+hold on; box on;
+%title('May O_2')
+rectangle('Position',[ssM(1), ylO(1), (ssM(2)-ssM(1)), (ylO(2) - ylO(1))],'FaceColor',dfc,'EdgeColor','none');
+plot(tsM,PDeniM(i3m,nc),'or')
+plot(tsM,PDeniM(i14m,nc),'sb')
+ylim(ylPDen);
+ax9.YTickLabel = [];
+ax9.Layer = 'top';    
+xlabel('time of day relative to solar noon')
+
+
+% plot based on time relative to flood
+xlf = [-0.3 0.3];
+figure(3)
+clf; 
+tiledlayout(4,3,'tilespacing','compact')
+
+nexttile;
+hold on; box on;
+title('Aug CH_4')
+plot(fD_flood3A,CH4iA(i3m,nc),'or')
+plot(fD_flood14A,CH4iA(i14m,nc),'sb')
+legend('3 m','14 m','location','south')
+ylim(ylC);
+xlim(xlf);
+
+nexttile;
+hold on; box on;
+title('Oct CH_4')
+plot(fD_flood3O,CH4iO(i3m,nc),'or')
+plot(fD_flood14O,CH4iO(i14m,nc),'sb')
+%legend('3 m','14 m')
+ylim(ylC);
+xlim(xlf);
+
+nexttile;
+hold on; box on;
+title('May CH_4')
+plot(fD_flood3M,CH4iM(i3m,nc),'or')
+plot(fD_flood14M,CH4iM(i14m,nc),'sb')
+%legend('3 m','14 m')
+ylim(ylC);
+xlim(xlf);
+
+nexttile;
+hold on; box on;
+title('Aug N_2O')
+plot(fD_flood3A,N2OiA(i3m,nc),'or')
+plot(fD_flood14A,N2OiA(i14m,nc),'sb')
+ylim(ylN);
+xlim(xlf);
+
+nexttile;
+hold on; box on;
+title('Oct N_2O')
+plot(fD_flood3O,N2OiO(i3m,nc),'or')
+plot(fD_flood14O,N2OiO(i14m,nc),'sb')
+ylim(ylN);
+xlim(xlf);
+
+
+nexttile;
+hold on; box on;
+title('May N_2O')
+plot(fD_flood3M,N2OiM(i3m,nc),'or')
+plot(fD_flood14M,N2OiM(i14m,nc),'sb')
+ylim(ylN);
+xlim(xlf);
+
+nexttile;
+hold on; box on;
+title('Aug O_2')
+plot(fD_flood3A,O2iA(i3m,nc),'or')
+plot(fD_flood14A,O2iA(i14m,nc),'sb')
+ylim(ylO);
+xlim(xlf);
+xlabel('time of day relative to peak flood')
+
+nexttile;
+hold on; box on;
+title('Oct O_2')
+plot(fD_flood3O,O2iO(i3m,nc),'or')
+plot(fD_flood3O,O2iO(i14m,nc),'sb')
+xlim(xlf);
+ylim(ylO);
+
+nexttile;
+hold on; box on;
+title('May O_2')
+plot(fD_flood3M,O2iM(i3m,nc),'or')
+plot(fD_flood14M,O2iM(i14m,nc),'sb')
+ylim(ylO);
+xlim(xlf);
+xlabel('time of day relative to peak flood')
+
+
+nexttile;
+hold on; box on;
+%title('Aug O_2')
+plot(fD_flood3A,PDeniA(i3m,nc),'or')
+plot(fD_flood14A,PDeniA(i14m,nc),'sb')
+ylim(ylPDen);
+ylabel('PDen');
+xlim(xlf);
+xlabel('time of day relative to peak flood')
+
+nexttile;
+hold on; box on;
+%title('Oct O_2')
+plot(fD_flood3O,PDeniO(i3m,nc),'or')
+plot(fD_flood3O,PDeniO(i14m,nc),'sb')
+xlim(xlf);
+ylim(ylPDen);
+
+nexttile;
+hold on; box on;
+%title('May O_2')
+plot(fD_flood3M,PDeniM(i3m,nc),'or')
+plot(fD_flood14M,PDeniM(i14m,nc),'sb')
+ylim(ylPDen);
+xlim(xlf);
+xlabel('time of day relative to peak flood')
+
+% plot based on time relative to ebb
+xlf = [-0.3 0.3];
+figure(4)
+clf; 
+tiledlayout(4,3,'tilespacing','compact')
+
+nexttile;
+hold on; box on;
+title('Aug CH_4')
+plot(fD_ebb3A,CH4iA(i3m,nc),'or')
+plot(fD_ebb14A,CH4iA(i14m,nc),'sb')
+legend('3 m','14 m','location','south')
+ylim(ylC);
+xlim(xlf);
+
+nexttile;
+hold on; box on;
+title('Oct CH_4')
+plot(fD_ebb3O,CH4iO(i3m,nc),'or')
+plot(fD_ebb14O,CH4iO(i14m,nc),'sb')
+%legend('3 m','14 m')
+ylim(ylC);
+xlim(xlf);
+
+nexttile;
+hold on; box on;
+title('May CH_4')
+plot(fD_ebb3M,CH4iM(i3m,nc),'or')
+plot(fD_ebb14M,CH4iM(i14m,nc),'sb')
+%legend('3 m','14 m')
+ylim(ylC);
+xlim(xlf);
+
+nexttile;
+hold on; box on;
+title('Aug N_2O')
+plot(fD_ebb3A,N2OiA(i3m,nc),'or')
+plot(fD_ebb14A,N2OiA(i14m,nc),'sb')
+ylim(ylN);
+xlim(xlf);
+
+nexttile;
+hold on; box on;
+title('Oct N_2O')
+plot(fD_ebb3O,N2OiO(i3m,nc),'or')
+plot(fD_ebb14O,N2OiO(i14m,nc),'sb')
+ylim(ylN);
+xlim(xlf);
+
+
+nexttile;
+hold on; box on;
+title('May N_2O')
+plot(fD_ebb3M,N2OiM(i3m,nc),'or')
+plot(fD_ebb14M,N2OiM(i14m,nc),'sb')
+ylim(ylN);
+xlim(xlf);
+
+nexttile;
+hold on; box on;
+title('Aug O_2')
+plot(fD_ebb3A,O2iA(i3m,nc),'or')
+plot(fD_ebb14A,O2iA(i14m,nc),'sb')
+ylim(ylO);
+xlim(xlf);
+xlabel('time of day relative to peak ebb')
+
+nexttile;
+hold on; box on;
+title('Oct O_2')
+plot(fD_ebb3O,O2iO(i3m,nc),'or')
+plot(fD_ebb3O,O2iO(i14m,nc),'sb')
+xlim(xlf);
+ylim(ylO);
+
+nexttile;
+hold on; box on;
+title('May O_2')
+plot(fD_ebb3M,O2iM(i3m,nc),'or')
+plot(fD_ebb14M,O2iM(i14m,nc),'sb')
+ylim(ylO);
+xlim(xlf);
+xlabel('time of day relative to peak ebb')
+
+
+nexttile;
+hold on; box on;
+%title('Aug O_2')
+plot(fD_ebb3A,PDeniA(i3m,nc),'or')
+plot(fD_ebb14A,PDeniA(i14m,nc),'sb')
+ylim(ylPDen);
+ylabel('PDen');
+xlim(xlf);
+xlabel('time of day relative to peak ebb')
+
+nexttile;
+hold on; box on;
+%title('Oct O_2')
+plot(fD_ebb3O,PDeniO(i3m,nc),'or')
+plot(fD_ebb3O,PDeniO(i14m,nc),'sb')
+xlim(xlf);
+ylim(ylPDen);
+
+nexttile;
+hold on; box on;
+%title('May O_2')
+plot(fD_ebb3M,PDeniM(i3m,nc),'or')
+plot(fD_ebb14M,PDeniM(i14m,nc),'sb')
+ylim(ylPDen);
+xlim(xlf);
+xlabel('time of day relative to peak ebb')
+%%
+
+
+figure(2)
+clf; 
+subplot(3,1,3)
+hold on;
+ylabel(['O_2 (\mumol kg^{-1})']);
+xlabel('time of day relative to solar noon')
+plot(tshift(mask12),LISA.O2_umolkg(mask12),'o');
+plot(tshift(mask13),LISA.O2_umolkg(mask13),'s');
+legend('surf','bot','location','east')
+
+subplot(3,1,1)
+hold on;
+ylabel(['CH_4 (nmol kg^{-1})']);
+xlabel('time of day relative to solar noon')
+plot(tshift(mask12),LISA.CH4_mean_nmolkg(mask12),'o');
+plot(tshift(mask13),LISA.CH4_mean_nmolkg(mask13),'s');
+
+subplot(3,1,2)
+hold on;
+ylabel(['N_2O (nmol kg^{-1})']);
+xlabel('time of day relative to solar noon')
+plot(tshift(mask12),LISA.N2O_mean_nmolkg(mask12),'o');
+plot(tshift(mask13),LISA.N2O_mean_nmolkg(mask13),'s');
 
 %%
 % set values above the first sample to the value of the top sample
@@ -1344,7 +2066,8 @@ subplot(sp(10))
 
     C = contourf(x_gridA,dl_grid,PDeniA,clevelPDen,'edgecolor','flat');
     plot(LISA.dn_local(asA),LISA.Depth(asA),'+k', 'linewidth', 2, 'markersize',ms)
-
+    plot(x_gridA(1,:),mldA,'-r');
+    contour(x_gridA,dl_grid,PDeniA,[17 17.5 18 18.5],'-k');
     caxis(caPDen)
     %c = colorbar('location','eastoutside');
     %c.Label.String = 'N_2O (nmol/kg)';
@@ -1617,6 +2340,9 @@ set(gcf,'renderer','painters');
 
 
 % SUBPLOT 1 - August tides
+ct1 = [0,0,1];
+ct2 = [0.5,0,0.5];
+ct3 = [1,0,0];
 subplot(sp(1))
     hold on; box on;
     set(gca,'tickdir','out');
@@ -1626,8 +2352,9 @@ subplot(sp(1))
     for i =1:length(uc)
         plot([uc(i) uc(i)],[-1 1],'--','color',bc);
     end;
-    h1=plot(datenum(PA.Datetime_local),PA.Speedms,'linewidth',lwC,'color','b');
-    h2=plot(datenum(PA46.Datetime_local),PA46.Speedms,'linewidth',lwC,'color','r');
+    h1=plot(datenum(PA.Datetime_local),PA.Speedms,'linewidth',lwC,'color',ct1);
+    h2=plot(datenum(PA30.Datetime_local),PA30.Speedms,'linewidth',lwC,'color',ct2);   
+    h3=plot(datenum(PA46.Datetime_local),PA46.Speedms,'linewidth',lwC,'color',ct3);
     title('August');
     set(gca,'xtick',xtA);
 %    plot(datenum(KA.Datetime_local),KA.Verifiedft);
@@ -1650,8 +2377,9 @@ subplot(sp(2))
     for i =1:length(uc)
         plot([uc(i) uc(i)],[-1 1],'--','color',bc);
     end;  
-    h1=plot(datenum(PO.Datetime_local),PO.Speedms,'linewidth',lwC,'color','b');
-    h2=plot(datenum(PO46.Datetime_local),PO46.Speedms,'linewidth',lwC,'color','r');
+    h1=plot(datenum(PO.Datetime_local),PO.Speedms,'linewidth',lwC,'color',ct1);
+    h2=plot(datenum(PO30.Datetime_local),PO30.Speedms,'linewidth',lwC,'color',ct2);   
+    h3=plot(datenum(PO46.Datetime_local),PO46.Speedms,'linewidth',lwC,'color',ct3);
     title('October');
     set(gca,'xtick',xtO);
 %    plot(datenum(KO.Datetime_local),KO.Verifiedft);
@@ -1670,8 +2398,9 @@ subplot(sp(3))
     for i =1:length(uc)
         plot([uc(i) uc(i)],[-1 1],'--','color',bc);
     end;   
-    h1=plot(datenum(PM.Datetime_local),PM.Speedms,'linewidth',lwC,'color','b');
-    h2=plot(datenum(PM46.Datetime_local),PM46.Speedms,'linewidth',lwC,'color','r'); 
+    h1=plot(datenum(PM.Datetime_local),PM.Speedms,'linewidth',lwC,'color',ct1);
+    h2=plot(datenum(PM30.Datetime_local),PM30.Speedms,'linewidth',lwC,'color',ct2);   
+    h3=plot(datenum(PM46.Datetime_local),PM46.Speedms,'linewidth',lwC,'color',ct3); 
     %        legend([h1,h2],'3 m','14 m','location','eastoutside')    
     title('May');
     set(gca,'xtick',xtM);
@@ -1694,7 +2423,7 @@ subplot(sp(4))
     C = contourf(x_gridA,dl_grid,DCH4_nmolkgiA,clevelDCH4_nmolkg,'edgecolor','flat');
     plot(LISA.dn_local(asA),LISA.Depth(asA),'+k', 'linewidth', 2, 'markersize',ms)
 
-    caxis(caDCH4_nmolkg)
+    clim(caDCH4_nmolkg);
     %c = colorbar('location','eastoutside');
     %c.Label.String = 'CH_4 (nmol/kg)';
     %c.FontSize = fs;
@@ -1734,7 +2463,7 @@ subplot(sp(5))
     set(gca,'xtick',xtO);
     %set(gca,'xticklabel',xtlM);
    % title('October');
-
+    clim(caDCH4_nmolkg);
     %add in plot of bathymetry
     dmO = [yl(2) DmaxO(1) DmaxO' DmaxO(end) yl(2)];
     kcO = [x_gridO(1,1) x_gridO(1,:) x_gridO(1,end)];
@@ -1760,7 +2489,7 @@ subplot(sp(6))
   %  c = colorbar('location','eastoutside');
   %  c.Label.String = '\DeltaCH_4 (nmol/kg)';
   %  c.FontSize = fs;
-    caxis(caDCH4_nmolkg)
+    clim(caDCH4_nmolkg);
     %c = colorbar('location','eastoutside');
     %c.Label.String = '\DeltaCH_4 [nmol kg^{-1}]';
     %c.FontSize = fs;
@@ -1793,7 +2522,7 @@ subplot(sp(7))
     C = contourf(x_gridA,dl_grid,DN2O_nmolkgiA,clevelDN2O_nmolkg,'edgecolor','flat');
     plot(LISA.dn_local(asA),LISA.Depth(asA),'+k', 'linewidth', 2, 'markersize',ms)
 
-    caxis(caDN2O_nmolkg)
+    clim(caDN2O_nmolkg);
     %c = colorbar('location','eastoutside');
     %c.Label.String = 'N_2O (nmol/kg)';
     %c.FontSize = fs;
@@ -1824,7 +2553,7 @@ subplot(sp(8))
 
     C = contourf(x_gridO,dl_grid,DN2O_nmolkgiO,clevelDN2O_nmolkg,'edgecolor','flat');
     plot(LISO.dn_local(asO),LISO.Depth(asO),'+k', 'linewidth', 2, 'markersize',ms)
-
+    clim(caDN2O_nmolkg);
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
     % caxis(caDN2O_nmolkg)
@@ -1857,7 +2586,7 @@ subplot(sp(9))
 
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
-   caxis(caDN2O_nmolkg)
+    clim(caDN2O_nmolkg);
    %c = colorbar('location','eastoutside');
    %c.Label.String = '\DeltaN_2O [nmol kg^{-1}]';
    %c.FontSize = fs;
@@ -1888,7 +2617,7 @@ subplot(sp(10))
     C = contourf(x_gridA,dl_grid,DO2_umolkgiA,clevelDO2_umolkg,'edgecolor','flat');
     plot(LISA.dn_local(asA),LISA.Depth(asA),'+k', 'linewidth', 2, 'markersize',ms)
     contour(x_gridA,dl_grid,DO2_umolkgiA,[0 0],'-k');
-    caxis(caDO2_umolkg)
+    clim(caDO2_umolkg);
     %c = colorbar('location','eastoutside');
     %c.Label.String = 'N_2O (nmol/kg)';
     %c.FontSize = fs;
@@ -1922,7 +2651,7 @@ subplot(sp(11))
     contour(x_gridO,dl_grid,DO2_umolkgiO,[0 0],'-k');
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
-    caxis(caDO2_umolkg)
+    clim(caDO2_umolkg);
     %c = colorbar('location','eastoutside');
     %c.Label.String = '\DeltaO_2 [\mumol kg^{-1}]';
     %c.FontSize = fs;
@@ -1954,7 +2683,7 @@ subplot(sp(12))
 
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
-    caxis(caDO2_umolkg)
+    clim(caDO2_umolkg);
    %c = colorbar('location','eastoutside');
    %c.Label.String = '\DeltaO_2 [\mumol kg^{-1}]';
    %c.FontSize = fs;
@@ -1985,7 +2714,7 @@ subplot(sp(13))
     C = contourf(x_gridA,dl_grid,PDeniA,clevelPDen,'edgecolor','flat');
     plot(LISA.dn_local(asA),LISA.Depth(asA),'+k', 'linewidth', 2, 'markersize',ms)
 
-    caxis(caPDen)
+    clim(caPDen);
     %c = colorbar('location','eastoutside');
     %c.Label.String = 'N_2O (nmol/kg)';
     %c.FontSize = fs;
@@ -2018,7 +2747,7 @@ subplot(sp(14))
 
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
-    clim(caPDen)
+    clim(caPDen);
     % c = colorbar('location','eastoutside');
     % c.Label.String = '\sigma_{\theta} [kg m^{-3}]';
     % c.FontSize = fs;
@@ -2051,8 +2780,7 @@ subplot(sp(15))
 
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
-    clim(caPDen)
-    caxis(caPDen)
+    clim(caPDen);
    %c = colorbar('location','eastoutside');
    %c.Label.String = '\sigma_{\theta} [kg m^{-3}]';
    %c.FontSize = fs;
@@ -2093,6 +2821,590 @@ subplot(sp(15))
 %epsclean('MID4_Current_DCH4_nmolkg_DN2O_nmolkg_DO2_umolkg_PDen.eps','MID4_Current_DCH4_nmolkg_DN2O_nmolkg_DO2_umolkg_PDen.eps');
 
 
+%% SUBPLOT WITH CONCENTRATION
+% ROW 1: CH4_nmolkg
+% ROW 2: N2O_nmolkg
+% ROW 3: O2_umolkg
+% ROW 4: PDEN
+
+nr = 5; % number of rows
+nc = 3; % number of columns
+lw = 2; % default line width
+fs = 13; % default font size
+ms = 3; % default marker size
+yt = [0 10 20 30]; %y-axis ticks;
+xtA = [datenum(2023,08,02,08,0,0), datenum(2023,08,02,12,0,0) datenum(2023,08,02,16,0,0) datenum(2023,08,02,20,0,0), datenum(2023,08,03,0,0,0), datenum(2023,08,03,4,0,0), datenum(2023,08,03,8,0,0)];
+xtlA = ['08:00';'12:00';'16:00';'20:00';'00:00';'04:00';'08:00'];
+
+xtO = [datenum(2023,10,19,08,0,0), datenum(2023,10,19,12,0,0) datenum(2023,10,19,16,0,0) datenum(2023,10,19,20,0,0), datenum(2023,10,20,0,0,0), datenum(2023,10,20,4,0,0), datenum(2023,10,20,8,0,0)];
+xtlO = ['08:00';'12:00';'16:00';'20:00';'00:00';'04:00';'08:00'];
+
+xtM = [datenum(2024,05,22,08,0,0), datenum(2024,05,22,12,0,0) datenum(2024,05,22,16,0,0) datenum(2024,05,22,20,0,0), datenum(2024,05,23,0,0,0), datenum(2024,05,23,4,0,0), datenum(2024,05,23,8,0,0)];
+xtlM = ['08:00';'12:00';'16:00';'20:00';'00:00';'04:00';'08:00'];
+
+
+yl = [0 20]; % y-axis limit in m
+lwC = 2; % linewidth for current
+cb = [0.7 0.7 0.7]; %color for bathymetry
+
+ylcurrent = [-0.41 0.41];
+ytcurrent = [-0.4 0 0.4];
+ytlcurrent = [-0.4 0 0.4];
+
+xlA = [min(min(x_gridA)) max(max(x_gridA))]; %x-axis limit in time
+xlO = [min(min(x_gridO)) max(max(x_gridO))]; %x-axis limit in time
+xlM = [min(min(x_gridM)) max(max(x_gridM))]; %x-axis limit in time
+
+[min(min(CH4iA)) max(max(CH4iA))
+min(min(CH4iO)) max(max(CH4iO))
+min(min(CH4iM)) max(max(CH4iM))]
+
+[min(min(N2OiA)) max(max(N2OiA))
+min(min(N2OiO)) max(max(N2OiO))
+min(min(N2OiM)) max(max(N2OiM))]
+
+[min(min(O2iA)) max(max(O2iA))
+min(min(O2iO)) max(max(O2iO))
+min(min(O2iM)) max(max(O2iM))]
+
+[min(min(PDeniA)) max(max(PDeniA))
+min(min(PDeniO)) max(max(PDeniO))
+min(min(PDeniM)) max(max(PDeniM))]
+%%
+caCH4 = [25 84]; % CH4 axis limits
+clevelCH4 = [caCH4(1):0.2:caCH4(2)]; %CH4 colorbar levels
+
+caN2O = [8.45 14]; % N2O axis limits
+clevelN2O = [caN2O(1):0.02:caN2O(2)]; % N2O colorbar levels
+
+caO2 = [8 371];
+clevelO2 = [caO2(1):1:caO2(2)];
+
+caPDen = [15.7 18.7]; % PDen axis limits
+clevelPDen = [caPDen(1):0.02:caPDen(2)]; % PDen colorbar levels
+
+ctA = datenum(2023,08,3,9,0,0);
+ctO = datenum(2023,10,20,8,30,0);
+ctM = datenum(2024,5,23,8,30,0);
+ctc = -0.33;
+ctd = 18.2;
+
+nr = 5;
+nc = 3;
+lwa = 1.5;
+
+ylcurrent = [-0.41 0.41];
+ytcurrent = [-0.4 0 0.4];
+ytlcurrent = [-0.4 0 0.4];
+
+yl = [0 20]; % y-axis limit in m
+lwC = 2; % linewidth for current
+cb = [0.7 0.7 0.7]; %color for bathymetry
+
+fs = 12;
+fig=figure(26);
+clf;
+clf;
+sp=tight_subplot(nr,nc,[.025 .02],[.1 .04],[.08 .04]);
+set(gcf, 'PaperUnits', 'inches');
+set(gcf, 'PaperPositionMode', 'manual');
+set(gcf, 'PaperPosition', [0 0 12 10]);
+set(gcf,'renderer','painters');
+    set(gcf,'GraphicsSmoothing','on');
+    set(gcf,'DefaultTextFontName','Arial')
+    fontname(fig,"Arial")
+
+
+% rows: May / Aug / Oct
+% columns: current / CH4 / N2O / O2 / Density
+
+
+% SUBPLOT 1 - August tides
+ct1 = [0,0,1];
+ct2 = [0.5,0,0.5];
+ct3 = [1,0,0];
+subplot(sp(1))
+    hold on; box on;
+    set(gca,'tickdir','out');
+    set(gca,'fontsize',fs);
+    plot([xlA],[0 0],'-k');
+    uc = unique(LISA.dn_local(asA));
+    for i =1:length(uc)
+        plot([uc(i) uc(i)],[-1 1],'--','color',bc);
+    end;
+    h1=plot(datenum(PA.Datetime_local),PA.Speedms,'linewidth',lwC,'color',ct1);
+    h2=plot(datenum(PA30.Datetime_local),PA30.Speedms,'linewidth',lwC,'color',ct2);   
+    h3=plot(datenum(PA46.Datetime_local),PA46.Speedms,'linewidth',lwC,'color',ct3);
+    title('August');
+    set(gca,'xtick',xtA);
+    set(gca,'layer','top','LineWidth',lwa);    
+%    plot(datenum(KA.Datetime_local),KA.Verifiedft);
+    xlim(xlA);
+    ylim(ylcurrent);
+    ylabel('Current speed [m s^{-1}]');
+    set(gca,'ytick',ytcurrent);
+    set(gca,'yticklabel',ytlcurrent);
+    text(ctA, ctc,'a','fontsize',fs);
+%    legend('Bridgeport','Kings Point','location','north')
+
+
+% SUBPLOT 2 - tides
+subplot(sp(2))
+    hold on; box on;
+    set(gca,'tickdir','out');
+    set(gca,'fontsize',fs);
+    plot([xlO],[0 0],'-k');
+    uc = unique(LISO.dn_local(asO));
+    for i =1:length(uc)
+        plot([uc(i) uc(i)],[-1 1],'--','color',bc);
+    end;  
+    h1=plot(datenum(PO.Datetime_local),PO.Speedms,'linewidth',lwC,'color',ct1);
+    h2=plot(datenum(PO30.Datetime_local),PO30.Speedms,'linewidth',lwC,'color',ct2);   
+    h3=plot(datenum(PO46.Datetime_local),PO46.Speedms,'linewidth',lwC,'color',ct3);
+    title('October');
+    set(gca,'xtick',xtO);
+    set(gca,'layer','top','LineWidth',lwa);    
+%    plot(datenum(KO.Datetime_local),KO.Verifiedft);
+    xlim(xlO);
+    ylim(ylcurrent);
+%    legend('Bridgeport','Kings Point','location','north')
+    text(ctO, ctc,'b','fontsize',fs);
+
+% SUBPLOT 3 - May tides
+subplot(sp(3))
+    hold on; box on;
+    set(gca,'tickdir','out');
+    set(gca,'fontsize',fs);
+    plot([xlM],[0 0],'-k');
+    uc = unique(LISM.dn_local(asM));
+    for i =1:length(uc)
+        plot([uc(i) uc(i)],[-1 1],'--','color',bc);
+    end;   
+    h1=plot(datenum(PM.Datetime_local),PM.Speedms,'linewidth',lwC,'color',ct1);
+    h2=plot(datenum(PM30.Datetime_local),PM30.Speedms,'linewidth',lwC,'color',ct2);   
+    h3=plot(datenum(PM46.Datetime_local),PM46.Speedms,'linewidth',lwC,'color',ct3); 
+%            legend([h1,h2,h3],'3 m','9 m','14 m','location','eastoutside')    
+    title('May');
+    set(gca,'xtick',xtM);
+    set(gca,'layer','top','LineWidth',lwa);    
+%    plot(datenum(KM.Datetime_local),KM.Verifiedft);
+    xlim(xlM);
+    ylim(ylcurrent);
+%    ylabel('current speed [m s^{-1}]');
+    set(gca,'ytick',ytcurrent);
+    %set(gca,'yticklabel',ytlcurrent);    
+%    legend('Bridgeport','Kings Point','location','north')
+    text(ctM, ctc,'c','fontsize',fs);
+
+
+
+% SUBPLOT 4
+subplot(sp(4))
+    hold on; box on;
+    set(gca,'tickdir','out');
+    set(gca,'fontsize',fs);
+    colormap parula;
+    C = contourf(x_gridA,dl_grid,CH4iA,clevelCH4,'edgecolor','flat');
+    plot(LISA.dn_local(asA),LISA.Depth(asA),'+k', 'linewidth', 2, 'markersize',ms)
+
+    clim(caCH4);
+    %c = colorbar('location','eastoutside');
+    %c.Label.String = 'CH_4 (nmol/kg)';
+    %c.FontSize = fs;
+    set(gca,'layer','top','LineWidth',lwa);
+    ylim(yl);
+    xlim(xlA);
+    set(gca,'ytick',yt);
+    set(gca,'yticklabel',yt);
+    set(gca,'xtick',xtA);
+    %set(gca,'xticklabel',xtlA);
+    %xlabel('Transect distance [km]');
+    ylabel('Depth [m]');
+
+    %add in plot of bathymetry
+    dmA = [yl(2) DmaxA(1) DmaxA' DmaxA(end) yl(2)];
+    kcA = [x_gridA(1,1) x_gridA(1,:) x_gridA(1,end)];
+    fill(datenum(kcA),dmA,cb,'edgecolor',cb);
+    text(ctA, ctd,'d','fontsize',fs);   
+    axis ij;
+
+% SUBPLOT 5
+subplot(sp(5))
+    hold on; box on;
+    set(gca,'tickdir','out');
+    set(gca,'fontsize',fs);
+    colormap ;
+    C = contourf(x_gridO,dl_grid,CH4iO,clevelCH4,'edgecolor','flat');
+    plot(LISO.dn_local(asO),LISO.Depth(asO),'+k', 'linewidth', 2, 'markersize',ms)
+
+    %xlabel('Transect distance [km]');
+    %ylabel('Depth [m]');
+    set(gca,'layer','top','LineWidth',lwa);
+    ylim(yl);
+    xlim(xlO);
+    set(gca,'ytick',yt);
+    %set(gca,'yticklabel',yt);
+    set(gca,'xtick',xtO);
+    %set(gca,'xticklabel',xtlM);
+   % title('October');
+    clim(caCH4);
+    %add in plot of bathymetry
+    dmO = [yl(2) DmaxO(1) DmaxO' DmaxO(end) yl(2)];
+    kcO = [x_gridO(1,1) x_gridO(1,:) x_gridO(1,end)];
+    fill(kcO,dmO,cb,'edgecolor',cb);
+    text(ctO, ctd,'e','fontsize',fs);   
+    axis ij;
+
+% SUBPLOT 6 - May CH4
+subplot(sp(6))
+    hold on; box on;
+    set(gca,'tickdir','out');
+    set(gca,'fontsize',fs);
+    colormap parula;
+
+    clevel = [25:1:460];
+    ca = [25 460]; %colorbar limits
+    C = contourf(x_gridM,dl_grid,CH4iM,clevelCH4,'edgecolor','flat');
+    plot(LISM.dn_local(asM),LISM.Depth(asM),'+k', 'linewidth', 2, 'markersize',ms)
+
+    %xlabel('Transect distance [km]');
+    %ylabel('Depth [m]');
+  %  caxis(caCH4)
+  %  c = colorbar('location','eastoutside');
+  %  c.Label.String = '\DeltaCH_4 (nmol/kg)';
+  %  c.FontSize = fs;
+    clim(caCH4);
+    %c = colorbar('location','eastoutside');
+    %c.Label.String = '\DeltaCH_4 [nmol kg^{-1}]';
+    %c.FontSize = fs;
+    %c.TickDirection = 'out';
+
+    set(gca,'layer','top','LineWidth',lwa);
+    ylim(yl);
+    xlim(xlM);
+    set(gca,'ytick',yt);
+    %set(gca,'yticklabel',yt);
+    set(gca,'xtick',xtM);
+    %set(gca,'xticklabel',xt);
+    %ylabel('Depth [m]');
+    %title(['May'])
+
+    %add in plot of bathymetry
+    dmM = [yl(2) DmaxM(1) DmaxM' DmaxM(end) yl(2)];
+    kcM = [x_gridM(1,1) x_gridM(1,:) x_gridM(1,end)];
+    fill(kcM,dmM,cb,'edgecolor',cb);
+    text(ctM, ctd,'f','fontsize',fs);   
+    axis ij;
+
+
+%SUBPLOT 7 - Aug N2O
+subplot(sp(7))
+    hold on; box on;
+    set(gca,'tickdir','out');
+    set(gca,'fontsize',fs);
+
+    C = contourf(x_gridA,dl_grid,N2OiA,clevelN2O,'edgecolor','flat');
+    plot(LISA.dn_local(asA),LISA.Depth(asA),'+k', 'linewidth', 2, 'markersize',ms)
+
+    clim(caN2O);
+    %c = colorbar('location','eastoutside');
+    %c.Label.String = 'N_2O (nmol/kg)';
+    %c.FontSize = fs;
+    set(gca,'layer','top','LineWidth',lwa);
+    ylim(yl);
+    %xlim(xl);
+    set(gca,'ytick',yt);
+    set(gca,'yticklabel',yt);
+    set(gca,'xtick',xtA);
+    %set(gca,'xticklabel',xt);
+    %xlabel('Transect distance [km]');
+    ylabel('Depth [m]');
+    %title('August');
+
+    %add in plot of bathymetry
+    dmA = [yl(2) DmaxA(1) DmaxA' DmaxA(end) yl(2)];
+    kcA = [x_gridA(1,1) x_gridA(1,:) x_gridA(1,end)];
+    fill(kcA,dmA,cb,'edgecolor',cb);
+    text(ctA, ctd,'g','fontsize',fs);      
+    axis ij;
+
+
+% SUBPLOT 8 - Oct N2O
+subplot(sp(8))
+    hold on; box on;
+    set(gca,'tickdir','out');
+    set(gca,'fontsize',fs);
+
+    C = contourf(x_gridO,dl_grid,N2OiO,clevelN2O,'edgecolor','flat');
+    plot(LISO.dn_local(asO),LISO.Depth(asO),'+k', 'linewidth', 2, 'markersize',ms)
+    clim(caN2O);
+    %xlabel('Transect distance [km]');
+    %ylabel('Depth [m]');
+    % caxis(caN2O)
+    % c = colorbar('location','eastoutside');
+    % c.Label.String = '\DeltaN_2O [nmol kg^{-1}]';
+    % c.FontSize = fs;
+    set(gca,'layer','top','LineWidth',lwa);
+    ylim(yl);
+    xlim(xlO);
+    set(gca,'ytick',yt);
+    %set(gca,'yticklabel',yt);
+    set(gca,'xtick',xtO);
+    %set(gca,'xticklabel',xt);
+
+    %add in plot of bathymetry
+    dmM = [yl(2) DmaxO(1) DmaxO' DmaxO(end) yl(2)];
+    kcO = [x_gridO(1,1) x_gridO(1,:) x_gridO(1,end)];
+    fill(kcO,dmO,cb,'edgecolor',cb);
+    text(ctO, ctd,'h','fontsize',fs);       
+    axis ij;
+
+% SUBPLOT 9 - May N2O
+subplot(sp(9))
+    hold on; box on;
+    set(gca,'tickdir','out');
+    set(gca,'fontsize',fs);
+
+    C = contourf(x_gridM,dl_grid,N2OiM,clevelN2O,'edgecolor','flat');
+    plot(LISM.dn_local(asM),LISM.Depth(asM),'+k', 'linewidth', 2, 'markersize',ms)
+
+    %xlabel('Transect distance [km]');
+    %ylabel('Depth [m]');
+    clim(caN2O);
+   %c = colorbar('location','eastoutside');
+   %c.Label.String = '\DeltaN_2O [nmol kg^{-1}]';
+   %c.FontSize = fs;
+   %c.TickDirection = 'out';
+    set(gca,'layer','top','LineWidth',lwa);
+    ylim(yl);
+    xlim(xlM);
+    set(gca,'ytick',yt);
+    %set(gca,'yticklabel',yt);
+    set(gca,'xtick',xtM);
+    %set(gca,'xticklabel',xt);
+    %ylabel('Depth [m]');
+
+    %add in plot of bathymetry
+    dmM = [yl(2) DmaxM(1) DmaxM' DmaxM(end) yl(2)];
+    kcM = [x_gridM(1,1) x_gridM(1,:) x_gridM(1,end)];
+    fill(kcM,dmM,cb,'edgecolor',cb);
+    text(ctM, ctd,'i','fontsize',fs);      
+    axis ij;
+
+
+%SUBPLOT 10 - Aug O2
+subplot(sp(10))
+    hold on; box on;
+    set(gca,'tickdir','out');
+    set(gca,'fontsize',fs);
+
+    C = contourf(x_gridA,dl_grid,O2iA,clevelO2,'edgecolor','flat');
+    plot(LISA.dn_local(asA),LISA.Depth(asA),'+k', 'linewidth', 2, 'markersize',ms)
+    contour(x_gridA,dl_grid,DO2_umolkgiA,[0 0],'-k');
+    clim(caO2);
+    %c = colorbar('location','eastoutside');
+    %c.Label.String = 'N_2O (nmol/kg)';
+    %c.FontSize = fs;
+    set(gca,'layer','top','LineWidth',lwa);
+    ylim(yl);
+    xlim(xlA);
+    set(gca,'ytick',yt);
+    set(gca,'yticklabel',yt);
+    set(gca,'xtick',xtA);
+    %set(gca,'xticklabel',xt);
+    %xlabel('Transect distance [km]');
+    ylabel('Depth [m]');
+    %title('August');
+
+    %add in plot of bathymetry
+    dmA = [yl(2) DmaxA(1) DmaxA' DmaxA(end) yl(2)];
+    kcA = [x_gridA(1,1) x_gridA(1,:) x_gridA(1,end)];
+    fill(kcA,dmA,cb,'edgecolor',cb);
+    text(ctA, ctd,'j','fontsize',fs);       
+    axis ij;
+
+
+% SUBPLOT 11 - Oct O2
+subplot(sp(11))
+    hold on; box on;
+    set(gca,'tickdir','out');
+    set(gca,'fontsize',fs);
+
+    C = contourf(x_gridO,dl_grid,O2iO,clevelO2,'edgecolor','flat');
+    plot(LISO.dn_local(asO),LISO.Depth(asO),'+k', 'linewidth', 2, 'markersize',ms)
+    contour(x_gridO,dl_grid,DO2_umolkgiO,[0 0],'-k');
+    %xlabel('Transect distance [km]');
+    %ylabel('Depth [m]');
+    clim(caO2);
+    %c = colorbar('location','eastoutside');
+    %c.Label.String = '\DeltaO_2 [\mumol kg^{-1}]';
+    %c.FontSize = fs;
+    set(gca,'layer','top','LineWidth',lwa);
+    ylim(yl);
+    xlim(xlO);
+    set(gca,'ytick',yt);
+    %set(gca,'yticklabel',yt);
+    set(gca,'xtick',xtO);
+    %set(gca,'xticklabel',xt);
+
+    %add in plot of bathymetry
+    dmO = [yl(2) DmaxO(1) DmaxO' DmaxO(end) yl(2)];
+    kcO = [x_gridO(1,1) x_gridO(1,:) x_gridO(1,end)];
+    fill(kcO,dmO,cb,'edgecolor',cb);
+    text(ctO, ctd,'k','fontsize',fs);      
+    axis ij;
+
+% SUBPLOT 12 - May O2
+subplot(sp(12))
+    hold on; box on;
+    set(gca,'tickdir','out');
+    set(gca,'fontsize',fs);
+
+    C = contourf(x_gridM,dl_grid,O2iM,clevelO2,'edgecolor','flat');
+    plot(LISM.dn_local(asM),LISM.Depth(asM),'+k', 'linewidth', 2, 'markersize',ms);
+    contour(x_gridM,dl_grid,DO2_umolkgiM,[0 0],'-k');
+    %contour(x_gridO,dl_grid,O2iO,0,'edgecolor','k');
+
+    %xlabel('Transect distance [km]');
+    %ylabel('Depth [m]');
+    clim(caO2);
+   %c = colorbar('location','eastoutside');
+   %c.Label.String = '\DeltaO_2 [\mumol kg^{-1}]';
+   %c.FontSize = fs;
+   %c.TickDirection = 'out';
+    set(gca,'layer','top','LineWidth',lwa);
+    ylim(yl);
+    xlim(xlM);
+    set(gca,'ytick',yt);
+    %set(gca,'yticklabel',yt);
+    set(gca,'xtick',xtM);
+    %set(gca,'xticklabel',xt);
+    %ylabel('Depth [m]');
+
+    %add in plot of bathymetry
+    dmM = [yl(2) DmaxM(1) DmaxM' DmaxM(end) yl(2)];
+    kcM = [x_gridM(1,1) x_gridM(1,:) x_gridM(1,end)];
+    fill(kcM,dmM,cb,'edgecolor',cb);
+    text(ctM, ctd,'l','fontsize',fs);      
+    axis ij;    
+
+
+%SUBPLOT 13 - Aug PDen
+subplot(sp(13))
+    hold on; box on;
+    set(gca,'tickdir','out');
+    set(gca,'fontsize',fs);
+
+    C = contourf(x_gridA,dl_grid,PDeniA,clevelPDen,'edgecolor','flat');
+    plot(LISA.dn_local(asA),LISA.Depth(asA),'+k', 'linewidth', 2, 'markersize',ms)
+    plot(x_gridA(1,:),mldA,'-k')
+    clim(caPDen);
+    %c = colorbar('location','eastoutside');
+    %c.Label.String = 'N_2O (nmol/kg)';
+    %c.FontSize = fs;
+    set(gca,'layer','top','LineWidth',lwa);
+    ylim(yl);
+    xlim(xlA);
+    set(gca,'ytick',yt);
+    set(gca,'yticklabel',yt);
+    set(gca,'xtick',xtA);
+    set(gca,'xticklabel',xtlA,'fontsize',fs-1);
+    xlabel('local time [EST]');
+    ylabel('Depth [m]');
+    %title('August');
+
+    %add in plot of bathymetry
+    dmA = [yl(2) DmaxA(1) DmaxA' DmaxA(end) yl(2)];
+    kcA = [x_gridA(1,1) x_gridA(1,:) x_gridA(1,end)];
+    fill(kcA,dmA,cb,'edgecolor',cb);
+    text(ctA, ctd,'m','fontsize',fs);   
+    axis ij;
+
+% SUBPLOT 14 - Oct PDen
+subplot(sp(14))
+    hold on; box on;
+    set(gca,'tickdir','out');
+    set(gca,'fontsize',fs);
+
+    C = contourf(x_gridO,dl_grid,PDeniO,clevelPDen,'edgecolor','flat');
+    plot(LISO.dn_local(asO),LISA.Depth(asO),'+k', 'linewidth', 2, 'markersize',ms)
+    plot(x_gridO(1,:),mldO,'-k')
+    %xlabel('Transect distance [km]');
+    %ylabel('Depth [m]');
+    clim(caPDen);
+    % c = colorbar('location','eastoutside');
+    % c.Label.String = '\sigma_{\theta} [kg m^{-3}]';
+    % c.FontSize = fs;
+    set(gca,'layer','top','LineWidth',lwa);
+    ylim(yl);
+    xlim(xlO);
+    set(gca,'ytick',yt);
+    %set(gca,'yticklabel',yt);
+    set(gca,'xtick',xtO);
+    set(gca,'xticklabel',xtlO,'fontsize',fs-1);
+    xlabel('local time [EST]');
+
+    %add in plot of bathymetry
+    dmM = [yl(2) DmaxO(1) DmaxO' DmaxO(end) yl(2)];
+    kcO = [x_gridO(1,1) x_gridO(1,:) x_gridO(1,end)];
+    fill(kcO,dmO,cb,'edgecolor',cb);
+    text(ctO, ctd,'n','fontsize',fs);   
+    axis ij;
+
+% SUBPLOT 15 - May PDen
+subplot(sp(15))
+    hold on; box on;
+    set(gca,'tickdir','out');
+    set(gca,'fontsize',fs);
+
+    C = contourf(x_gridM,dl_grid,PDeniM,clevelPDen,'edgecolor','flat');
+  %  C = surf(x_grid,dl_grid,PDeniM,clevelPDen,'facecolor','interp','edgecolor','interp');
+  %  surf instead, with 'FaceColor','interp', 'EdgeColor','interp' and %view(0,90)'.  
+    plot(LISM.dn_local(asM),LISM.Depth(asM),'+k', 'linewidth', 2, 'markersize',ms)
+    plot(x_gridM(1,:),mldM,'-k')
+    %xlabel('Transect distance [km]');
+    %ylabel('Depth [m]');
+    clim(caPDen);
+   %c = colorbar('location','eastoutside');
+   %c.Label.String = '\sigma_{\theta} [kg m^{-3}]';
+   %c.FontSize = fs;
+   %c.TickDirection = 'out';
+    set(gca,'layer','top','LineWidth',lwa);
+    ylim(yl);
+    xlim(xlM);
+    set(gca,'ytick',yt);
+    %set(gca,'yticklabel',yt);
+%    ylabel('Depth [m]');
+    set(gca,'xtick',xtM);
+    set(gca,'xticklabel',xtlM,'fontsize',fs-1);
+    xlabel('local time [EST]');
+
+    %add in plot of bathymetry
+    dmM = [yl(2) DmaxM(1) DmaxM' DmaxM(end) yl(2)];
+    kcM = [x_gridM(1,1) x_gridM(1,:) x_gridM(1,end)];
+    fill(kcM,dmM,cb,'edgecolor',cb);
+    text(ctM, ctd,'o','fontsize',fs);   
+    axis ij;
+
+
+   
+    wysiwyg;
+
+exportgraphics(gcf,'my_contourf.svg','BackgroundColor','none','ContentType','vector')
+%exportgraphics(gcf, 'my_contourf_plot.eps', 'BackgroundColor', 'None', 'ContentType', 'Vector');
+%exportgraphics(gcf, '20251225_LIS_MID4_Currents_CH4_N2O_O2_PDen_exportgraphics_nocolorbar.eps','ContentType','vector')
+
+
+
+
+%exportgraphics(gcf, '20250901_LIS_MID4_Currents_CH4_N2O_O2_PDen_exportgraphics_colorbar.eps','ContentType','vector')
+
+%print(gcf, '-dpng', '-r300', 'MID4_Current_DCH4_nmolkg_DN2O_nmolkg_DO2_umolkg_PDen.png');
+%5print(gcf,'-depsc','-vector','MID4_Current_DCH4_nmolkg_DN2O_nmolkg_DO2_umolkg_PDen.eps');
+%epsclean('MID4_Current_DCH4_nmolkg_DN2O_nmolkg_DO2_umolkg_PDen.eps','MID4_Current_DCH4_nmolkg_DN2O_nmolkg_DO2_umolkg_PDen.eps');
+
+
+
 
 %% PLOT CONCENTRATIONS OF CH4, N2O, and O2
 
@@ -2117,10 +3429,10 @@ yl = [0 20]; % y-axis limit in m
 xlA = [min(min(x_gridA)) max(max(x_gridA))]; %x-axis limit in time
 xlO = [min(min(x_gridO)) max(max(x_gridO))]; %x-axis limit in time
 xlM = [min(min(x_gridM)) max(max(x_gridM))]; %x-axis limit in time
-caCH4 = [25 100]; % CH4 axis limits
+caCH4 = [25 84]; % CH4 axis limits
 clevelCH4 = [caCH4(1):1:caCH4(2)]; %CH4 colorbar levels
 
-caN2O = [8.5 15]; % N2O axis limits
+caN2O = [8.4 14]; % N2O axis limits
 clevelN2O = [8.5:0.02:14]; % N2O colorbar levels
 
 caO2 = [0 316];
@@ -2128,6 +3440,9 @@ clevelO2 = [caO2(1):1:caO2(2)];
 
 caPDen = [15.7 18.8]; % PDen axis limits
 clevelPDen = [caPDen(1):0.02:caPDen(2)]; % PDen colorbar levels
+
+caS = [22.4 27]; % S axis limits
+clevelS = [caS(1):0.02:caS(2)]; % S levels
 
 fig=figure(23);
 clf;
@@ -2421,10 +3736,12 @@ subplot(sp(10))
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
 
-    C = contourf(x_gridA,dl_grid,PDeniA,clevelPDen,'edgecolor','none');
-    plot(LISA.dn_local(asA),LISA.Depth(asA),'+k', 'linewidth', 2, 'markersize',ms)
-
-    caxis(caPDen)
+    %C = contourf(x_gridA,dl_grid,PDeniA,clevelPDen,'edgecolor','none');
+    C = contourf(x_gridA,dl_grid,SiA,clevelS,'edgecolor','none');   
+    plot(LISA.dn_local(asA),LISA.Depth(asA),'+k', 'linewidth', 2, 'markersize',ms);
+    plot(x_gridA(1,:),mldA,'-k');
+    %caxis(caPDen)
+    clim(caS);
     %c = colorbar('location','eastoutside');
     %c.Label.String = 'N_2O (nmol/kg)';
     %c.FontSize = fs;
@@ -2452,12 +3769,16 @@ subplot(sp(11))
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
 
-    C = contourf(x_gridO,dl_grid,PDeniO,clevelPDen,'edgecolor','none');
+    %C = contourf(x_gridO,dl_grid,PDeniO,clevelPDen,'edgecolor','none');
+    C = contourf(x_gridO,dl_grid,SiO,clevelS,'edgecolor','none');   
+    
     plot(LISO.dn_local(asO),LISA.Depth(asO),'+k', 'linewidth', 2, 'markersize',ms)
 
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
-    clim(caPDen)
+    clim(caPDen);
+    clim(caS);
+    %caxis(caS); clim(caS);
     %c = colorbar('location','eastoutside');
     %c.Label.String = 'CH_4 (nmol/kg)';
     %c.FontSize = fs;
@@ -2482,14 +3803,17 @@ subplot(sp(12))
     set(gca,'tickdir','out');
     set(gca,'fontsize',fs);
 
-    C = contourf(x_gridM,dl_grid,PDeniM,clevelPDen,'edgecolor','none');
+    %C = contourf(x_gridM,dl_grid,PDeniM,clevelPDen,'edgecolor','none');
+    C = contourf(x_gridM,dl_grid,SiM,clevelS,'edgecolor','none');   
+    
   %  C = surf(x_grid,dl_grid,PDeniM,clevelPDen,'facecolor','interp','edgecolor','interp');
   %  surf instead, with 'FaceColor','interp', 'EdgeColor','interp' and %view(0,90)’.  
     plot(LISM.dn_local(asM),LISM.Depth(asM),'+k', 'linewidth', 2, 'markersize',ms)
 
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
-    clim(caPDen)
+    clim(caPDen);
+        clim(caS);
     c = colorbar('location','eastoutside');
     c.Label.String = '\sigma_{\theta} (kg/m^3)';
     c.FontSize = fs;

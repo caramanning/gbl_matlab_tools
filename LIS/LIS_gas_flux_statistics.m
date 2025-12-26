@@ -340,6 +340,17 @@ mean(gfM_avg.ch4_nmolkg) std(gfM_avg.ch4_nmolkg)]
 [median(gfO_avg.ch4_nmolkg) min(gfO_avg.ch4_nmolkg) max(gfO_avg.ch4_nmolkg)]
 [median(gfM_avg.ch4_nmolkg) min(gfM_avg.ch4_nmolkg) max(gfM_avg.ch4_nmolkg)]
 
+%%
+[median(gfA_avg.k_wt_15_CH4) mean(gfA_avg.k_wt_15_CH4)]
+[median(gfO_avg.k_wt_15_CH4) mean(gfO_avg.k_wt_15_CH4)]
+[median(gfM_avg.k_wt_15_CH4) mean(gfM_avg.k_wt_15_CH4)]
+
+%%
+[median(gfA_avg.k_wt_15_N2O) mean(gfA_avg.k_wt_15_N2O)]
+[median(gfO_avg.k_wt_15_N2O) mean(gfO_avg.k_wt_15_N2O)]
+[median(gfM_avg.k_wt_15_N2O) mean(gfM_avg.k_wt_15_N2O)]
+
+
 
 %%
 [mean(gfA_avg.F_CH4_15) std(gfA_avg.F_CH4_15)
