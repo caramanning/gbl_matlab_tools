@@ -1263,15 +1263,7 @@ ct3 = [1,0,0]; % 14 m / 46 ft
 
 lwC = 1.5;
 
-fsA = tsA.*24; % set local solar noon to 12:00
-fsO = tsO.*24; % set local solar noon to 12:00
-fsM = tsM.*24; % set local solar noon to 12:00
-
-ffA = ssA.*24; % set local solar noon to 12:00
-ffO = ssO.*24; % set local solar noon to 12:00
-ffM = ssM.*24; % set local solar noon to 12:00
-xlff = [-12 12];
-
+fsA = tsA.*24 + 12; % set local solar noon to 12:00
 % plot based on local solar noon
 dfc = [1 1 0.5]; % daytime facecolor
 figure(2)
@@ -1282,87 +1274,80 @@ ax1 = nexttile;
 hold on; box on;
 set(gca,'tickdir','out','layer','top');
 title('August')
-rectangle('Position',[ffA(1), ylC(1), (ffA(2)-ffA(1)), (ylC(2) - ylC(1))],'FaceColor',dfc,'EdgeColor','none');
+rectangle('Position',[ssA(1), ylC(1), (ssA(2)-ssA(1)), (ylC(2) - ylC(1))],'FaceColor',dfc,'EdgeColor','none');
 plot(fsA,CH4iA(i3m,nc),'or','linewidth',lwC,'color',ct1);
 plot(fsA,CH4iA(i9m,nc),'^r','linewidth',lwC,'color',ct2);
 plot(fsA,CH4iA(i14m,nc),'sb','linewidth',lwC,'color',ct3);
 legend('3 m','9 m','14 m','location','south')
 ylim(ylC);
-xlim(xlff);
 ylabel('CH_4 [nmol kg^{-1}]')
 
 ax2 = nexttile;
 hold on; box on;
 title('October')
 set(gca,'tickdir','out','layer','top');
-rectangle('Position',[ffO(1), ylC(1), (ffO(2)-ffO(1)), (ylC(2) - ylC(1))],'FaceColor',dfc,'EdgeColor','none');
+rectangle('Position',[ssO(1), ylC(1), (ssO(2)-ssO(1)), (ylC(2) - ylC(1))],'FaceColor',dfc,'EdgeColor','none');
 plot(fsO,CH4iO(i3m,nc),'or','linewidth',lwC,'color',ct1);
 plot(fsO,CH4iO(i9m,nc),'^r','linewidth',lwC,'color',ct2);
 plot(fsO,CH4iO(i14m,nc),'sb','linewidth',lwC,'color',ct3);
 %legend('3 m','14 m')
 ylim(ylC);
 ax2.YTickLabel = [];
-xlim(xlff);
 
 ax3 = nexttile;
 hold on; box on;
 title('May')
 set(gca,'tickdir','out','layer','top');
-rectangle('Position',[ffM(1), ylC(1), (ffM(2)-ffM(1)), (ylC(2) - ylC(1))],'FaceColor',dfc,'EdgeColor','none');
+rectangle('Position',[ssM(1), ylC(1), (ssM(2)-ssM(1)), (ylC(2) - ylC(1))],'FaceColor',dfc,'EdgeColor','none');
 plot(fsM,CH4iM(i3m,nc),'or','linewidth',lwC,'color',ct1);
 plot(fsM,CH4iM(i9m,nc),'^r','linewidth',lwC,'color',ct2);
 plot(fsM,CH4iM(i14m,nc),'sb','linewidth',lwC,'color',ct3);
 %legend('3 m','14 m')
 ylim(ylC);
 ax3.YTickLabel = [];
-xlim(xlff);
 
 ax4 = nexttile;
 hold on; box on;
 set(gca,'tickdir','out','layer','top');
-rectangle('Position',[ffA(1), ylN(1), (ffA(2)-ffA(1)), (ylN(2) - ylN(1))],'FaceColor',dfc,'EdgeColor','none');
+rectangle('Position',[ssA(1), ylN(1), (ssA(2)-ssA(1)), (ylN(2) - ylN(1))],'FaceColor',dfc,'EdgeColor','none');
 plot(fsA,N2OiA(i3m,nc),'or','linewidth',lwC,'color',ct1);
 plot(fsA,N2OiA(i9m,nc),'^r','linewidth',lwC,'color',ct2);
 plot(fsA,N2OiA(i14m,nc),'sb','linewidth',lwC,'color',ct3);
 ylim(ylN);
-ylabel('N_2O [nmol kg^{-1}]');
-xlim(xlff);
+ylabel('N_2O [nmol kg^{-1}]')
 
 
 ax5 = nexttile;
 hold on; box on;
 set(gca,'tickdir','out','layer','top');
-rectangle('Position',[ffO(1), ylN(1), (ffO(2)-ffO(1)), (ylN(2) - ylN(1))],'FaceColor',dfc,'EdgeColor','none');
+rectangle('Position',[ssO(1), ylN(1), (ssO(2)-ssO(1)), (ylN(2) - ylN(1))],'FaceColor',dfc,'EdgeColor','none');
 plot(fsO,N2OiO(i3m,nc),'or','linewidth',lwC,'color',ct1);
 plot(fsO,N2OiO(i9m,nc),'^r','linewidth',lwC,'color',ct2);
 plot(fsO,N2OiO(i14m,nc),'sb','linewidth',lwC,'color',ct3);
 ylim(ylN);
 ax5.YTickLabel = [];
-xlim(xlff);
 
 ax6 = nexttile;
 hold on; box on;
 set(gca,'tickdir','out','layer','top');
-rectangle('Position',[ffM(1), ylN(1), (ffM(2)-ffM(1)), (ylN(2) - ylN(1))],'FaceColor',dfc,'EdgeColor','none');
+rectangle('Position',[ssM(1), ylN(1), (ssM(2)-ssM(1)), (ylN(2) - ylN(1))],'FaceColor',dfc,'EdgeColor','none');
 plot(fsM,N2OiM(i3m,nc),'or','linewidth',lwC,'color',ct1);
 plot(fsM,N2OiM(i9m,nc),'^r','linewidth',lwC,'color',ct2);
 plot(fsM,N2OiM(i14m,nc),'sb','linewidth',lwC,'color',ct3);
 ylim(ylN);
 ax6.YTickLabel = [];
-xlim(xlff);
 
 ax7 = nexttile;
 hold on; box on;
 set(gca,'tickdir','out','layer','top');
 %title('Aug O_2')
-rectangle('Position',[ffA(1), ylO(1), (ffA(2)-ffA(1)), (ylO(2) - ylO(1))],'FaceColor',dfc,'EdgeColor','none');
+rectangle('Position',[ssA(1), ylO(1), (ssA(2)-ssA(1)), (ylO(2) - ylO(1))],'FaceColor',dfc,'EdgeColor','none');
 plot(fsA,O2iA(i3m,nc),'or','linewidth',lwC,'color',ct1);
 plot(fsA,O2iA(i9m,nc),'^r','linewidth',lwC,'color',ct2);
 plot(fsA,O2iA(i14m,nc),'sb','linewidth',lwC,'color',ct3);
 ylim(ylO);
 ax7.Layer = 'top';    
 ylabel('O_2 [\mumol kg^{-1}]');
-xlim(xlff);
 %xlabel('time of day relative to solar noon')
 
 
@@ -1370,14 +1355,13 @@ ax8 = nexttile;
 hold on; box on;
 %title('Oct O_2')
 set(gca,'tickdir','out','layer','top');
-rectangle('Position',[ffO(1), ylO(1), (ffO(2)-ffO(1)), (ylO(2) - ylO(1))],'FaceColor',dfc,'EdgeColor','none');
+rectangle('Position',[ssO(1), ylO(1), (ssO(2)-ssO(1)), (ylO(2) - ylO(1))],'FaceColor',dfc,'EdgeColor','none');
 plot(fsO,O2iO(i3m,nc),'or','linewidth',lwC,'color',ct1);
 plot(fsO,O2iO(i9m,nc),'^r','linewidth',lwC,'color',ct2);
 plot(fsO,O2iO(i14m,nc),'sb','linewidth',lwC,'color',ct3);
 ylim(ylO);
 ax8.YTickLabel = [];
 ax8.Layer = 'top';   
-xlim(xlff);
 %xlabel('time of day relative to solar noon');
 
 
@@ -1385,27 +1369,25 @@ ax9 = nexttile;
 hold on; box on;
 %title('May O_2')
 set(gca,'tickdir','out','layer','top');
-rectangle('Position',[ffM(1), ylO(1), (ffM(2)-ffM(1)), (ylO(2) - ylO(1))],'FaceColor',dfc,'EdgeColor','none');
+rectangle('Position',[ssM(1), ylO(1), (ssM(2)-ssM(1)), (ylO(2) - ylO(1))],'FaceColor',dfc,'EdgeColor','none');
 plot(fsM,O2iM(i3m,nc),'or','linewidth',lwC,'color',ct1);
 plot(fsM,O2iM(i9m,nc),'^r','linewidth',lwC,'color',ct2);
 plot(fsM,O2iM(i14m,nc),'sb','linewidth',lwC,'color',ct3);
 ylim(ylO);
 ax9.YTickLabel = [];
-ax9.Layer = 'top';   
-xlim(xlff);
+ax9.Layer = 'top';    
 %xlabel('time of day relative to solar noon')
 
 ax10 = nexttile;
 hold on; box on;
 %title('Aug O_2')
 set(gca,'tickdir','out','layer','top');
-rectangle('Position',[ffA(1), ylO(1), (ffA(2)-ffA(1)), (ylO(2) - ylO(1))],'FaceColor',dfc,'EdgeColor','none');
+rectangle('Position',[ssA(1), ylO(1), (ssA(2)-ssA(1)), (ylO(2) - ylO(1))],'FaceColor',dfc,'EdgeColor','none');
 plot(fsA,PDeniA(i3m,nc),'or','linewidth',lwC,'color',ct1);
 plot(fsA,PDeniA(i9m,nc),'^r','linewidth',lwC,'color',ct2);
 plot(fsA,PDeniA(i14m,nc),'sb','linewidth',lwC,'color',ct3);
 ylim(ylPDen);
 ax7.Layer = 'top';    
-xlim(xlff);
 ylabel('\sigma_{\theta} [kg m^{-3}]');
 xlabel('time of day relative to solar noon')
 
@@ -1414,14 +1396,13 @@ ax11 = nexttile;
 hold on; box on;
 set(gca,'tickdir','out','layer','top');
 %title('Oct O_2')
-rectangle('Position',[ffO(1), ylO(1), (ffO(2)-ffO(1)), (ylO(2) - ylO(1))],'FaceColor',dfc,'EdgeColor','none');
+rectangle('Position',[ssO(1), ylO(1), (ssO(2)-ssO(1)), (ylO(2) - ylO(1))],'FaceColor',dfc,'EdgeColor','none');
 plot(fsO,PDeniO(i3m,nc),'or','linewidth',lwC,'color',ct1);
 plot(fsO,PDeniO(i9m,nc),'^r','linewidth',lwC,'color',ct2);
 plot(fsO,PDeniO(i14m,nc),'sb','linewidth',lwC,'color',ct3);
 ylim(ylPDen);
-ax11.YTickLabel = [];
-xlim(xlff);
-ax11.Layer = 'top';   
+ax8.YTickLabel = [];
+ax8.Layer = 'top';   
 xlabel('time of day relative to solar noon');
 
 
@@ -1429,14 +1410,13 @@ ax12 = nexttile;
 hold on; box on;
 set(gca,'tickdir','out','layer','top');
 %title('May O_2')
-rectangle('Position',[ffM(1), ylO(1), (ffM(2)-ffM(1)), (ylO(2) - ylO(1))],'FaceColor',dfc,'EdgeColor','none');
+rectangle('Position',[ssM(1), ylO(1), (ssM(2)-ssM(1)), (ylO(2) - ylO(1))],'FaceColor',dfc,'EdgeColor','none');
 plot(fsM,PDeniM(i3m,nc),'or','linewidth',lwC,'color',ct1);
 plot(fsM,PDeniM(i9m,nc),'^r','linewidth',lwC,'color',ct2);
 plot(fsM,PDeniM(i14m,nc),'sb','linewidth',lwC,'color',ct3);
 ylim(ylPDen);
-ax12.YTickLabel = [];
-ax12.Layer = 'top';    
-xlim(xlff);
+ax9.YTickLabel = [];
+ax9.Layer = 'top';    
 xlabel('time of day relative to solar noon')
 
 %%
