@@ -726,6 +726,59 @@ DO2_umolkgiM(:,end) = DO2_umolkgiM(:,end-1);
 [min(LISO.PDen) max(LISO.PDen)]
 
 [min(LISM.mean_N2O_nM) max(LISM.mean_N2O_nM)]
+
+
+%%
+i3m=find(dl_grid(:,1) == 3);
+i9m=find(dl_grid(:,1) == 9);
+i14m = find(dl_grid(:,1) == 14);
+
+nc = 2:8; % not using the repeat stations at edge for this
+nc = 4:6; % only MID3 to MID5
+%%
+% now plot spatial variability in CH4
+
+[   min(CH4iA(i3m,nc)) max(CH4iA(i3m,nc)) mean(CH4iA(i3m,nc)) max(CH4iA(i3m,nc))-min(CH4iA(i3m,nc))
+    min(CH4iO(i3m,nc)) max(CH4iO(i3m,nc)) mean(CH4iO(i3m,nc)) max(CH4iO(i3m,nc))-min(CH4iO(i3m,nc))
+    min(CH4iM(i3m,nc)) max(CH4iM(i3m,nc)) mean(CH4iM(i3m,nc)) max(CH4iM(i3m,nc))-min(CH4iM(i3m,nc))]
+
+[   min(CH4iA(i9m,nc)) max(CH4iA(i9m,nc)) mean(CH4iA(i9m,nc)) max(CH4iA(i9m,nc))-min(CH4iA(i9m,nc))
+    min(CH4iO(i9m,nc)) max(CH4iO(i9m,nc)) mean(CH4iO(i9m,nc)) max(CH4iO(i9m,nc))-min(CH4iO(i9m,nc))
+    min(CH4iM(i9m,nc)) max(CH4iM(i9m,nc)) mean(CH4iM(i9m,nc)) max(CH4iM(i9m,nc))-min(CH4iM(i9m,nc))]
+
+[   min(CH4iA(i14m,nc)) max(CH4iA(i14m,nc)) mean(CH4iA(i14m,nc))  max(CH4iA(i14m,nc))-min(CH4iA(i14m,nc))
+    min(CH4iO(i14m,nc)) max(CH4iO(i14m,nc)) mean(CH4iO(i14m,nc)) max(CH4iO(i14m,nc))-min(CH4iO(i14m,nc))
+    min(CH4iM(i14m,nc)) max(CH4iM(i14m,nc)) mean(CH4iM(i14m,nc))  max(CH4iM(i14m,nc))-min(CH4iM(i14m,nc))]
+
+%%
+% now plot seasonal variability in N2O
+
+[   min(N2OiA(i3m,nc)) max(N2OiA(i3m,nc)) mean(N2OiA(i3m,nc)) max(N2OiA(i3m,nc))-min(N2OiA(i3m,nc))
+    min(N2OiO(i3m,nc)) max(N2OiO(i3m,nc)) mean(N2OiO(i3m,nc)) max(N2OiO(i3m,nc))-min(N2OiO(i3m,nc))
+    min(N2OiM(i3m,nc)) max(N2OiM(i3m,nc)) mean(N2OiM(i3m,nc)) max(N2OiM(i3m,nc))-min(N2OiM(i3m,nc))]
+
+[   min(N2OiA(i9m,nc)) max(N2OiA(i9m,nc)) mean(N2OiA(i9m,nc)) max(N2OiA(i9m,nc))-min(N2OiA(i9m,nc))
+    min(N2OiO(i9m,nc)) max(N2OiO(i9m,nc)) mean(N2OiO(i9m,nc)) max(N2OiO(i9m,nc))-min(N2OiO(i9m,nc))
+    min(N2OiM(i9m,nc)) max(N2OiM(i9m,nc)) mean(N2OiM(i9m,nc)) max(N2OiM(i9m,nc))-min(N2OiM(i9m,nc))]
+
+[   min(N2OiA(i14m,nc)) max(N2OiA(i14m,nc)) mean(N2OiA(i14m,nc))  max(N2OiA(i14m,nc))-min(N2OiA(i14m,nc))
+    min(N2OiO(i14m,nc)) max(N2OiO(i14m,nc)) mean(N2OiO(i14m,nc)) max(N2OiO(i14m,nc))-min(N2OiO(i14m,nc))
+    min(N2OiM(i14m,nc)) max(N2OiM(i14m,nc)) mean(N2OiM(i14m,nc))  max(N2OiM(i14m,nc))-min(N2OiM(i14m,nc))]
+
+%%
+% now plot seasonal variability in O2
+[   min(O2iA(i3m,nc)) max(O2iA(i3m,nc)) mean(O2iA(i3m,nc)) max(O2iA(i3m,nc))-min(O2iA(i3m,nc))
+    min(O2iO(i3m,nc)) max(O2iO(i3m,nc)) mean(O2iO(i3m,nc)) max(O2iO(i3m,nc))-min(O2iO(i3m,nc))
+    min(O2iM(i3m,nc)) max(O2iM(i3m,nc)) mean(O2iM(i3m,nc)) max(O2iM(i3m,nc))-min(O2iM(i3m,nc))]
+
+[   min(O2iA(i9m,nc)) max(O2iA(i9m,nc)) mean(O2iA(i9m,nc)) max(O2iA(i9m,nc))-min(O2iA(i9m,nc))
+    min(O2iO(i9m,nc)) max(O2iO(i9m,nc)) mean(O2iO(i9m,nc)) max(O2iO(i9m,nc))-min(O2iO(i9m,nc))
+    min(O2iM(i9m,nc)) max(O2iM(i9m,nc)) mean(O2iM(i9m,nc)) max(O2iM(i9m,nc))-min(O2iM(i9m,nc))]
+
+[   min(O2iA(i14m,nc)) max(O2iA(i14m,nc)) mean(O2iA(i14m,nc))  max(O2iA(i14m,nc))-min(O2iA(i14m,nc))
+    min(O2iO(i14m,nc)) max(O2iO(i14m,nc)) mean(O2iO(i14m,nc)) max(O2iO(i14m,nc))-min(O2iO(i14m,nc))
+    min(O2iM(i14m,nc)) max(O2iM(i14m,nc)) mean(O2iM(i14m,nc))  max(O2iM(i14m,nc))-min(O2iM(i14m,nc))]
+
 %%
 
 [min(min(CH4iA)) max(max(CH4iA))
@@ -1205,7 +1258,7 @@ fc = [0.75 0.75 0.75]; %fill color
 fsl = 16; % font size for axis label
 
 caCH4 = [20 435]; % CH4 axis limits
-clevelCH4 = [caCH4(1):2:50 60 :caCH4(2)]; %CH4 colorbar levels
+clevelCH4 = [caCH4(1):2:100 110:10:caCH4(2)]; %CH4 colorbar levels
 
 caN2O = [0 7]; % N2O axis limits
 clevelN2O = [caN2O(1):0.15:caN2O(2)]; % N2O colorbar levels
@@ -1234,7 +1287,8 @@ cmap2 = 'nebula';
 
 fig=figure(24);
 clf;
-sp=tight_subplot(nr,nc,[.025 .025],[.08 .04],[.08 .04]);
+sp=tight_subplot(nr,nc,[.025 .02],[.08 .04],[.06 .05]);
+%sp=tight_subplot(nr,nc,[.025 .025],[.08 .04],[.08 .04]);
 set(gcf, 'PaperUnits', 'inches');
 set(gcf, 'PaperPositionMode', 'manual');
 set(gcf, 'PaperPosition', [0 0 12 8]);
@@ -1346,8 +1400,9 @@ cbar.TickDirection = 'out';
 colormap(cmap2);
 
     %cbar = colorbar('location','eastoutside');
-    cbar.Label.String = '\DeltaCH_4 [nmol/kg]';
+    cbar.Label.String = '\DeltaCH_4 [nmol kg^{-1}]';
     cbar.FontSize = fs;
+    colorbar('off');
     set(gca,'layer','top');
     ylim(yl);
     xlim(xl);
@@ -1441,9 +1496,10 @@ subplot(sp(6))
     %ylabel('Depth [m]');
     caxis(caN2O)
     c = colorbar('location','eastoutside');
-    c.Label.String = '\DeltaN_2O [nmol/kg]';
+    c.Label.String = '\DeltaN_2O [nmol kg^{-1}]';
     c.FontSize = fs;
     c.TickDirection = 'out';
+    colorbar('off');
     set(gca,'layer','top');
     ylim(yl);
     xlim(xl);
@@ -1538,9 +1594,11 @@ subplot(sp(9))
     %ylabel('Depth [m]');
     caxis(caO2)
     c = colorbar('location','eastoutside');
-    c.Label.String = '\DeltaO_2 [\mumol/kg]';
+    c.Label.String = '\DeltaO_2 [\mumol kg^{-1}]';
     c.FontSize = fs;
     c.TickDirection = 'out';
+    colorbar('off');
+
     set(gca,'layer','top');
     ylim(yl);
     xlim(xl);
@@ -1636,9 +1694,10 @@ subplot(sp(12))
     %ylabel('Depth [m]');
     clim(caPDen)
     c = colorbar('location','eastoutside');
-    c.Label.String = '\sigma_{\theta} [kg/m^3]';
+    c.Label.String = '\sigma_{\theta} [kg m^{-3}]';
     c.FontSize = fs;
     c.TickDirection = 'out';
+    colorbar('off');
     set(gca,'layer','top');
     ylim(yl);
     xlim(xl);
@@ -1667,8 +1726,12 @@ subplot(sp(12))
 %set(gcf,'renderer','opengl'); 
 %saveas(gcf,'test','epsc','Resolution','600'); 
 
-%exportgraphics(gcf,'20250831_LIS_Transect_DCH4_DN2O_DO2_PDen_nocolorbar.eps','BackgroundColor','none','ContentType','vector');
-exportgraphics(gcf,'20250915_LIS_Transect_DCH4_DN2O_DO2_PDen_withcolorbar.eps','BackgroundColor','none','ContentType','vector')
+%exportgraphics(gcf,'20250915_LIS_Transect_DCH4_DN2O_DO2_PDen_withcolorbar.eps','BackgroundColor','none','ContentType','vector')
+%exportgraphics(gcf,'20250915_LIS_Transect_DCH4_DN2O_DO2_PDen_withcolorbar.pdf','BackgroundColor','none','ContentType','vector')
+
+exportgraphics(gcf,'20250915_LIS_Transect_DCH4_DN2O_DO2_PDen_nocolorbar.eps','BackgroundColor','none','ContentType','vector')
+exportgraphics(gcf,'20250915_LIS_Transect_DCH4_DN2O_DO2_PDen_nocolorbar.pdf','BackgroundColor','none','ContentType','vector')
+
 
 %%
 %PDF

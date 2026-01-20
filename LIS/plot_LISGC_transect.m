@@ -726,6 +726,59 @@ DO2_umolkgiM(:,end) = DO2_umolkgiM(:,end-1);
 [min(LISO.PDen) max(LISO.PDen)]
 
 [min(LISM.mean_N2O_nM) max(LISM.mean_N2O_nM)]
+
+
+%%
+i3m=find(dl_grid(:,1) == 3);
+i9m=find(dl_grid(:,1) == 9);
+i14m = find(dl_grid(:,1) == 14);
+
+nc = 2:8; % not using the repeat stations at edge for this
+%nc = 4:6; % only MID3 to MID5
+%%
+% now plot spatial variability in CH4
+
+[   min(CH4iA(i3m,nc)) max(CH4iA(i3m,nc)) mean(CH4iA(i3m,nc)) max(CH4iA(i3m,nc))-min(CH4iA(i3m,nc))
+    min(CH4iO(i3m,nc)) max(CH4iO(i3m,nc)) mean(CH4iO(i3m,nc)) max(CH4iO(i3m,nc))-min(CH4iO(i3m,nc))
+    min(CH4iM(i3m,nc)) max(CH4iM(i3m,nc)) mean(CH4iM(i3m,nc)) max(CH4iM(i3m,nc))-min(CH4iM(i3m,nc))]
+
+[   min(CH4iA(i9m,nc)) max(CH4iA(i9m,nc)) mean(CH4iA(i9m,nc)) max(CH4iA(i9m,nc))-min(CH4iA(i9m,nc))
+    min(CH4iO(i9m,nc)) max(CH4iO(i9m,nc)) mean(CH4iO(i9m,nc)) max(CH4iO(i9m,nc))-min(CH4iO(i9m,nc))
+    min(CH4iM(i9m,nc)) max(CH4iM(i9m,nc)) mean(CH4iM(i9m,nc)) max(CH4iM(i9m,nc))-min(CH4iM(i9m,nc))]
+
+[   min(CH4iA(i14m,nc)) max(CH4iA(i14m,nc)) mean(CH4iA(i14m,nc))  max(CH4iA(i14m,nc))-min(CH4iA(i14m,nc))
+    min(CH4iO(i14m,nc)) max(CH4iO(i14m,nc)) mean(CH4iO(i14m,nc)) max(CH4iO(i14m,nc))-min(CH4iO(i14m,nc))
+    min(CH4iM(i14m,nc)) max(CH4iM(i14m,nc)) mean(CH4iM(i14m,nc))  max(CH4iM(i14m,nc))-min(CH4iM(i14m,nc))]
+
+%%
+% now plot seasonal variability in N2O
+
+[   min(N2OiA(i3m,nc)) max(N2OiA(i3m,nc)) mean(N2OiA(i3m,nc)) max(N2OiA(i3m,nc))-min(N2OiA(i3m,nc))
+    min(N2OiO(i3m,nc)) max(N2OiO(i3m,nc)) mean(N2OiO(i3m,nc)) max(N2OiO(i3m,nc))-min(N2OiO(i3m,nc))
+    min(N2OiM(i3m,nc)) max(N2OiM(i3m,nc)) mean(N2OiM(i3m,nc)) max(N2OiM(i3m,nc))-min(N2OiM(i3m,nc))]
+
+[   min(N2OiA(i9m,nc)) max(N2OiA(i9m,nc)) mean(N2OiA(i9m,nc)) max(N2OiA(i9m,nc))-min(N2OiA(i9m,nc))
+    min(N2OiO(i9m,nc)) max(N2OiO(i9m,nc)) mean(N2OiO(i9m,nc)) max(N2OiO(i9m,nc))-min(N2OiO(i9m,nc))
+    min(N2OiM(i9m,nc)) max(N2OiM(i9m,nc)) mean(N2OiM(i9m,nc)) max(N2OiM(i9m,nc))-min(N2OiM(i9m,nc))]
+
+[   min(N2OiA(i14m,nc)) max(N2OiA(i14m,nc)) mean(N2OiA(i14m,nc))  max(N2OiA(i14m,nc))-min(N2OiA(i14m,nc))
+    min(N2OiO(i14m,nc)) max(N2OiO(i14m,nc)) mean(N2OiO(i14m,nc)) max(N2OiO(i14m,nc))-min(N2OiO(i14m,nc))
+    min(N2OiM(i14m,nc)) max(N2OiM(i14m,nc)) mean(N2OiM(i14m,nc))  max(N2OiM(i14m,nc))-min(N2OiM(i14m,nc))]
+
+%%
+% now plot seasonal variability in O2
+[   min(O2iA(i3m,nc)) max(O2iA(i3m,nc)) mean(O2iA(i3m,nc)) max(O2iA(i3m,nc))-min(O2iA(i3m,nc))
+    min(O2iO(i3m,nc)) max(O2iO(i3m,nc)) mean(O2iO(i3m,nc)) max(O2iO(i3m,nc))-min(O2iO(i3m,nc))
+    min(O2iM(i3m,nc)) max(O2iM(i3m,nc)) mean(O2iM(i3m,nc)) max(O2iM(i3m,nc))-min(O2iM(i3m,nc))]
+
+[   min(O2iA(i9m,nc)) max(O2iA(i9m,nc)) mean(O2iA(i9m,nc)) max(O2iA(i9m,nc))-min(O2iA(i9m,nc))
+    min(O2iO(i9m,nc)) max(O2iO(i9m,nc)) mean(O2iO(i9m,nc)) max(O2iO(i9m,nc))-min(O2iO(i9m,nc))
+    min(O2iM(i9m,nc)) max(O2iM(i9m,nc)) mean(O2iM(i9m,nc)) max(O2iM(i9m,nc))-min(O2iM(i9m,nc))]
+
+[   min(O2iA(i14m,nc)) max(O2iA(i14m,nc)) mean(O2iA(i14m,nc))  max(O2iA(i14m,nc))-min(O2iA(i14m,nc))
+    min(O2iO(i14m,nc)) max(O2iO(i14m,nc)) mean(O2iO(i14m,nc)) max(O2iO(i14m,nc))-min(O2iO(i14m,nc))
+    min(O2iM(i14m,nc)) max(O2iM(i14m,nc)) mean(O2iM(i14m,nc))  max(O2iM(i14m,nc))-min(O2iM(i14m,nc))]
+
 %%
 
 [min(min(CH4iA)) max(max(CH4iA))

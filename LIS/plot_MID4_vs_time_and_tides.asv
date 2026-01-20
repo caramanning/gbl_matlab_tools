@@ -1448,28 +1448,21 @@ ax12.Layer = 'top';
 xlim(xlff);
 xlabel('hour relative to solar noon')
 
-
 %%
 % plot based on time relative to flood
 xlf = [-6.5 6.5];
-fs=11;
-fig3=figure(3)
+figure(3)
 clf; 
-tiledlayout(3,3,'tilespacing','compact')
-set(gcf, 'PaperUnits', 'inches');
-set(gcf, 'PaperPositionMode', 'manual');
-set(gcf, 'PaperPosition', [0 0 12 5]);
+tiledlayout(3,3,'tilespacing','tight')
 
 ax1 = nexttile;
 hold on; box on;
 set(gca,'tickdir','out','layer','top');
-set(gca,'fontsize',fs);
 title('August')
-l1=plot([0 0],ylC,'--k');
-lA=plot(fD_flood3A.*24,CH4iA(i3m,nc),'or','linewidth',lwC,'color',ct1);
-lO=plot(fD_flood9A.*24,CH4iA(i9m,nc),'^r','linewidth',lwC,'color',ct2);
-lM=plot(fD_flood14A.*24,CH4iA(i14m,nc),'sb','linewidth',lwC,'color',ct3);
-legend([lA, lO, lM],'3 m','9 m','14 m','location','southwest');
+plot(fD_flood3A.*24,CH4iA(i3m,nc),'or','linewidth',lwC,'color',ct1);
+plot(fD_flood9A.*24,CH4iA(i9m,nc),'^r','linewidth',lwC,'color',ct2);
+plot(fD_flood14A.*24,CH4iA(i14m,nc),'sb','linewidth',lwC,'color',ct3);
+legend('3 m','9 m','14 m','location','south');
 ax1.Layer = 'top'; 
 ax1.XTickLabel = [];
 ylim(ylC);
@@ -1479,9 +1472,7 @@ ylabel('CH_4 [nmol kg^{-1}]');
 ax2 = nexttile;
 hold on; box on;
 set(gca,'tickdir','out','layer','top');
-set(gca,'fontsize',fs);
 title('October')
-l1=plot([0 0],ylC,'--k');
 plot(fD_flood3O.*24,CH4iO(i3m,nc),'or','linewidth',lwC,'color',ct1);
 plot(fD_flood9O.*24,CH4iO(i9m,nc),'^r','linewidth',lwC,'color',ct2);
 plot(fD_flood14O.*24,CH4iO(i14m,nc),'sb','linewidth',lwC,'color',ct3);
@@ -1496,9 +1487,7 @@ xlim(xlf);
 ax3 = nexttile;
 hold on; box on;
 set(gca,'tickdir','out','layer','top');
-set(gca,'fontsize',fs);
 title('May')
-l1=plot([0 0],ylC,'--k');
 plot(fD_flood3M.*24,CH4iM(i3m,nc),'or','linewidth',lwC,'color',ct1);
 plot(fD_flood9M.*24,CH4iM(i9m,nc),'^r','linewidth',lwC,'color',ct2);
 plot(fD_flood14M.*24,CH4iM(i14m,nc),'sb','linewidth',lwC,'color',ct3);
@@ -1512,55 +1501,41 @@ xlim(xlf);
 
 ax4 = nexttile;
 hold on; box on;
-set(gca,'tickdir','out','layer','top');
-set(gca,'fontsize',fs);
 %title('Aug N_2O')
-l1=plot([0 0],ylN,'--k');
 plot(fD_flood3A.*24,N2OiA(i3m,nc),'or','linewidth',lwC,'color',ct1);
 plot(fD_flood9A.*24,N2OiA(i9m,nc),'^r','linewidth',lwC,'color',ct2);
 plot(fD_flood14A.*24,N2OiA(i14m,nc),'sb','linewidth',lwC,'color',ct3);
 ax4.Layer = 'top'; 
-%ax4.YTickLabel = [];
+ax4.YTickLabel = [];
 ax4.XTickLabel = [];
 ylim(ylN);
 xlim(xlf);
 ylabel('N_2O [nmol kg^{-1}]');
 
-ax5 = nexttile;
+nexttile;
 hold on; box on;
-set(gca,'tickdir','out','layer','top');
 %title('Oct N_2O')
-l1=plot([0 0],ylN,'--k');
 plot(fD_flood3O.*24,N2OiO(i3m,nc),'or','linewidth',lwC,'color',ct1);
 plot(fD_flood9O.*24,N2OiO(i9m,nc),'^r','linewidth',lwC,'color',ct2);
 plot(fD_flood14O.*24,N2OiO(i14m,nc),'sb','linewidth',lwC,'color',ct3);
-text('e')
 ylim(ylN);
 xlim(xlf);
-ax5.Layer = 'top'; 
-ax5.YTickLabel = [];
-ax5.XTickLabel = [];
+ax3.Layer = 'top'; 
+ax3.YTickLabel = [];
+ax3.XTickLabel = [];
 
-ax6 = nexttile;
+nexttile;
 hold on; box on;
-set(gca,'tickdir','out','layer','top');
 %title('May N_2O')
-l1=plot([0 0],ylN,'--k');
 plot(fD_flood3M.*24,N2OiM(i3m,nc),'or','linewidth',lwC,'color',ct1);
 plot(fD_flood9M.*24,N2OiM(i9m,nc),'^r','linewidth',lwC,'color',ct2);
 plot(fD_flood14M.*24,N2OiM(i14m,nc),'sb','linewidth',lwC,'color',ct3);
 ylim(ylN);
 xlim(xlf);
-ax6.Layer = 'top'; 
-ax6.YTickLabel = [];
-ax6.XTickLabel = [];
 
-ax7 = nexttile;
+nexttile;
 hold on; box on;
-set(gca,'tickdir','out','layer','top');
-set(gca,'fontsize',fs);
 %title('Aug O_2')
-l1=plot([0 0],ylO,'--k');
 plot(fD_flood3A.*24,O2iA(i3m,nc),'or','linewidth',lwC,'color',ct1);
 plot(fD_flood9A.*24,O2iA(i9m,nc),'^r','linewidth',lwC,'color',ct2);
 plot(fD_flood14A.*24,O2iA(i14m,nc),'sb','linewidth',lwC,'color',ct3);
@@ -1568,49 +1543,25 @@ ylim(ylO);
 xlim(xlf);
 ylabel('O_2 [\mumol kg^{-1}]');
 %xlabel('time of day relative to peak flood')
-ax7.Layer = 'top'; 
-%ax7.YTickLabel = [];
-%ax7.XTickLabel = [];
-xlabel('time relative to peak flood [hr]')
 
-ax8 = nexttile;
+nexttile;
 hold on; box on;
-set(gca,'tickdir','out','layer','top');
-set(gca,'fontsize',fs);
 %title('Oct O_2')
-l1=plot([0 0],ylO,'--k');
 plot(fD_flood3O.*24,O2iO(i3m,nc),'or','linewidth',lwC,'color',ct1);
 plot(fD_flood9O.*24,O2iO(i9m,nc),'^r','linewidth',lwC,'color',ct2);
 plot(fD_flood14O.*24,O2iO(i14m,nc),'sb','linewidth',lwC,'color',ct3);
 xlim(xlf);
 ylim(ylO);
-ax8.Layer = 'top'; 
-ax8.YTickLabel = [];
-%ax8.XTickLabel = [];
-xlabel('time relative to peak flood [hr]')
 
-ax9 = nexttile;
+nexttile;
 hold on; box on;
-set(gca,'tickdir','out','layer','top');
-set(gca,'fontsize',fs);
-%title('May O_2')
-l1=plot([0 0],ylO,'--k');
+title('May O_2')
 plot(fD_flood3M.*24,O2iM(i3m,nc),'or','linewidth',lwC,'color',ct1);
 plot(fD_flood9M.*24,O2iM(i9m,nc),'^r','linewidth',lwC,'color',ct2);
 plot(fD_flood14M.*24,O2iM(i14m,nc),'sb','linewidth',lwC,'color',ct3);
 ylim(ylO);
 xlim(xlf);
-xlabel('time relative to peak flood [hr]')
-ax9.Layer = 'top'; 
-ax9.YTickLabel = [];
-%ax9.XTickLabel = [];
-
-wysiwyg;
-
-set(gcf,'renderer','opengl'); 
-saveas(gcf, '20250119_Time_Relative_to_Peak_flood', 'pdf')  
-saveas(gcf,'20250119_Time_Relative_to_Peak_flood','epsc') 
-saveas(gcf,'20250119_Time_Relative_to_Peak_flood.png') 
+%xlabel('time of day relative to peak flood')
 
 %%
 nexttile;
