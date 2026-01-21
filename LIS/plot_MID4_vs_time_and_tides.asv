@@ -1254,7 +1254,7 @@ i14m = find(dl_grid(:,1) == 14);
 % concentration ranges for each gas
 ylC = [20 80]; % ch4
 ylN = [8 14.2]; % n2o
-ylO = [0 400]; % o2
+ylO = [0 380]; % o2
 ylPDen = [15.5 19];
 
 ct1 = [0,0,1]; % 3 m / 10 ft
@@ -1272,21 +1272,45 @@ ffO = ssO.*24; % set local solar noon to 12:00
 ffM = ssM.*24; % set local solar noon to 12:00
 xlff = [-12 12];
 
+% position of captions on figures
+xC = -11;
+ynC = 13.15;
+ycC = 70;
+yoC = 320;
+xt = [-12 -6 0 6 12];
+
+fs=11;
+
 % plot based on local solar noon
 dfc = [1 1 0.5]; % daytime facecolor
 figure(2)
 clf; 
-tiledlayout(4,3,'tilespacing','compact')
+tiledlayout(3,3,'tilespacing','compact')
+set(gcf, 'PaperUnits', 'inches');
+set(gcf, 'PaperPositionMode', 'manual');
+set(gcf, 'PaperPosition', [0 0 12 5]);
+fontname("Arial")
 
 ax1 = nexttile;
 hold on; box on;
+fontname("Arial");
 set(gca,'tickdir','out','layer','top');
+set(gca,'fontsize',fs);
+
 title('August')
 rectangle('Position',[ffA(1), ylC(1), (ffA(2)-ffA(1)), (ylC(2) - ylC(1))],'FaceColor',dfc,'EdgeColor','none');
-plot(fsA,CH4iA(i3m,nc),'or','linewidth',lwC,'color',ct1);
-plot(fsA,CH4iA(i9m,nc),'^r','linewidth',lwC,'color',ct2);
-plot(fsA,CH4iA(i14m,nc),'sb','linewidth',lwC,'color',ct3);
-legend('3 m','9 m','14 m','location','south')
+l1=plot([0 0],ylC,'--k');
+lA=plot(fsA,CH4iA(i3m,nc),'or','linewidth',lwC,'color',ct1);
+lO=plot(fsA,CH4iA(i9m,nc),'^r','linewidth',lwC,'color',ct2);
+lM=plot(fsA,CH4iA(i14m,nc),'sb','linewidth',lwC,'color',ct3);
+text(xC,ycC,'a','fontsize',fs);
+legend([lA, lO, lM],'3 m','9 m','14 m','location','southwest');
+ax1.Layer = 'top'; 
+ax1.XTickLabel = [];
+ax1.XTick = xt;
+ylim(ylC);
+xlim(xlf);
+
 ylim(ylC);
 xlim(xlff);
 ax1.XTickLabel = [];
@@ -1294,115 +1318,164 @@ ylabel('CH_4 [nmol kg^{-1}]')
 
 ax2 = nexttile;
 hold on; box on;
+fontname("Arial");
+set(gca,'fontsize',fs);
 title('October')
 set(gca,'tickdir','out','layer','top');
 rectangle('Position',[ffO(1), ylC(1), (ffO(2)-ffO(1)), (ylC(2) - ylC(1))],'FaceColor',dfc,'EdgeColor','none');
+l1=plot([0 0],ylC,'--k');
 plot(fsO,CH4iO(i3m,nc),'or','linewidth',lwC,'color',ct1);
 plot(fsO,CH4iO(i9m,nc),'^r','linewidth',lwC,'color',ct2);
 plot(fsO,CH4iO(i14m,nc),'sb','linewidth',lwC,'color',ct3);
+text(xC,ycC,'b','fontsize',fs);
 %legend('3 m','14 m')
 ylim(ylC);
 ax2.XTickLabel = [];
 ax2.YTickLabel = [];
+ax2.XTick = xt;
 xlim(xlff);
 
 ax3 = nexttile;
 hold on; box on;
+fontname("Arial");
+set(gca,'fontsize',fs);
 title('May')
 set(gca,'tickdir','out','layer','top');
 rectangle('Position',[ffM(1), ylC(1), (ffM(2)-ffM(1)), (ylC(2) - ylC(1))],'FaceColor',dfc,'EdgeColor','none');
+l1=plot([0 0],ylC,'--k');
 plot(fsM,CH4iM(i3m,nc),'or','linewidth',lwC,'color',ct1);
 plot(fsM,CH4iM(i9m,nc),'^r','linewidth',lwC,'color',ct2);
 plot(fsM,CH4iM(i14m,nc),'sb','linewidth',lwC,'color',ct3);
+text(xC,ycC,'c','fontsize',fs);
 %legend('3 m','14 m')
 ylim(ylC);
 ax3.XTickLabel = [];
 ax3.YTickLabel = [];
+ax3.XTick = xt;
 xlim(xlff);
 
 ax4 = nexttile;
 hold on; box on;
+fontname("Arial");
+set(gca,'fontsize',fs);
 set(gca,'tickdir','out','layer','top');
 rectangle('Position',[ffA(1), ylN(1), (ffA(2)-ffA(1)), (ylN(2) - ylN(1))],'FaceColor',dfc,'EdgeColor','none');
+l1=plot([0 0],ylN,'--k');
 plot(fsA,N2OiA(i3m,nc),'or','linewidth',lwC,'color',ct1);
 plot(fsA,N2OiA(i9m,nc),'^r','linewidth',lwC,'color',ct2);
 plot(fsA,N2OiA(i14m,nc),'sb','linewidth',lwC,'color',ct3);
+text(xC,ynC,'d','fontsize',fs);
 ylim(ylN);
 ax4.XTickLabel = [];
+ax4.XTick = xt;
 ylabel('N_2O [nmol kg^{-1}]');
 xlim(xlff);
 
 
 ax5 = nexttile;
 hold on; box on;
+fontname("Arial");
+set(gca,'fontsize',fs);
 set(gca,'tickdir','out','layer','top');
 rectangle('Position',[ffO(1), ylN(1), (ffO(2)-ffO(1)), (ylN(2) - ylN(1))],'FaceColor',dfc,'EdgeColor','none');
+l1=plot([0 0],ylN,'--k');
 plot(fsO,N2OiO(i3m,nc),'or','linewidth',lwC,'color',ct1);
 plot(fsO,N2OiO(i9m,nc),'^r','linewidth',lwC,'color',ct2);
 plot(fsO,N2OiO(i14m,nc),'sb','linewidth',lwC,'color',ct3);
+text(xC,ynC,'e','fontsize',fs);
 ylim(ylN);
 ax5.XTickLabel = [];
 ax5.YTickLabel = [];
+ax5.XTick = xt;
 xlim(xlff);
 
 ax6 = nexttile;
 hold on; box on;
+fontname("Arial");
+set(gca,'fontsize',fs);
 set(gca,'tickdir','out','layer','top');
 rectangle('Position',[ffM(1), ylN(1), (ffM(2)-ffM(1)), (ylN(2) - ylN(1))],'FaceColor',dfc,'EdgeColor','none');
+l1=plot([0 0],ylN,'--k');
 plot(fsM,N2OiM(i3m,nc),'or','linewidth',lwC,'color',ct1);
 plot(fsM,N2OiM(i9m,nc),'^r','linewidth',lwC,'color',ct2);
 plot(fsM,N2OiM(i14m,nc),'sb','linewidth',lwC,'color',ct3);
+text(xC,ynC,'f','fontsize',fs);
 ylim(ylN);
 ax6.YTickLabel = [];
 ax6.XTickLabel = [];
+ax6.XTick = xt;
 xlim(xlff);
 
 ax7 = nexttile;
 hold on; box on;
+fontname("Arial");
+set(gca,'fontsize',fs);
 set(gca,'tickdir','out','layer','top');
 %title('Aug O_2')
 rectangle('Position',[ffA(1), ylO(1), (ffA(2)-ffA(1)), (ylO(2) - ylO(1))],'FaceColor',dfc,'EdgeColor','none');
+l1=plot([0 0],ylO,'--k');
 plot(fsA,O2iA(i3m,nc),'or','linewidth',lwC,'color',ct1);
 plot(fsA,O2iA(i9m,nc),'^r','linewidth',lwC,'color',ct2);
 plot(fsA,O2iA(i14m,nc),'sb','linewidth',lwC,'color',ct3);
+text(xC,yoC,'g','fontsize',fs);
 ylim(ylO);
 ax7.Layer = 'top'; 
-ax7.XTickLabel = [];
+ax7.XTick = xt;
+%ax7.XTickLabel = [];
 ylabel('O_2 [\mumol kg^{-1}]');
 xlim(xlff);
-%xlabel('time of day relative to solar noon')
+xlabel('time relative to solar noon [hr]')
 
 
 ax8 = nexttile;
 hold on; box on;
+fontname("Arial");
+set(gca,'fontsize',fs);
 %title('Oct O_2')
 set(gca,'tickdir','out','layer','top');
 rectangle('Position',[ffO(1), ylO(1), (ffO(2)-ffO(1)), (ylO(2) - ylO(1))],'FaceColor',dfc,'EdgeColor','none');
+l1=plot([0 0],ylO,'--k');
 plot(fsO,O2iO(i3m,nc),'or','linewidth',lwC,'color',ct1);
 plot(fsO,O2iO(i9m,nc),'^r','linewidth',lwC,'color',ct2);
 plot(fsO,O2iO(i14m,nc),'sb','linewidth',lwC,'color',ct3);
+text(xC,yoC,'h','fontsize',fs);
 ylim(ylO);
-ax8.XTickLabel = [];
+%ax8.XTickLabel = [];
 ax8.YTickLabel = [];
 ax8.Layer = 'top';   
+ax8.XTick = xt;
 xlim(xlff);
-%xlabel('time of day relative to solar noon');
+xlabel('time relative to solar noon [hr]');
 
 
 ax9 = nexttile;
 hold on; box on;
+fontname("Arial");
+set(gca,'fontsize',fs);
 %title('May O_2')
 set(gca,'tickdir','out','layer','top');
 rectangle('Position',[ffM(1), ylO(1), (ffM(2)-ffM(1)), (ylO(2) - ylO(1))],'FaceColor',dfc,'EdgeColor','none');
+l1=plot([0 0],ylO,'--k');
 plot(fsM,O2iM(i3m,nc),'or','linewidth',lwC,'color',ct1);
 plot(fsM,O2iM(i9m,nc),'^r','linewidth',lwC,'color',ct2);
 plot(fsM,O2iM(i14m,nc),'sb','linewidth',lwC,'color',ct3);
+text(xC,yoC,'i','fontsize',fs);
 ylim(ylO);
-ax9.XTickLabel = [];
+%ax9.XTickLabel = [];
 ax9.YTickLabel = [];
 ax9.Layer = 'top';   
+ax9.XTick = xt;
 xlim(xlff);
-%xlabel('time of day relative to solar noon')
+xlabel('time relative to solar noon [hr]')
+
+wysiwyg;
+
+%set(gcf,'renderer','opengl'); 
+saveas(gcf, '20250119_Time_Relative_to_Solar_Noon', 'pdf')  
+saveas(gcf,'20250119_Time_Relative_to_Solar_Noon','epsc') 
+saveas(gcf,'20250119_Time_Relative_to_Solar_Noon.png') 
+
+%%
 
 ax10 = nexttile;
 hold on; box on;
@@ -1448,23 +1521,41 @@ ax12.Layer = 'top';
 xlim(xlff);
 xlabel('hour relative to solar noon')
 
+
 %%
 % plot based on time relative to flood
 xlf = [-6.5 6.5];
-figure(3)
+
+% position of captions on figures
+xC = -6;
+ynC = 13.15;
+ycC = 70;
+yoC = 320;
+xt = [-6 -3 0 3 6];
+
+fs=11;
+fig3=figure(3)
 clf; 
-tiledlayout(3,3,'tilespacing','tight')
+tiledlayout(3,3,'tilespacing','compact')
+set(gcf, 'PaperUnits', 'inches');
+set(gcf, 'PaperPositionMode', 'manual');
+set(gcf, 'PaperPosition', [0 0 12 5]);
 
 ax1 = nexttile;
 hold on; box on;
 set(gca,'tickdir','out','layer','top');
+set(gca,'fontsize',fs);
+fontname("Arial");
 title('August')
-plot(fD_flood3A.*24,CH4iA(i3m,nc),'or','linewidth',lwC,'color',ct1);
-plot(fD_flood9A.*24,CH4iA(i9m,nc),'^r','linewidth',lwC,'color',ct2);
-plot(fD_flood14A.*24,CH4iA(i14m,nc),'sb','linewidth',lwC,'color',ct3);
-legend('3 m','9 m','14 m','location','south');
+l1=plot([0 0],ylC,'--k');
+lA=plot(fD_flood3A.*24,CH4iA(i3m,nc),'or','linewidth',lwC,'color',ct1);
+lO=plot(fD_flood9A.*24,CH4iA(i9m,nc),'^r','linewidth',lwC,'color',ct2);
+lM=plot(fD_flood14A.*24,CH4iA(i14m,nc),'sb','linewidth',lwC,'color',ct3);
+text(xC,ycC,'a','fontsize',fs);
+legend([lA, lO, lM],'3 m','9 m','14 m','location','southwest');
 ax1.Layer = 'top'; 
 ax1.XTickLabel = [];
+ax1.XTick = xt;
 ylim(ylC);
 xlim(xlf);
 ylabel('CH_4 [nmol kg^{-1}]');
@@ -1472,14 +1563,19 @@ ylabel('CH_4 [nmol kg^{-1}]');
 ax2 = nexttile;
 hold on; box on;
 set(gca,'tickdir','out','layer','top');
+set(gca,'fontsize',fs);
+fontname("Arial");
 title('October')
+l1=plot([0 0],ylC,'--k');
 plot(fD_flood3O.*24,CH4iO(i3m,nc),'or','linewidth',lwC,'color',ct1);
 plot(fD_flood9O.*24,CH4iO(i9m,nc),'^r','linewidth',lwC,'color',ct2);
 plot(fD_flood14O.*24,CH4iO(i14m,nc),'sb','linewidth',lwC,'color',ct3);
+text(xC,ycC,'b','fontsize',fs);
 %legend('3 m','14 m')
 ax2.Layer = 'top'; 
 ax2.YTickLabel = [];
 ax2.XTickLabel = [];
+ax2.XTick = xt;
 
 ylim(ylC);
 xlim(xlf);
@@ -1487,83 +1583,145 @@ xlim(xlf);
 ax3 = nexttile;
 hold on; box on;
 set(gca,'tickdir','out','layer','top');
+set(gca,'fontsize',fs);
+fontname("Arial");
 title('May')
+l1=plot([0 0],ylC,'--k');
 plot(fD_flood3M.*24,CH4iM(i3m,nc),'or','linewidth',lwC,'color',ct1);
 plot(fD_flood9M.*24,CH4iM(i9m,nc),'^r','linewidth',lwC,'color',ct2);
 plot(fD_flood14M.*24,CH4iM(i14m,nc),'sb','linewidth',lwC,'color',ct3);
+text(xC,ycC,'c','fontsize',fs);
 %legend('3 m','14 m')
 ax3.Layer = 'top'; 
 ax3.YTickLabel = [];
 ax3.XTickLabel = [];
+ax3.XTick = xt;
 
 ylim(ylC);
 xlim(xlf);
 
 ax4 = nexttile;
 hold on; box on;
+set(gca,'tickdir','out','layer','top');
+set(gca,'fontsize',fs);
+fontname("Arial");
 %title('Aug N_2O')
+l1=plot([0 0],ylN,'--k');
 plot(fD_flood3A.*24,N2OiA(i3m,nc),'or','linewidth',lwC,'color',ct1);
 plot(fD_flood9A.*24,N2OiA(i9m,nc),'^r','linewidth',lwC,'color',ct2);
 plot(fD_flood14A.*24,N2OiA(i14m,nc),'sb','linewidth',lwC,'color',ct3);
+text(xC,ynC,'d','fontsize',fs);
 ax4.Layer = 'top'; 
-ax4.YTickLabel = [];
+%ax4.YTickLabel = [];
 ax4.XTickLabel = [];
+ax4.XTick = xt;
 ylim(ylN);
 xlim(xlf);
+
 ylabel('N_2O [nmol kg^{-1}]');
 
-nexttile;
+ax5 = nexttile;
 hold on; box on;
+set(gca,'tickdir','out','layer','top');
+set(gca,'fontsize',fs);
+fontname("Arial");
 %title('Oct N_2O')
+l1=plot([0 0],ylN,'--k');
 plot(fD_flood3O.*24,N2OiO(i3m,nc),'or','linewidth',lwC,'color',ct1);
 plot(fD_flood9O.*24,N2OiO(i9m,nc),'^r','linewidth',lwC,'color',ct2);
 plot(fD_flood14O.*24,N2OiO(i14m,nc),'sb','linewidth',lwC,'color',ct3);
+text(xC,ynC,'e','fontsize',fs);
+ax5.Layer = 'top'; 
+ax5.YTickLabel = [];
+ax5.XTickLabel = [];
+ax5.XTick = xt;
 ylim(ylN);
 xlim(xlf);
-ax3.Layer = 'top'; 
-ax3.YTickLabel = [];
-ax3.XTickLabel = [];
 
-nexttile;
+ax6 = nexttile;
 hold on; box on;
+set(gca,'tickdir','out','layer','top');
+fontname("Arial");
 %title('May N_2O')
+l1=plot([0 0],ylN,'--k');
 plot(fD_flood3M.*24,N2OiM(i3m,nc),'or','linewidth',lwC,'color',ct1);
 plot(fD_flood9M.*24,N2OiM(i9m,nc),'^r','linewidth',lwC,'color',ct2);
 plot(fD_flood14M.*24,N2OiM(i14m,nc),'sb','linewidth',lwC,'color',ct3);
+text(xC,ynC,'f','fontsize',fs);
 ylim(ylN);
 xlim(xlf);
+ax6.Layer = 'top'; 
+ax6.YTickLabel = [];
+ax6.XTickLabel = [];
+ax6.XTick = xt;
 
-nexttile;
+ax7 = nexttile;
 hold on; box on;
+set(gca,'tickdir','out','layer','top');
+set(gca,'fontsize',fs);
+fontname("Arial");
 %title('Aug O_2')
+l1=plot([0 0],ylO,'--k');
 plot(fD_flood3A.*24,O2iA(i3m,nc),'or','linewidth',lwC,'color',ct1);
 plot(fD_flood9A.*24,O2iA(i9m,nc),'^r','linewidth',lwC,'color',ct2);
 plot(fD_flood14A.*24,O2iA(i14m,nc),'sb','linewidth',lwC,'color',ct3);
-ylim(ylO);
-xlim(xlf);
+text(xC,yoC,'g','fontsize',fs);
 ylabel('O_2 [\mumol kg^{-1}]');
 %xlabel('time of day relative to peak flood')
+ax7.Layer = 'top'; 
+%ax7.YTickLabel = [];
+%ax7.XTickLabel = [];
+ax7.XTick = xt;
+ylim(ylO);
+xlim(xlf);
+xlabel('time relative to peak flood [hr]')
 
-nexttile;
+ax8 = nexttile;
 hold on; box on;
+set(gca,'tickdir','out','layer','top');
+set(gca,'fontsize',fs);
+fontname("Arial");
 %title('Oct O_2')
+l1=plot([0 0],ylO,'--k');
 plot(fD_flood3O.*24,O2iO(i3m,nc),'or','linewidth',lwC,'color',ct1);
 plot(fD_flood9O.*24,O2iO(i9m,nc),'^r','linewidth',lwC,'color',ct2);
 plot(fD_flood14O.*24,O2iO(i14m,nc),'sb','linewidth',lwC,'color',ct3);
+text(xC,yoC,'h','fontsize',fs);
 xlim(xlf);
 ylim(ylO);
+ax8.Layer = 'top'; 
+ax8.YTickLabel = [];
+ax8.XTick = xt;
+%ax8.XTickLabel = [];
+xlabel('time relative to peak flood [hr]')
 
-nexttile;
+ax9 = nexttile;
 hold on; box on;
-title('May O_2')
+set(gca,'tickdir','out','layer','top');
+set(gca,'fontsize',fs);
+fontname("Arial");
+%title('May O_2')
+l1=plot([0 0],ylO,'--k');
 plot(fD_flood3M.*24,O2iM(i3m,nc),'or','linewidth',lwC,'color',ct1);
 plot(fD_flood9M.*24,O2iM(i9m,nc),'^r','linewidth',lwC,'color',ct2);
 plot(fD_flood14M.*24,O2iM(i14m,nc),'sb','linewidth',lwC,'color',ct3);
+text(xC,yoC,'i','fontsize',fs);
 ylim(ylO);
 xlim(xlf);
-%xlabel('time of day relative to peak flood')
+xlabel('time relative to peak flood [hr]')
+ax9.Layer = 'top'; 
+ax9.YTickLabel = [];
+ax9.XTick = xt;
+%ax9.XTickLabel = [];
 
+wysiwyg;
+
+%set(gcf,'renderer','opengl'); 
+saveas(gcf, '20250119_Time_Relative_to_Peak_flood', 'pdf')  
+saveas(gcf,'20250119_Time_Relative_to_Peak_flood','epsc') 
+saveas(gcf,'20250119_Time_Relative_to_Peak_flood.png') 
 %%
+
 nexttile;
 hold on; box on;
 %title('Aug O_2')
@@ -3133,6 +3291,7 @@ subplot(sp(1))
     h1=plot(datenum(PA.Datetime_local),PA.Speedms,'linewidth',lwC,'color',ct1);
     h2=plot(datenum(PA30.Datetime_local),PA30.Speedms,'linewidth',lwC,'color',ct2);   
     h3=plot(datenum(PA46.Datetime_local),PA46.Speedms,'linewidth',lwC,'color',ct3);
+    legend([h1,h2,h3],'3 m','9 m','14 m','location','south');
     title('August');
     set(gca,'xtick',xtA);
     set(gca,'layer','top','LineWidth',lwa);    
@@ -3272,10 +3431,10 @@ subplot(sp(6))
   %  c.Label.String = '\DeltaCH_4 (nmol/kg)';
   %  c.FontSize = fs;
     clim(caCH4);
-    %c = colorbar('location','eastoutside');
-    %c.Label.String = '\DeltaCH_4 [nmol kg^{-1}]';
-    %c.FontSize = fs;
-    %c.TickDirection = 'out';
+    c = colorbar('location','eastoutside');
+    c.Label.String = 'CH_4 [nmol kg^{-1}]';
+    c.FontSize = fs;
+    c.TickDirection = 'out';
 
     set(gca,'layer','top','LineWidth',lwa);
     ylim(yl);
@@ -3369,10 +3528,10 @@ subplot(sp(9))
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
     clim(caN2O);
-   %c = colorbar('location','eastoutside');
-   %c.Label.String = '\DeltaN_2O [nmol kg^{-1}]';
-   %c.FontSize = fs;
-   %c.TickDirection = 'out';
+   c = colorbar('location','eastoutside');
+   c.Label.String = '\DeltaN_2O [nmol kg^{-1}]';
+   c.FontSize = fs;
+   c.TickDirection = 'out';
     set(gca,'layer','top','LineWidth',lwa);
     ylim(yl);
     xlim(xlM);
@@ -3466,10 +3625,10 @@ subplot(sp(12))
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
     clim(caO2);
-   %c = colorbar('location','eastoutside');
-   %c.Label.String = '\DeltaO_2 [\mumol kg^{-1}]';
-   %c.FontSize = fs;
-   %c.TickDirection = 'out';
+   c = colorbar('location','eastoutside');
+   c.Label.String = '\DeltaO_2 [\mumol kg^{-1}]';
+   c.FontSize = fs;
+   c.TickDirection = 'out';
     set(gca,'layer','top','LineWidth',lwa);
     ylim(yl);
     xlim(xlM);
@@ -3563,10 +3722,10 @@ subplot(sp(15))
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
     clim(caPDen);
-   %c = colorbar('location','eastoutside');
-   %c.Label.String = '\sigma_{\theta} [kg m^{-3}]';
-   %c.FontSize = fs;
-   %c.TickDirection = 'out';
+   c = colorbar('location','eastoutside');
+   c.Label.String = '\sigma_{\theta} [kg m^{-3}]';
+   c.FontSize = fs;
+   c.TickDirection = 'out';
     set(gca,'layer','top','LineWidth',lwa);
     ylim(yl);
     xlim(xlM);
@@ -3588,7 +3747,8 @@ subplot(sp(15))
    
     wysiwyg;
 
-exportgraphics(gcf,'my_contourf.svg','BackgroundColor','none','ContentType','vector')
+exportgraphics(gcf,'20250120_LIS_MID_Currents_CH4_N2O_O2_PDen_exportgraphics_nocolorbar.svg','BackgroundColor','none','ContentType','vector')
+exportgraphics(gcf,'20250120_LIS_MID_Currents_CH4_N2O_O2_PDen_exportgraphics_colorbar.svg','BackgroundColor','none','ContentType','vector')
 %exportgraphics(gcf, 'my_contourf_plot.eps', 'BackgroundColor', 'None', 'ContentType', 'Vector');
 %exportgraphics(gcf, '20251225_LIS_MID4_Currents_CH4_N2O_O2_PDen_exportgraphics_nocolorbar.eps','ContentType','vector')
 
