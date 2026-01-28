@@ -261,6 +261,7 @@ DO2iA = nan(numel(dl),n_stn); % make a blank grid for storing O2
 DCH4_nmolkgiA = nan(numel(dl),n_stn); % make a blank grid for storing CH4
 DN2O_nmolkgiA = nan(numel(dl),n_stn); % make a blank grid for storing N2O
 DO2_umolkgiA = nan(numel(dl),n_stn); % make a blank grid for storing O2
+mldA = repmat(nan,1,n_stn); % mixed layer depth
 
 asA = []; % indices containing samples we want to use
 
@@ -290,7 +291,7 @@ for i = 1:numel(stnlist)
     q = find(LISA.Station==stnlist(i));
     asA = [asA; q];
     LISA.km_cumulative(q) = x(i+1); % make sure we only do this for the real stations and not fillers
-
+    mldA(i+1) = LISA.mld(q(1));
     tiA(i+1) = LISA.datetime(q(1));
     CH4iA(:,i+1) = interp1(LISA.Depth(q),LISA.mean_CH4_nM(q),dl);
     N2OiA(:,i+1) = interp1(LISA.Depth(q),LISA.mean_N2O_nM(q),dl);
@@ -365,6 +366,9 @@ DO2_umolkgiA(dl_gridA<dmin) = NaN;
 
 
 % now add in data at start and end 
+mldA(1) = mldA(2);
+mldA(end) = mldA(end-1);
+
 tiA(1) = tiA(2);
 tiA(end) = tiA(end-1);
 
@@ -450,12 +454,14 @@ O2iO = nan(numel(dl),n_stn); % make a blank grid for storing O2
 SiO = nan(numel(dl),n_stn); % make a blank grid for storing S
 PDeniO = nan(numel(dl),n_stn); % make a blank grid for storing PDen
 tiO = repmat(datetime(0,0,0), 1, n_stn);
+mldO = repmat(nan,1,n_stn); % mixed layer depth
+
 
 for i = 1:numel(stnlist)
     q = find(LISO.Station==stnlist(i));
     asO = [asO; q];
     LISO.km_cumulative(q) = x(i+1); % make sure we only do this for the real stations and not fillers
-
+    mldO(i+1) = LISO.mld(q(1));
     tiO(i+1) = LISO.datetime(q(1));
     CH4iO(:,i+1) = interp1(LISO.Depth(q),LISO.mean_CH4_nM(q),dl);
     N2OiO(:,i+1) = interp1(LISO.Depth(q),LISO.mean_N2O_nM(q),dl);
@@ -530,6 +536,9 @@ DN2O_nmolkgiO(dl_gridO<dmin) = NaN;
 DO2_umolkgiO(dl_gridO<dmin) = NaN;
 
 % now add in data at start and end 
+mldO(1) = mldO(2);
+mldO(end) = mldO(end-1);
+
 tiO(1) = tiO(2);
 tiO(end) = tiO(end-1);
 
@@ -605,12 +614,14 @@ O2iM = nan(numel(dl),n_stn); % make a blank grid for storing O2
 SiM = nan(numel(dl),n_stn); % make a blank grid for storing S
 PDeniM = nan(numel(dl),n_stn); % make a blank grid for storing PDen
 tiM = repmat(datetime(0,0,0), 1, n_stn);
+mldM = repmat(nan,1,n_stn); % mixed layer depth
+
 
 for i = 1:numel(stnlist)
     q = find(LISM.Station==stnlist(i));
     asM = [asM; q];
     LISM.km_cumulative(q) = x(i+1); % make sure we only do this for the real stations and not fillers
-
+    mldM(i+1) = LISM.mld(q(1));
     tiM(i+1) = LISM.datetime(q(1));
     CH4iM(:,i+1) = interp1(LISM.Depth(q),LISM.mean_CH4_nM(q),dl);
     N2OiM(:,i+1) = interp1(LISM.Depth(q),LISM.mean_N2O_nM(q),dl);
@@ -684,6 +695,9 @@ DN2O_nmolkgiM(dl_gridM<dmin) = NaN;
 DO2_umolkgiM(dl_gridM<dmin) = NaN;
 
 % now add in data at start and end 
+mldM(1) = mldM(2);
+mldM(end) = mldM(end-1);
+
 tiM(1) = tiM(2);
 tiM(end) = tiM(end-1);
 
@@ -834,7 +848,7 @@ set(gcf, 'PaperPositionMode', 'manual');
 set(gcf, 'PaperPosition', [0 0 12 8]);
 set(gcf,'renderer','painters');
     set(gcf,'GraphicsSmoothing','on')
-colormap cm;
+%colormap cm;
 
 % rows: May / Aug / Oct
 % columns: CH4 / N2O / O2 / Density
@@ -1220,6 +1234,7 @@ saveas(gcf,'test','epsc')
 saveas(gcf,'test.png') 
 
 %exportgraphics(gcf, '20250718_LIS_Transect_CH4_N2O_O2_PDen_exportgraphics.eps','ContentType','vector')
+exportgraphics(gcf,'20250120_LIS_Transect_CH4_N2O_O2_PDen_exportgraphics.svg','BackgroundColor','none','ContentType','vector')
 
 %%
 
@@ -1402,7 +1417,7 @@ colormap(cmap2);
     %cbar = colorbar('location','eastoutside');
     cbar.Label.String = '\DeltaCH_4 [nmol kg^{-1}]';
     cbar.FontSize = fs;
-    colorbar('off');
+    %colorbar('off');
     set(gca,'layer','top');
     ylim(yl);
     xlim(xl);
@@ -1499,7 +1514,7 @@ subplot(sp(6))
     c.Label.String = '\DeltaN_2O [nmol kg^{-1}]';
     c.FontSize = fs;
     c.TickDirection = 'out';
-    colorbar('off');
+    %colorbar('off');
     set(gca,'layer','top');
     ylim(yl);
     xlim(xl);
@@ -1597,7 +1612,7 @@ subplot(sp(9))
     c.Label.String = '\DeltaO_2 [\mumol kg^{-1}]';
     c.FontSize = fs;
     c.TickDirection = 'out';
-    colorbar('off');
+    %colorbar('off');
 
     set(gca,'layer','top');
     ylim(yl);
@@ -1624,7 +1639,7 @@ subplot(sp(10))
     colormap(cmap)
     C = contourf(x_gridA,dl_grid,PDeniA,clevelPDen,'edgecolor','flat');
     plot(LISA.km_cumulative(asA),LISA.Depth(asA),'+k', 'linewidth', 2, 'markersize',ms)
-
+    plot(x_gridA(1,:),mldA,'-k')
     caxis(caPDen)
     %c = colorbar('location','eastoutside');
     %c.Label.String = 'N_2O (nmol/kg)';
@@ -1656,7 +1671,7 @@ subplot(sp(11))
     colormap(cmap)
     C = contourf(x_gridO,dl_grid,PDeniO,clevelPDen,'edgecolor','flat');
     plot(LISO.km_cumulative(asO),LISO.Depth(asO),'+k', 'linewidth', 2, 'markersize',ms)
-
+    plot(x_gridO(1,:),mldO,'-k')
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
     clim(caPDen)
@@ -1689,7 +1704,7 @@ subplot(sp(12))
   %  C = surf(x_grid,dl_grid,PDeniM,clevelPDen,'facecolor','interp','edgecolor','interp');
   %  surf instead, with 'FaceColor','interp', 'EdgeColor','interp' and %view(0,90)’.  
     plot(LISM.km_cumulative(asM),LISM.Depth(asM),'+k', 'linewidth', 2, 'markersize',ms)
-
+    plot(x_gridM(1,:),mldM,'-k')
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
     clim(caPDen)
@@ -1697,7 +1712,7 @@ subplot(sp(12))
     c.Label.String = '\sigma_{\theta} [kg m^{-3}]';
     c.FontSize = fs;
     c.TickDirection = 'out';
-    colorbar('off');
+    %colorbar('off');
     set(gca,'layer','top');
     ylim(yl);
     xlim(xl);
@@ -1729,9 +1744,13 @@ subplot(sp(12))
 %exportgraphics(gcf,'20250915_LIS_Transect_DCH4_DN2O_DO2_PDen_withcolorbar.eps','BackgroundColor','none','ContentType','vector')
 %exportgraphics(gcf,'20250915_LIS_Transect_DCH4_DN2O_DO2_PDen_withcolorbar.pdf','BackgroundColor','none','ContentType','vector')
 
-exportgraphics(gcf,'20250915_LIS_Transect_DCH4_DN2O_DO2_PDen_nocolorbar.eps','BackgroundColor','none','ContentType','vector')
-exportgraphics(gcf,'20250915_LIS_Transect_DCH4_DN2O_DO2_PDen_nocolorbar.pdf','BackgroundColor','none','ContentType','vector')
+%exportgraphics(gcf,'20250915_LIS_Transect_DCH4_DN2O_DO2_PDen_nocolorbar.eps','BackgroundColor','none','ContentType','vector')
+%exportgraphics(gcf,'20250915_LIS_Transect_DCH4_DN2O_DO2_PDen_nocolorbar.pdf','BackgroundColor','none','ContentType','vector')
 
+%exportgraphics(gcf,'20250120_LIS_Transect_DCH4_DN2O_DO2_PDen_exportgraphics.svg','BackgroundColor','none','ContentType','vector')
+exportgraphics(gcf,'20250120_LIS_Transect_DCH4_DN2O_DO2_PDen_exportgraphics_colorbar.svg','BackgroundColor','none','ContentType','vector')
+exportgraphics(gcf,'20250120_LIS_Transect_DCH4_DN2O_DO2_PDen_exportgraphics_colorbar.eps','BackgroundColor','none','ContentType','vector')
+exportgraphics(gcf,'20250120_LIS_Transect_DCH4_DN2O_DO2_PDen_exportgraphics_colorbar.pdf','BackgroundColor','none','ContentType','vector')
 
 %%
 %PDF

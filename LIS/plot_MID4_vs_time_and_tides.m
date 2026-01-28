@@ -1,3 +1,4 @@
+clear all; close all; clc;
 
 UTC_to_local = -4/24;
 
@@ -1309,7 +1310,7 @@ ax1.Layer = 'top';
 ax1.XTickLabel = [];
 ax1.XTick = xt;
 ylim(ylC);
-xlim(xlf);
+xlim(xlff);
 
 ylim(ylC);
 xlim(xlff);
@@ -1799,6 +1800,80 @@ xlabel('hour relative to peak flood')
     min(O2iO(i14m,nc)) max(O2iO(i14m,nc)) mean(O2iO(i14m,nc)) max(O2iO(i14m,nc))-min(O2iO(i14m,nc))
     min(O2iM(i14m,nc)) max(O2iM(i14m,nc)) mean(O2iM(i14m,nc))  max(O2iM(i14m,nc))-min(O2iM(i14m,nc))]
 
+[~,iminO2A] = min(O2iA(i3m,nc));
+[~,imaxO2A] = max(O2iA(i3m,nc));
+[~,iminO2O] = min(O2iO(i3m,nc));
+[~,imaxO2O] = max(O2iO(i3m,nc));
+[~,iminO2M] = min(O2iM(i3m,nc));
+[~,imaxO2M] = max(O2iM(i3m,nc));
+
+[fD_flood3A(iminO2A), fD_flood3A(imaxO2A)
+fD_flood3O(iminO2O), fD_flood3O(imaxO2O)
+fD_flood3M(iminO2M), fD_flood3M(imaxO2M)].*24
+
+[~,iminO2A] = min(O2iA(i14m,nc));
+[~,imaxO2A] = max(O2iA(i14m,nc));
+[~,iminO2O] = min(O2iO(i14m,nc));
+[~,imaxO2O] = max(O2iO(i14m,nc));
+[~,iminO2M] = min(O2iM(i14m,nc));
+[~,imaxO2M] = max(O2iM(i14m,nc));
+
+[fD_flood14A(iminO2A), fD_flood14A(imaxO2A)
+fD_flood14O(iminO2O), fD_flood14O(imaxO2O)
+fD_flood14M(iminO2M), fD_flood14M(imaxO2M)].*24
+
+
+%% 3 m min max in CH4 and N2O
+
+[~,iminCH4A] = min(CH4iA(i3m,nc));
+[~,imaxCH4A] = max(CH4iA(i3m,nc));
+[~,iminCH4O] = min(CH4iO(i3m,nc));
+[~,imaxCH4O] = max(CH4iO(i3m,nc));
+[~,iminCH4M] = min(CH4iM(i3m,nc));
+[~,imaxCH4M] = max(CH4iM(i3m,nc));
+
+[fD_flood3A(iminCH4A), fD_flood3A(imaxCH4A)
+fD_flood3O(iminCH4O), fD_flood3O(imaxCH4O)
+fD_flood3M(iminCH4M), fD_flood3M(imaxCH4M)].*24
+
+
+[~,iminN2OA] = min(N2OiA(i3m,nc));
+[~,imaxN2OA] = max(N2OiA(i3m,nc));
+[~,iminN2OO] = min(N2OiO(i3m,nc));
+[~,imaxN2OO] = max(N2OiO(i3m,nc));
+[~,iminN2OM] = min(N2OiM(i3m,nc));
+[~,imaxN2OM] = max(N2OiM(i3m,nc));
+
+[fD_flood3A(iminN2OA), fD_flood3A(imaxN2OA)
+fD_flood3O(iminN2OO), fD_flood3O(imaxN2OO)
+fD_flood3M(iminN2OM), fD_flood3M(imaxN2OM)].*24
+
+
+%% 14 m min max in CH4 and N2O
+
+
+[~,iminCH4A] = min(CH4iA(i14m,nc));
+[~,imaxCH4A] = max(CH4iA(i14m,nc));
+[~,iminCH4O] = min(CH4iO(i14m,nc));
+[~,imaxCH4O] = max(CH4iO(i14m,nc));
+[~,iminCH4M] = min(CH4iM(i14m,nc));
+[~,imaxCH4M] = max(CH4iM(i14m,nc));
+
+[fD_flood14A(iminCH4A), fD_flood14A(imaxCH4A)
+fD_flood14O(iminCH4O), fD_flood14O(imaxCH4O)
+fD_flood14M(iminCH4M), fD_flood14M(imaxCH4M)].*24
+
+
+[~,iminN2OA] = min(N2OiA(i14m,nc));
+[~,imaxN2OA] = max(N2OiA(i14m,nc));
+[~,iminN2OO] = min(N2OiO(i14m,nc));
+[~,imaxN2OO] = max(N2OiO(i14m,nc));
+[~,iminN2OM] = min(N2OiM(i14m,nc));
+[~,imaxN2OM] = max(N2OiM(i14m,nc));
+
+[fD_flood14A(iminN2OA), fD_flood14A(imaxN2OA)
+fD_flood14O(iminN2OO), fD_flood14O(imaxN2OO)
+fD_flood14M(iminN2OM), fD_flood14M(imaxN2OM)].*24
 
 %%
 % plot based on time relative to ebb

@@ -1309,7 +1309,7 @@ ax1.Layer = 'top';
 ax1.XTickLabel = [];
 ax1.XTick = xt;
 ylim(ylC);
-xlim(xlf);
+xlim(xlff);
 
 ylim(ylC);
 xlim(xlff);
@@ -1798,6 +1798,21 @@ xlabel('hour relative to peak flood')
 [   min(O2iA(i14m,nc)) max(O2iA(i14m,nc)) mean(O2iA(i14m,nc))  max(O2iA(i14m,nc))-min(O2iA(i14m,nc))
     min(O2iO(i14m,nc)) max(O2iO(i14m,nc)) mean(O2iO(i14m,nc)) max(O2iO(i14m,nc))-min(O2iO(i14m,nc))
     min(O2iM(i14m,nc)) max(O2iM(i14m,nc)) mean(O2iM(i14m,nc))  max(O2iM(i14m,nc))-min(O2iM(i14m,nc))]
+
+[~,iminCH4A] = min(CH4iA(i3m,nc));
+[~,imaxCH4A] = max(CH4iA(i3m,nc));
+[~,iminCH4O] = min(CH4iO(i3m,nc));
+[~,imaxCH4O] = max(CH4iO(i3m,nc));
+[~,iminCH4M] = min(CH4iM(i3m,nc));
+[~,imaxCH4M] = max(CH4iM(i3m,nc));
+
+[fD_flood3A(iminCH4A), fD_flood3A(imaxCH4A)].*24
+%%
+[fD_flood3O(iminCH4A), fD_flood3O(imaxCH4A)].*24
+[fD_flood3M(iminCH4A), fD_flood3M(imaxCH4A)].*24
+
+
+%%
 
 
 %%
@@ -3423,18 +3438,13 @@ subplot(sp(6))
     ca = [25 460]; %colorbar limits
     C = contourf(x_gridM,dl_grid,CH4iM,clevelCH4,'edgecolor','flat');
     plot(LISM.dn_local(asM),LISM.Depth(asM),'+k', 'linewidth', 2, 'markersize',ms)
-
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
-  %  caxis(caCH4)
-  %  c = colorbar('location','eastoutside');
-  %  c.Label.String = '\DeltaCH_4 (nmol/kg)';
-  %  c.FontSize = fs;
     clim(caCH4);
-    c = colorbar('location','eastoutside');
-    c.Label.String = 'CH_4 [nmol kg^{-1}]';
-    c.FontSize = fs;
-    c.TickDirection = 'out';
+  %  c = colorbar('location','eastoutside');
+  %  c.Label.String = 'CH_4 [nmol kg^{-1}]';
+  %  c.FontSize = fs;
+  %  c.TickDirection = 'out';
 
     set(gca,'layer','top','LineWidth',lwa);
     ylim(yl);
@@ -3528,10 +3538,10 @@ subplot(sp(9))
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
     clim(caN2O);
-   c = colorbar('location','eastoutside');
-   c.Label.String = '\DeltaN_2O [nmol kg^{-1}]';
-   c.FontSize = fs;
-   c.TickDirection = 'out';
+   % c = colorbar('location','eastoutside');
+   % c.Label.String = 'N_2O [nmol kg^{-1}]';
+   % c.FontSize = fs;
+   % c.TickDirection = 'out';
     set(gca,'layer','top','LineWidth',lwa);
     ylim(yl);
     xlim(xlM);
@@ -3625,10 +3635,10 @@ subplot(sp(12))
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
     clim(caO2);
-   c = colorbar('location','eastoutside');
-   c.Label.String = '\DeltaO_2 [\mumol kg^{-1}]';
-   c.FontSize = fs;
-   c.TickDirection = 'out';
+   % c = colorbar('location','eastoutside');
+   % c.Label.String = 'O_2 [\mumol kg^{-1}]';
+   % c.FontSize = fs;
+   % c.TickDirection = 'out';
     set(gca,'layer','top','LineWidth',lwa);
     ylim(yl);
     xlim(xlM);
@@ -3722,10 +3732,10 @@ subplot(sp(15))
     %xlabel('Transect distance [km]');
     %ylabel('Depth [m]');
     clim(caPDen);
-   c = colorbar('location','eastoutside');
-   c.Label.String = '\sigma_{\theta} [kg m^{-3}]';
-   c.FontSize = fs;
-   c.TickDirection = 'out';
+  % c = colorbar('location','eastoutside');
+  % c.Label.String = '\sigma_{\theta} [kg m^{-3}]';
+  % c.FontSize = fs;
+  % c.TickDirection = 'out';
     set(gca,'layer','top','LineWidth',lwa);
     ylim(yl);
     xlim(xlM);
@@ -3748,7 +3758,7 @@ subplot(sp(15))
     wysiwyg;
 
 exportgraphics(gcf,'20250120_LIS_MID_Currents_CH4_N2O_O2_PDen_exportgraphics_nocolorbar.svg','BackgroundColor','none','ContentType','vector')
-exportgraphics(gcf,'20250120_LIS_MID_Currents_CH4_N2O_O2_PDen_exportgraphics_colorbar.svg','BackgroundColor','none','ContentType','vector')
+%exportgraphics(gcf,'20250120_LIS_MID_Currents_CH4_N2O_O2_PDen_exportgraphics_colorbar.svg','BackgroundColor','none','ContentType','vector')
 %exportgraphics(gcf, 'my_contourf_plot.eps', 'BackgroundColor', 'None', 'ContentType', 'Vector');
 %exportgraphics(gcf, '20251225_LIS_MID4_Currents_CH4_N2O_O2_PDen_exportgraphics_nocolorbar.eps','ContentType','vector')
 
